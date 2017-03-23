@@ -27,6 +27,7 @@ function cloudGenerator:tap(event)
     fallScore.y = event.target.y
     fallScore.text = n
     physics.addBody(fallScore)
+    fallScore.isSensor = true
     timer.performWithDelay(5000,deleteScoreText)
   end
 
@@ -58,7 +59,6 @@ function cloudGenerator:tap(event)
     updatePlayScore()
     makeScoreFall(1)
   end
-  return true
 end
 
 function cloudGenerator.new(number,view,speed)

@@ -7,8 +7,8 @@ local speed
 
 local function createBalloon()
   if balloon == nil then
-    local width = 50
-    local height = 65
+    local width = 90
+    local height = 110
     local randomX = math.random(screenLeft+width/2,rightMarg-width/2)
     local randomY = math.random(bottomMarg+height,bottomMarg+800)
     local chance = math.random()
@@ -17,13 +17,9 @@ local function createBalloon()
       balloon.width = width
       balloon.height = height
       balloon:addEventListener("tap",tapUltra)
+      physics.addBody(balloon);
+      balloon.gravityScale = balloonGravity
     end
-  end
-end
-
-  function moveUltra()
-  if balloon ~= nil then
-    balloon.y = balloon.y - balloonSpeed
   end
 end
 
@@ -74,8 +70,7 @@ function tapUltra()
   end
   scoreMultiplier = true
   scoreTimer = timer.performWithDelay(10000,normalScoreMode)
-
-  return true
+  physics.pause()
 end
 
 function popEventUltra(event)
@@ -94,6 +89,7 @@ function popEventUltra(event)
     transition.fadeOut(muscle,{onComplete=fadeOut2})
     transition.fadeOut(x3,{onComplete=fadeOut2})
     addEventListeners()
+    physics.start()
   end
 
   if event.phase == "ended" then
@@ -108,7 +104,6 @@ function normalScoreMode()
 end
 
 function frameUltra()
-  moveUltra()
   isOutUltra()
 end
 

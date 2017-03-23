@@ -8,8 +8,8 @@ local speed
 
 local function createBalloon()
   if balloon == nil then
-    local width = 50
-    local height = 65
+    local width = 90
+    local height = 110
     local randomX = math.random(screenLeft+width/2,rightMarg-width/2)
     local randomY = math.random(bottomMarg+height,bottomMarg+800)
     local chance = math.random()
@@ -18,13 +18,9 @@ local function createBalloon()
       balloon.width = width
       balloon.height = height
       balloon:addEventListener("tap",tapToupe)
+      physics.addBody(balloon);
+      balloon.gravityScale = balloonGravity
     end
-  end
-end
-
-function moveToupe()
-  if balloon ~= nil then
-    balloon.y = balloon.y - balloonSpeed
   end
 end
 
@@ -48,11 +44,9 @@ function tapToupe()
   popSprite:play()
   balloon.alpha = 0
   balloon:removeEventListener("tap",tapToupe)
-  return true
 end
 
 function frameToupe()
-  moveToupe()
   isOutToupe()
 end
 

@@ -29,7 +29,7 @@ function zepFrame()
 end
 
 function createZep()
-  local x = math.random(rightMarg,rightMarg+zepWidth+1000)
+  local x = math.random(rightMarg+zepWidth,rightMarg+zepWidth+1000)
   local y = math.random(screenTop+zepWidth/2,centerY)
   zep = display.newImage("res/zep.png",x,y)
   zep.width = zepWidth

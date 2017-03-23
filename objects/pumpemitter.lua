@@ -20,6 +20,7 @@ function emitter:tap(event)
     fallScore.y = event.target.y
     fallScore.text = n
     physics.addBody(fallScore)
+    fallScore.isSensor = true
     timer.performWithDelay(5000,deleteScoreText)
   end
 
@@ -43,7 +44,6 @@ function emitter:tap(event)
     popSprite.y = event.target.y-50
     popSprite.width = event.target.width
     popSprite.height = event.target.height
-    popSprite:scale(0.8,0.8)
     popSprite:play()
     event.target.alpha = 0
     event.target:removeEventListener("tap",self)
@@ -51,7 +51,6 @@ function emitter:tap(event)
     updatePlayScore()
     makeScoreFall(1)
   end
-  return true
 end
 
 function emitter.new(number,view)
@@ -76,18 +75,7 @@ function emitter.new(number,view)
 end
 
 function emitter:enterFrame()
-  self:move()
   self:isOut()
-end
-
-function emitter:move()
-  for i = 1, #self.all do
-    if balloonSpeed < 3.5 then
-    self.all[i].y = self.all[i].y - balloonSpeed
-    else
-      self.all[i].y = self.all[i].y - 3.5 --max speed
-    end
-  end
 end
 
 function emitter:isOut()
@@ -103,14 +91,20 @@ end
 
 function emitter:createBalloon()
   local balloon
-  local width = 50
-  local height = 65
+  local width = 120
+  local height = 140
   local randomX = math.random(screenLeft+width/2,rightMarg-width/2)
   local randomY = math.random(bottomMarg+height,bottomMarg+800)
   balloon = display.newImage("res/pumpballoon.png",randomX,randomY)
   balloon.width = width
   balloon.height = height
   balloon:addEventListener("tap",self)
+  physics.addBody(balloon);
+  local g = balloonGravity
+  if g < -0.15 then
+    g = -0.15
+  end
+  balloon.gravityScale = g
   return balloon
 end
 

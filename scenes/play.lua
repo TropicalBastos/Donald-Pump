@@ -14,7 +14,7 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 --global
-balloonSpeed = 1
+balloonGravity = -0.01
 scoreMultiplier = false
 scoreTimer = nil
 playScore = nil
@@ -26,6 +26,7 @@ local num
 local bombEmitter = nil
 local pumpEmitter = nil
 local cloudEmitter = nil
+speedTimer = nil
 whichScene = "play"
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -33,6 +34,8 @@ whichScene = "play"
 
 -- create()
 function scene:create( event )
+
+    physics.pause()
 
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
@@ -56,8 +59,8 @@ function scene:create( event )
     balloonSpeed = 1
 
     --set up emitters
-    bombEmitter = bemitter.new(50,sceneGroup)
-    pumpEmitter = pemitter.new(5,sceneGroup)
+    bombEmitter = bemitter.new(25,sceneGroup)
+    pumpEmitter = pemitter.new(8,sceneGroup)
 
     playScore = display.newText(globalTextOptions)
     playScore.text = "Score: " .. currentScore
@@ -66,11 +69,22 @@ function scene:create( event )
     sceneGroup:insert(playScore)
     playScore:toFront()
 
+    local leftWall = display.newRect(0,0,0,10000)
+    local rightWall = display.newRect (rightMarg, 0, 1, 10000)
+
+    leftWall.alpha = 0
+    rightWall.alpha = 0
+
+    sceneGroup:insert(rightWall)
+    sceneGroup:insert(leftWall)
+
+    physics.addBody (leftWall, "static", { bounce = 0.1} )
+    physics.addBody (rightWall, "static", { bounce = 0.1} )
+
     --animate startup
     startup()
 
 end
-
 
 -- show()
 function scene:show( event )
@@ -85,6 +99,13 @@ function scene:show( event )
         -- Code here runs when the scene is entirely on screen
 
     end
+end
+
+function speedUp()
+  if balloonGravity > -0.20 then
+    print("sped")
+    balloonGravity = balloonGravity - 0.01
+  end
 end
 
 --global event for all pops
@@ -131,7 +152,6 @@ function startup()
 
   num.alpha = 0
   transition.fadeIn(num,{onComplete = numOut})
-
 end
 
 --number transitions in and out
@@ -154,6 +174,8 @@ function startGame()
   addEventListeners()
   beginToupeEmitter()
   beginUltraEmitter()
+  speedTimer = timer.performWithDelay(5000,speedUp,0)
+  physics.start()
 end
 
 -- hide()
