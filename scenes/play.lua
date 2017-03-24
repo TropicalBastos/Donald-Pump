@@ -102,8 +102,7 @@ function scene:show( event )
 end
 
 function speedUp()
-  if balloonGravity > -0.20 then
-    print("sped")
+  if balloonGravity > -0.23 then
     balloonGravity = balloonGravity - 0.01
   end
 end

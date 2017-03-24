@@ -12,14 +12,20 @@ local function createBalloon()
     local randomX = math.random(screenLeft+width/2,rightMarg-width/2)
     local randomY = math.random(bottomMarg+height,bottomMarg+800)
     local chance = math.random()
-    if chance < 1.01 then
-      balloon = display.newImage("res/ultraballoon.png",randomX,randomY)
-      balloon.width = width
-      balloon.height = height
-      balloon:addEventListener("tap",tapUltra)
-      physics.addBody(balloon);
-      balloon.gravityScale = balloonGravity
-    end
+    balloon = display.newImage("res/ultraballoon.png",randomX,randomY)
+    balloon.width = width
+    balloon.height = height
+    balloon:addEventListener("tap",tapUltra)
+    physics.addBody(balloon);
+    balloon.gravityScale = balloonGravity
+  end
+end
+
+local function chanceOfAppearance()
+  local chance = 6
+  local r = math.random(1,chance)
+  if r==1 then
+    createBalloon()
   end
 end
 
@@ -28,7 +34,6 @@ function isOutUltra()
     if balloon.y < screenTop - balloon.height then
       balloon:removeSelf()
       balloon = nil
-      createBalloon()
     end
   end
 end
@@ -108,5 +113,5 @@ function frameUltra()
 end
 
 function beginUltraEmitter()
-  timer.performWithDelay(1000,createBalloon,0)
+  timer.performWithDelay(4000,chanceOfAppearance,0)
 end

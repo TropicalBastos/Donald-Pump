@@ -3,8 +3,20 @@ package.path = package.path .. ";../?.lua"
 local emitter = {}
 local emitter_mt = {__index = emitter}
 local speed
+eventCopy = nil
 
-function emitter:tap(event)
+function emitter:collision(event)
+  local current = event.target
+  local collided = event.other
+  eventCopy = event
+  if collided==toupe then
+    timer.performWithDelay(50,self.pop)
+  end
+end
+
+function emitter:pop(event)
+
+  if event == nil then event = eventCopy end
 
   local fallScore = nil
 
@@ -53,6 +65,10 @@ function emitter:tap(event)
   end
 end
 
+function emitter:tap(event)
+  self:pop(event)
+end
+
 function emitter.new(number,view)
 
   local bGroup = display.newGroup()
@@ -91,14 +107,15 @@ end
 
 function emitter:createBalloon()
   local balloon
-  local width = 120
-  local height = 140
+  local width = 130
+  local height = 150
   local randomX = math.random(screenLeft+width/2,rightMarg-width/2)
-  local randomY = math.random(bottomMarg+height,bottomMarg+800)
+  local randomY = math.random(bottomMarg+height,bottomMarg+1000)
   balloon = display.newImage("res/pumpballoon.png",randomX,randomY)
   balloon.width = width
   balloon.height = height
   balloon:addEventListener("tap",self)
+  balloon:addEventListener("collision",self)
   physics.addBody(balloon);
   local g = balloonGravity
   if g < -0.15 then

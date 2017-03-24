@@ -3,6 +3,66 @@ package.path = package.path .. ";../?.lua"
 vGroup = nil
 local emitter = {}
 local emitter_mt = {__index = emitter}
+eventCopyBomb = nil
+
+function emitter:collision(event)
+  local collided = event.other
+  eventCopyBomb = event
+  if collided==toupe then
+    timer.performWithDelay(10,self.pop)
+  end
+end
+
+function emitter:pop(event)
+
+  if event == nil then event = eventCopyBomb end
+
+  local fallScore = nil
+
+  --delete text from memory after it has exited screen
+  local function deleteScoreText()
+    fallScore:removeSelf()
+  end
+
+  local function makeScoreFall(n)
+    --set falling text
+    fallScore = display.newText(globalTextOptions)
+    fallScore.x = event.target.x
+    fallScore.y = event.target.y
+    fallScore.text = n
+    physics.addBody(fallScore)
+    fallScore.isSensor = true
+    timer.performWithDelay(5000,deleteScoreText)
+  end
+
+  if scoreMultiplier then
+    local popSprite = display.newSprite(ultraSheet,ultraSeq)
+    popSprite:addEventListener("sprite",popEvent)
+    popSprite.x = event.target.x+50
+    popSprite.y = event.target.y+25
+    popSprite.width = event.target.width
+    popSprite.height = event.target.height
+    popSprite:play()
+    event.target.alpha = 0
+    event.target:removeEventListener("tap",self)
+    currentScore = currentScore+10
+    updatePlayScore()
+    makeScoreFall(10)
+  else
+    local popSprite = display.newSprite(explosionSheet,explosionSeq)
+    popSprite:addEventListener("sprite",popEvent)
+    popSprite.x = event.target.x
+    popSprite.y = event.target.y-50
+    popSprite.width = event.target.width
+    popSprite.height = event.target.height
+    popSprite:play()
+    event.target.alpha = 0
+    event.target:removeEventListener("tap",self)
+    currentScore = currentScore+1
+    updatePlayScore()
+    makeScoreFall(1)
+  end
+end
 
 function emitter:tap(event)
   local popSprite = display.newSprite(explosionSheet,explosionSeq)
@@ -71,6 +131,7 @@ function emitter:createBalloon()
   balloon:addEventListener("tap",self)
   physics.addBody(balloon);
   balloon.gravityScale = balloonGravity
+  balloon:addEventListener("collision",self)
   return balloon
 end
 
