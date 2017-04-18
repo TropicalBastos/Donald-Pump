@@ -15,7 +15,7 @@ local function createBalloon()
     balloon = display.newImage("res/ultraballoon.png",randomX,randomY)
     balloon.width = width
     balloon.height = height
-    balloon:addEventListener("tap",tapUltra)
+    balloon:addEventListener("touch",tapUltra)
     physics.addBody(balloon);
     balloon.gravityScale = balloonGravity
   end
@@ -51,7 +51,7 @@ function tapUltra()
   popSprite.height = balloon.height
   popSprite:play()
   balloon.alpha = 0
-  balloon:removeEventListener("tap",tapUltra)
+  balloon:removeEventListener("touch",tapUltra)
   removeEventListeners()
 
   --flex muscle animation

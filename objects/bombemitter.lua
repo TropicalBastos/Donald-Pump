@@ -44,7 +44,7 @@ function emitter:pop(event)
     popSprite.height = event.target.height
     popSprite:play()
     event.target.alpha = 0
-    event.target:removeEventListener("tap",self)
+    event.target:removeEventListener("touch",self)
     currentScore = currentScore+10
     updatePlayScore()
     makeScoreFall(10)
@@ -57,14 +57,14 @@ function emitter:pop(event)
     popSprite.height = event.target.height
     popSprite:play()
     event.target.alpha = 0
-    event.target:removeEventListener("tap",self)
+    event.target:removeEventListener("touch",self)
     currentScore = currentScore+1
     updatePlayScore()
     makeScoreFall(1)
   end
 end
 
-function emitter:tap(event)
+function emitter:touch(event)
   local popSprite = display.newSprite(explosionSheet,explosionSeq)
   popSprite:addEventListener("sprite",popEvent)
   popSprite.x = event.target.x
@@ -74,7 +74,7 @@ function emitter:tap(event)
   popSprite:scale(2.5,2.5)
   popSprite:play()
   event.target.alpha = 0
-  event.target:removeEventListener("tap",self)
+  event.target:removeEventListener("touch",self)
 end
 
 function emitter.new(number,view)
@@ -128,7 +128,7 @@ function emitter:createBalloon()
   balloon = display.newImage("res/bombballoon.png",randomX,randomY)
   balloon.width = width
   balloon.height = height
-  balloon:addEventListener("tap",self)
+  balloon:addEventListener("touch",self)
   physics.addBody(balloon);
   balloon.gravityScale = balloonGravity
   balloon:addEventListener("collision",self)

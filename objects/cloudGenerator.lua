@@ -11,7 +11,7 @@ local rightMarg = display.contentWidth - display.screenOriginX
 local cloudGenerator = {}
 local cloudGenerator_mt = {__index = cloudGenerator}
 
-function cloudGenerator:tap(event)
+function cloudGenerator:touch(event)
 
   local fallScore = nil
 
@@ -40,7 +40,7 @@ function cloudGenerator:tap(event)
     popSprite.height = event.target.height
     popSprite:play()
     event.target.alpha = 0
-    event.target:removeEventListener("tap",self)
+    event.target:removeEventListener("touch",self)
     currentScore = currentScore+10
     updatePlayScore()
     makeScoreFall(10)
@@ -54,7 +54,7 @@ function cloudGenerator:tap(event)
     popSprite:scale(0.8,0.8)
     popSprite:play()
     event.target.alpha = 0
-    event.target:removeEventListener("tap",self)
+    event.target:removeEventListener("touch",self)
     currentScore = currentScore+1
     updatePlayScore()
     makeScoreFall(1)
@@ -88,7 +88,7 @@ function cloudGenerator:createCloud()
   cloud.width = width
   cloud.height = cloud.width/2
   if whichScene == "play" then
-    cloud:addEventListener("tap",self)
+    cloud:addEventListener("touch",self)
     end
   return cloud
 end

@@ -45,7 +45,7 @@ function emitter:pop(event)
     popSprite.height = event.target.height
     popSprite:play()
     event.target.alpha = 0
-    event.target:removeEventListener("tap",self)
+    event.target:removeEventListener("touch",self)
     currentScore = currentScore+(scoreTier*10)
     updatePlayScore()
     makeScoreFall(scoreTier*10)
@@ -58,14 +58,14 @@ function emitter:pop(event)
     popSprite.height = event.target.height
     popSprite:play()
     event.target.alpha = 0
-    event.target:removeEventListener("tap",self)
+    event.target:removeEventListener("touch",self)
     currentScore = currentScore+scoreTier
     updatePlayScore()
     makeScoreFall(scoreTier)
   end
 end
 
-function emitter:tap(event)
+function emitter:touch(event)
   self:pop(event)
 end
 
@@ -73,6 +73,7 @@ function emitter.new(number,view)
 
   local bGroup = display.newGroup()
   local all = {}
+  --local tapRect = {}
 
   for i = 0, number do
     local b = emitter:createBalloon()
@@ -91,6 +92,11 @@ function emitter.new(number,view)
 end
 
 function emitter:enterFrame()
+  --move each invisible rect
+  --for i = 1, #self.all do
+    --self.all[i].tapRect.x = self.all[i].x
+    --self.all[i].tapRect.y = self.all[i].y
+  --end
   self:isOut()
 end
 
@@ -117,14 +123,21 @@ function emitter:createBalloon()
   balloon = display.newImage("res/pumpballoon.png",randomX,randomY)
   balloon.width = width
   balloon.height = height
-  balloon:addEventListener("tap",self)
   balloon:addEventListener("collision",self)
   physics.addBody(balloon);
+  balloon:addEventListener("touch",self)
   local g = balloonGravity
   if g < -0.15 then
     g = -0.15
   end
   balloon.gravityScale = g
+  --bigger invisible rectangle for increased sensitivity on tap
+  --local lRect = display.newRect(balloon.x,balloon.y,balloon.width*1.5,balloon.height*2)
+  --lRect.alpha = 0
+  --lRect:addEventListener("touch",self)
+  --lRect.isHitTestable = true
+  --balloon.tapRect = lRect
+  --balloon.tapRect.p = balloon
   return balloon
 end
 

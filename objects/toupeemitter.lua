@@ -17,7 +17,7 @@ local function createBalloon()
     balloon = display.newImage("res/toupeballoon.png",randomX,randomY)
     balloon.width = width
     balloon.height = height
-    balloon:addEventListener("tap",tapToupe)
+    balloon:addEventListener("touch",tapToupe)
     physics.addBody(balloon);
     balloon.gravityScale = balloonGravity
   end
@@ -54,7 +54,7 @@ function tapToupe()
   popSprite.height = balloon.height
   popSprite:play()
   balloon.alpha = 0
-  balloon:removeEventListener("tap",tapToupe)
+  balloon:removeEventListener("touch",tapToupe)
   toupe = display.newImage("res/toupe.png",balloon.x,balloon.y)
   toupe:scale(0.6,0.6)
   physics.addBody(toupe)
