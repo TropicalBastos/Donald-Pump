@@ -46,9 +46,9 @@ function emitter:pop(event)
     popSprite:play()
     event.target.alpha = 0
     event.target:removeEventListener("tap",self)
-    currentScore = currentScore+10
+    currentScore = currentScore+(scoreTier*10)
     updatePlayScore()
-    makeScoreFall(10)
+    makeScoreFall(scoreTier*10)
   else
     local popSprite = display.newSprite(balloonSheet,balloonSequence)
     popSprite:addEventListener("sprite",popEvent)
@@ -59,9 +59,9 @@ function emitter:pop(event)
     popSprite:play()
     event.target.alpha = 0
     event.target:removeEventListener("tap",self)
-    currentScore = currentScore+1
+    currentScore = currentScore+scoreTier
     updatePlayScore()
-    makeScoreFall(1)
+    makeScoreFall(scoreTier)
   end
 end
 
@@ -97,6 +97,9 @@ end
 function emitter:isOut()
   for i = 1, #self.all do
     if self.all[i].y < screenTop - self.all[i].height then
+      if self.all[i].alpha ~= 0 then
+        decrementScoreTier()
+      end
       self.all[i]:removeSelf()
       self.all[i] = nil
       self.all[i] = self:createBalloon()

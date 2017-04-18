@@ -6,6 +6,7 @@ local bemitter = require("objects.bombemitter")
 local pemitter = require("objects.pumpemitter")
 local temitter = require("objects.toupeemitter")
 local uemitter = require("objects.ultraemitter")
+local propertiesImport = require("objects.properties")
 
 local scene = composer.newScene()
 
@@ -26,6 +27,10 @@ local num
 local bombEmitter = nil
 local pumpEmitter = nil
 local cloudEmitter = nil
+scoreTier = 1
+backButton = nil
+topBarHUD = nil
+propertyLife = nil
 speedTimer = nil
 whichScene = "play"
 -- -----------------------------------------------------------------------------------
@@ -81,6 +86,15 @@ function scene:create( event )
     physics.addBody (leftWall, "static", { bounce = 0.1} )
     physics.addBody (rightWall, "static", { bounce = 0.1} )
 
+    --set lives (properties) 3 lives to begin
+    propertyLife = propertiesImport.new(3)
+    scoreTier = #propertyLife
+
+    --add back buttons
+    backButton = display.newImage("res/back.png",screenLeft+25,screenTop+25)
+    backButton.width = 50
+    backButton.height = 50
+
     --animate startup
     startup()
 
@@ -134,6 +148,18 @@ function addEventListeners()
   Runtime:addEventListener("enterFrame",frameUltra)
   Runtime:addEventListener("enterFrame",cloudEmitter)
   Runtime:addEventListener("enterFrame",zepFrame)
+end
+
+function incrementScoreTier()
+  propertyLife:add()
+  scoreTier = scoreTier + 1
+end
+
+function decrementScoreTier()
+  if #propertyLife >= 1 then
+    propertyLife:pop()
+    scoreTier = scoreTier - 1
+  end
 end
 
 function startup()
