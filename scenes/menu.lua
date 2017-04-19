@@ -83,7 +83,7 @@ function scene:create( event )
     buttons:setDimension(rightMarg/4)
     for i = 1, #buttons.allButtons do
       buttons.allButtons[i].y = buttons.allButtons[i].y+300
-      buttons.allButtons[i]:addEventListener("tap",buttonTap)
+      buttons.allButtons[i]:addEventListener("touch",buttonTap)
       local r = math.random(3,6)/10
       physics.addBody(buttons.allButtons[i],{bounce=r,density=r})
       buttons.allButtons[i].gravityScale = -0.5

@@ -29,10 +29,12 @@ local pumpEmitter = nil
 local cloudEmitter = nil
 scoreTier = 1
 backButton = nil
+restartButton = nil
 topBarHUD = nil
 propertyLife = nil
 speedTimer = nil
 whichScene = "play"
+gamePaused = false
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -90,8 +92,14 @@ function scene:create( event )
     propertyLife = propertiesImport.new(3)
     scoreTier = #propertyLife
 
-    --add back buttons
-    backButton = display.newImage("res/back.png",screenLeft+25,screenTop+25)
+    --add back button
+    backButton = display.newImage("res/back.png",screenLeft+25,bottomMarg-25)
+    backButton.width = 50
+    backButton.height = 50
+    backButton:addEventListener("tap",backToMenuListener)
+
+    --add restart button
+    backButton = display.newImage("res/restart.png",rightMarg-25,bottomMarg-25)
     backButton.width = 50
     backButton.height = 50
 
@@ -218,6 +226,24 @@ function scene:hide( event )
     end
 end
 
+function backToMenuListener()
+  if gamePaused then
+    return
+  end
+  
+  local darkenedScreen = display.newRect(centerX,centerY,2000,2000)
+  darkenedScreen:setFillColor(black)
+  darkenedScreen.alpha = 0.3
+  local truckWidth = rightMarg - 25
+  local truckHeight = truckWidth/1.5
+  local truck = display.newImage("res/backtomenu.png",screenLeft-truckWidth-100,
+                                  centerY-(truckHeight/2))
+  truck.width = truckWidth
+  truck.height = truckHeight
+  physics.pause()
+  gamePaused = true
+  transition.to(truck,{x=centerX,time=800,onComplete=restartRuntimeTouch})
+end
 
 -- destroy()
 function scene:destroy( event )

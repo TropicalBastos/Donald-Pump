@@ -39,6 +39,10 @@ function isOutUltra()
 end
 
 function tapUltra()
+  if gamePaused then
+    return
+  end
+
   local darkeffect = display.newRect(centerX,centerY,4000,4000)
   darkeffect:setFillColor(0,0,0)
   darkeffect.alpha = 0.2

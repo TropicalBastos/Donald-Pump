@@ -2,7 +2,7 @@ package.path = package.path .. ";../?.lua"
 
 local properties = {}
 local properties_mt = {__index = properties}
-local propWidth = 30
+local propWidth = 40
 local propHeight = 40
 local propY = (screenTop + propHeight/2) + 3
 

@@ -46,6 +46,9 @@ function destroyToupe()
 end
 
 function tapToupe()
+  if gamePaused then
+    return
+  end
   local popSprite = display.newSprite(balloonSheet,balloonSequence)
   popSprite:addEventListener("sprite",popEvent)
   popSprite.x = balloon.x

@@ -66,6 +66,9 @@ function emitter:pop(event)
 end
 
 function emitter:touch(event)
+  if gamePaused then
+    return
+  end
   self:pop(event)
 end
 

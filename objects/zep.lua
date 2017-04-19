@@ -13,6 +13,9 @@ function newZep(w,h,s)
 end
 
 function moveZep()
+  if gamePaused then
+    return
+  end
   zep.x = zep.x - zepSpeed
 end
 

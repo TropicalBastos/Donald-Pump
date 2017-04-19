@@ -13,6 +13,10 @@ local cloudGenerator_mt = {__index = cloudGenerator}
 
 function cloudGenerator:touch(event)
 
+  if gamePaused then
+    return
+  end
+
   local fallScore = nil
 
   --delete text from memory after it has exited screen
@@ -99,6 +103,9 @@ function cloudGenerator:enterFrame()
 end
 
 function cloudGenerator:move()
+  if gamePaused then
+    return
+  end
   for i = 1, #self.allClouds do
     self.allClouds[i].x = self.allClouds[i].x - self.speed
   end

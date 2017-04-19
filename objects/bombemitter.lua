@@ -65,6 +65,9 @@ function emitter:pop(event)
 end
 
 function emitter:touch(event)
+  if gamePaused then
+    return
+  end
   local popSprite = display.newSprite(explosionSheet,explosionSeq)
   popSprite:addEventListener("sprite",popEvent)
   popSprite.x = event.target.x
