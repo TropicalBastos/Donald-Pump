@@ -3,23 +3,24 @@ package.path = package.path .. ";../?.lua"
 
 local emitter = {}
 local emitter_mt = {__index = emitter}
-local balloon
+local balloonToupe
 local speed
+local toupe_Timer
 toupe = nil
 toupeTimer = nil
 
 local function createBalloon()
-  if balloon == nil then
+  if balloonToupe == nil then
     local width = 90
     local height = 110
     local randomX = math.random(screenLeft+width/2,rightMarg-width/2)
     local randomY = math.random(bottomMarg+height,bottomMarg+800)
-    balloon = display.newImage("res/toupeballoon.png",randomX,randomY)
-    balloon.width = width
-    balloon.height = height
-    balloon:addEventListener("touch",tapToupe)
-    physics.addBody(balloon);
-    balloon.gravityScale = balloonGravity
+    balloonToupe = display.newImage("res/toupeballoon.png",randomX,randomY)
+    balloonToupe.width = width
+    balloonToupe.height = height
+    balloonToupe:addEventListener("touch",tapToupe)
+    physics.addBody(balloonToupe);
+    balloonToupe.gravityScale = balloonGravity
   end
 end
 
@@ -32,17 +33,20 @@ local function chanceOfAppearance()
 end
 
 function isOutToupe()
-  if balloon ~= nil then
-    if balloon.y < screenTop - balloon.height then
-      balloon:removeSelf()
-      balloon = nil
+  if balloonToupe ~= nil then
+    if balloonToupe.y < screenTop - balloonToupe.height then
+      balloonToupe:removeSelf()
+      balloonToupe = nil
     end
   end
 end
 
 function destroyToupe()
-  toupe:removeSelf()
-  toupeTimer = nil
+  display.remove(balloonToupe)
+  display.remove(toupe)
+  if balloonToupe ~= nil then
+    balloonToupe = nil
+  end
 end
 
 function tapToupe()
@@ -51,14 +55,14 @@ function tapToupe()
   end
   local popSprite = display.newSprite(balloonSheet,balloonSequence)
   popSprite:addEventListener("sprite",popEvent)
-  popSprite.x = balloon.x
-  popSprite.y = balloon.y-50
-  popSprite.width = balloon.width
-  popSprite.height = balloon.height
+  popSprite.x = balloonToupe.x
+  popSprite.y = balloonToupe.y-50
+  popSprite.width = balloonToupe.width
+  popSprite.height = balloonToupe.height
   popSprite:play()
-  balloon.alpha = 0
-  balloon:removeEventListener("touch",tapToupe)
-  toupe = display.newImage("res/toupe.png",balloon.x,balloon.y)
+  balloonToupe.alpha = 0
+  balloonToupe:removeEventListener("touch",tapToupe)
+  toupe = display.newImage("res/toupe.png",balloonToupe.x,balloonToupe.y)
   toupe:scale(0.6,0.6)
   physics.addBody(toupe)
   toupe.angularVelocity = 270
@@ -70,9 +74,16 @@ function tapToupe()
 end
 
 function frameToupe()
+  if gamePaused then
+    return
+  end
   isOutToupe()
 end
 
+function cancelToupeEmitter()
+  timer.cancel(toupe_Timer)
+end
+
 function beginToupeEmitter()
-  timer.performWithDelay(4000,chanceOfAppearance,0)
+  toupe_Timer = timer.performWithDelay(4000,chanceOfAppearance,0)
 end

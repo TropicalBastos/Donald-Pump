@@ -98,14 +98,14 @@ function cloudGenerator:createCloud()
 end
 
 function cloudGenerator:enterFrame()
+  if gamePaused then
+    return
+  end
   self:move()
   self:outOfBounds()
 end
 
 function cloudGenerator:move()
-  if gamePaused then
-    return
-  end
   for i = 1, #self.allClouds do
     self.allClouds[i].x = self.allClouds[i].x - self.speed
   end

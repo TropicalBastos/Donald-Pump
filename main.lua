@@ -20,10 +20,6 @@ globalTextOptions = {
   y = display.contentCenterY
 }
 
---start physics that is used by some objects
-physics.start()
-physics.setGravity(0,25)
-
 --global screen position variables
 centerX = display.contentCenterX
 centerY = display.contentCenterY

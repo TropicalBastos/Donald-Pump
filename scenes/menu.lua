@@ -34,6 +34,16 @@ function scene:create( event )
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
 
+    composer.removeScene("scenes.play")
+    composer.removeScene("scenes.loading")
+
+    --start physics that is used by some objects
+    physics.start()
+    physics.setGravity(0,25)
+
+    --set the game to paused so it doesnt start up any game play objects
+    gamePaused = false
+
     --Background
     bg = display.newImage("res/bg.png",0,0)
     bg.width = rightMarg + 100
@@ -89,8 +99,8 @@ function scene:create( event )
       buttons.allButtons[i].gravityScale = -0.5
     end
 
-    local leftWall = display.newRect(0,0,0,bottomMarg)
-    local rightWall = display.newRect (rightMarg, 0, 1, bottomMarg)
+    local leftWall = display.newRect(0,0,40,4000)
+    local rightWall = display.newRect (rightMarg, 0, 40, 4000)
     local topWall = display.newRect (screenLeft, centerY-30, 4000, 10)
     topWall.alpha = 0
     leftWall.alpha = 0
@@ -113,6 +123,10 @@ function scene:create( event )
     }
     highscore = display.newText(textOptions)
     highscore.alpha = 0
+
+    --add listener for cloud emitter
+    Runtime:addEventListener("enterFrame",cloudEmitter)
+    Runtime:addEventListener("enterFrame",zepFrame)
 end
 
 --balloon button tap animation and functions
@@ -190,16 +204,17 @@ function scene:show( event )
 
         animateTitle()
 
-        --add listener for cloud emitter
-        Runtime:addEventListener("enterFrame",cloudEmitter)
-        Runtime:addEventListener("enterFrame",zepFrame)
-
         local transitionOptions = {
           time = 1000,
-          onComplete = function() event.params.bg:removeSelf() end --remove previous bg
+          onComplete = function()
+            if event.params ~= nil then
+              event.params.bg:removeSelf()
+            end
+          end --remove previous bg
         }
         transition.fadeIn(bg,transitionOptions)
         transition.fadeIn(highscore)
+
     end
 end
 

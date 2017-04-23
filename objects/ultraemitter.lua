@@ -2,22 +2,24 @@ package.path = package.path .. ";../?.lua"
 
 local emitter = {}
 local emitter_mt = {__index = emitter}
-local balloon
+local balloonUltra
 local speed
+local ultraTimer = nil
+finishedUltraAnimation = true
 
 local function createBalloon()
-  if balloon == nil then
+  if balloonUltra == nil then
     local width = 90
     local height = 110
     local randomX = math.random(screenLeft+width/2,rightMarg-width/2)
     local randomY = math.random(bottomMarg+height,bottomMarg+800)
     local chance = math.random()
-    balloon = display.newImage("res/ultraballoon.png",randomX,randomY)
-    balloon.width = width
-    balloon.height = height
-    balloon:addEventListener("touch",tapUltra)
-    physics.addBody(balloon);
-    balloon.gravityScale = balloonGravity
+    balloonUltra = display.newImage("res/ultraballoon.png",randomX,randomY)
+    balloonUltra.width = width
+    balloonUltra.height = height
+    balloonUltra:addEventListener("touch",tapUltra)
+    physics.addBody(balloonUltra);
+    balloonUltra.gravityScale = balloonGravity
   end
 end
 
@@ -29,11 +31,18 @@ local function chanceOfAppearance()
   end
 end
 
+function destroyUltra()
+  display.remove(balloonUltra)
+  if balloonUltra ~= nil then
+    balloonUltra = nil
+  end
+end
+
 function isOutUltra()
-  if balloon ~= nil then
-    if balloon.y < screenTop - balloon.height then
-      balloon:removeSelf()
-      balloon = nil
+  if balloonUltra ~= nil then
+    if balloonUltra.y < screenTop - balloonUltra.height then
+      balloonUltra:removeSelf()
+      balloonUltra = nil
     end
   end
 end
@@ -43,19 +52,20 @@ function tapUltra()
     return
   end
 
+  finishedUltraAnimation = false
   local darkeffect = display.newRect(centerX,centerY,4000,4000)
   darkeffect:setFillColor(0,0,0)
   darkeffect.alpha = 0.2
   local popSprite = display.newSprite(ultraSheet,ultraSeq)
   popSprite:addEventListener("sprite",popEventUltra)
   popSprite.dark = darkeffect
-  popSprite.x = balloon.x+50
-  popSprite.y = balloon.y+25
-  popSprite.width = balloon.width
-  popSprite.height = balloon.height
+  popSprite.x = balloonUltra.x+50
+  popSprite.y = balloonUltra.y+25
+  popSprite.width = balloonUltra.width
+  popSprite.height = balloonUltra.height
   popSprite:play()
-  balloon.alpha = 0
-  balloon:removeEventListener("touch",tapUltra)
+  balloonUltra.alpha = 0
+  balloonUltra:removeEventListener("touch",tapUltra)
   removeEventListeners()
 
   --flex muscle animation
@@ -89,8 +99,8 @@ function popEventUltra(event)
   local x3 = event.target.x3
 
   local function fadeOut2()
-    muscle:removeSelf()
-    x3:removeSelf()
+    --muscle:removeSelf()
+    --x3:removeSelf()
   end
 
   local function fadeoutComplete()
@@ -99,6 +109,7 @@ function popEventUltra(event)
     transition.fadeOut(x3,{onComplete=fadeOut2})
     addEventListeners()
     physics.start()
+    finishedUltraAnimation = true
   end
 
   if event.phase == "ended" then
@@ -113,9 +124,16 @@ function normalScoreMode()
 end
 
 function frameUltra()
+  if gamePaused then
+    return
+  end
   isOutUltra()
 end
 
+function cancelUltraEmitter()
+  timer.cancel(ultraTimer)
+end
+
 function beginUltraEmitter()
-  timer.performWithDelay(4000,chanceOfAppearance,0)
+  ultraTimer = timer.performWithDelay(4000,chanceOfAppearance,0)
 end

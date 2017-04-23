@@ -3,6 +3,7 @@ package.path = package.path .. ";../?.lua"
 local Buttons = {}
 local Buttons_mt = {__index = Buttons}
 
+
 Buttons.new = function(x,y,view)
 
   local xPos = x
@@ -41,6 +42,5 @@ function Buttons:setDimension(w)
     end
   end
 end
-
 
 return Buttons

@@ -32,6 +32,12 @@ function properties:add()
   self[#self+1] = prop
 end
 
+function properties:deleteAll()
+  for i = 1, #self do
+    self[i]:removeSelf()
+  end
+end
+
 function properties:pop()
   if #self ~= 0 then
     self[#self]:removeSelf()

@@ -173,7 +173,6 @@ function scene:destroy( event )
     display.remove(loading)
     for i=0, #balloonGenerator.allBalloons do
       display.remove(balloonGenerator.allBalloons[i])
-      print(balloonGenerator.speed)
     end
 
 end

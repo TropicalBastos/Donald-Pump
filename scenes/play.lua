@@ -34,7 +34,12 @@ topBarHUD = nil
 propertyLife = nil
 speedTimer = nil
 whichScene = "play"
-gamePaused = false
+gamePaused = true
+darkenedScreen = nil
+menuMenu = nil
+yesButton = nil
+noButton = nil
+fromMenuToPlay = true
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -76,8 +81,8 @@ function scene:create( event )
     sceneGroup:insert(playScore)
     playScore:toFront()
 
-    local leftWall = display.newRect(0,0,0,10000)
-    local rightWall = display.newRect (rightMarg, 0, 1, 10000)
+    local leftWall = display.newRect(0,0,50,10000)
+    local rightWall = display.newRect (rightMarg, 0, 50, 10000)
 
     leftWall.alpha = 0
     rightWall.alpha = 0
@@ -99,13 +104,15 @@ function scene:create( event )
     backButton:addEventListener("tap",backToMenuListener)
 
     --add restart button
-    backButton = display.newImage("res/restart.png",rightMarg-25,bottomMarg-25)
-    backButton.width = 50
-    backButton.height = 50
+    restartButton = display.newImage("res/restart.png",rightMarg-25,bottomMarg-25)
+    restartButton.width = 50
+    restartButton.height = 50
+
+    sceneGroup:insert(backButton)
+    sceneGroup:insert(restartButton)
 
     --animate startup
     startup()
-
 end
 
 -- show()
@@ -123,7 +130,11 @@ function scene:show( event )
     end
 end
 
+
 function speedUp()
+  if gamePaused then
+    return
+  end
   if balloonGravity > -0.23 then
     balloonGravity = balloonGravity - 0.01
   end
@@ -209,6 +220,8 @@ function startGame()
   beginUltraEmitter()
   speedTimer = timer.performWithDelay(5000,speedUp,0)
   physics.start()
+  gamePaused = false
+  fromMenuToPlay = false
 end
 
 -- hide()
@@ -227,22 +240,88 @@ function scene:hide( event )
 end
 
 function backToMenuListener()
-  if gamePaused then
+  if gamePaused or not finishedUltraAnimation then
     return
   end
-  
-  local darkenedScreen = display.newRect(centerX,centerY,2000,2000)
-  darkenedScreen:setFillColor(black)
-  darkenedScreen.alpha = 0.3
-  local truckWidth = rightMarg - 25
-  local truckHeight = truckWidth/1.5
-  local truck = display.newImage("res/backtomenu.png",screenLeft-truckWidth-100,
-                                  centerY-(truckHeight/2))
-  truck.width = truckWidth
-  truck.height = truckHeight
+
   physics.pause()
   gamePaused = true
-  transition.to(truck,{x=centerX,time=800,onComplete=restartRuntimeTouch})
+
+  --add menu container
+  darkenedScreen = display.newRect(centerX,centerY,2000,2000)
+  darkenedScreen:setFillColor(black)
+  darkenedScreen.alpha = 0.3
+  local menuMenuWidth = rightMarg - 25
+  local menuMenuHeight = menuMenuWidth/1.5
+  menuMenu = display.newImage("res/backtomenu.png",centerX,2000)
+  menuMenu.width = menuMenuWidth
+  menuMenu.height = menuMenuHeight
+  transition.to(menuMenu,{y=centerY,time=200,
+  onComplete=restartRuntimeTouch,transition=easing.inOutSine})
+
+  --add buttons
+  yesButton = display.newImage("res/yesbutton.png",
+  centerX-(menuMenuWidth/4),2000)
+  yesButton.width = menuMenuWidth/2.5
+  yesButton.height = menuMenuHeight/3
+  transition.to(yesButton,{y=centerY+(menuMenuHeight/4),time=200,
+  onComplete=restartRuntimeTouch,transition=easing.inOutSine})
+
+  noButton = display.newImage("res/nobutton.png",
+  centerX+(menuMenuWidth/4),2000)
+  noButton.width = menuMenuWidth/2.5
+  noButton.height = menuMenuHeight/3
+  transition.to(noButton,{y=centerY+(menuMenuHeight/4),time=200,
+  onComplete=restartRuntimeTouch,transition=easing.inOutSine})
+
+  yesButton:addEventListener("touch",buttonTouchListener)
+  noButton:addEventListener("touch",buttonTouchListener)
+end
+
+function transitionTheMenu(item,callback)
+  transition.to(item,{time=500,y=-2000,onComplete=callback})
+  transition.to(yesButton,{time=500,y=-2000,onComplete=callback})
+  transition.to(noButton,{time=500,y=-2000,onComplete=callback})
+  darkenedScreen:removeSelf()
+end
+
+function goToMainMenu()
+  composer.gotoScene("scenes.menu",{effect="crossFade"})
+end
+
+function resumeFromMenu()
+  transitionTheMenu(menuMenu)
+  physics.start()
+  gamePaused = false
+end
+
+function buttonTouchListener(event)
+local function mainMenuGo()
+  transitionTheMenu(menuMenu,goToMainMenu)
+end
+
+  if event.phase == "began" then
+    event.target:scale(0.6,0.6)
+    if event.target == yesButton then
+      --cancel increase of game speed
+      timer.cancel(speedTimer)
+      timer.performWithDelay(100,mainMenuGo)
+    else
+      timer.performWithDelay(100,resumeFromMenu)
+    end
+
+  elseif event.phase == "ended" or event.phase == "cancelled" then
+    event.target:scale(1.67,1.67)
+  end
+
+end
+
+function deleteAllNonSceneObjects()
+  cloudEmitter:deleteAll()
+  propertyLife:deleteAll()
+  destroyToupe()
+  destroyUltra()
+  deleteZep()
 end
 
 -- destroy()
@@ -250,8 +329,10 @@ function scene:destroy( event )
 
     local sceneGroup = self.view
     -- Code here runs prior to the removal of scene's view
-    Runtime:removeEventListener("enterFrame",cloudEmitter)
     removeEventListeners()
+    deleteAllNonSceneObjects()
+    cancelUltraEmitter()
+    cancelToupeEmitter()
 end
 
 

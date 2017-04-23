@@ -13,9 +13,6 @@ function newZep(w,h,s)
 end
 
 function moveZep()
-  if gamePaused then
-    return
-  end
   zep.x = zep.x - zepSpeed
 end
 
@@ -27,8 +24,13 @@ function outZep()
 end
 
 function zepFrame()
-  moveZep()
-  outZep()
+  if gamePaused then
+    return
+  end
+  if zep ~= nil then
+    moveZep()
+    outZep()
+  end
 end
 
 function createZep()
@@ -37,4 +39,11 @@ function createZep()
   zep = display.newImage("res/zep.png",x,y)
   zep.width = zepWidth
   zep.height = zepHeight
+end
+
+function deleteZep()
+  if zep ~= nil then
+    zep:removeSelf()
+    zep = nil
+  end
 end
