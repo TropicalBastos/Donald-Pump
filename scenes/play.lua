@@ -95,18 +95,29 @@ function scene:create( event )
 
     --set lives (properties) 3 lives to begin
     propertyLife = propertiesImport.new(3)
+    for i = 1, #propertyLife do
+      local propY = propertyLife[i].y
+      propertyLife[i].y = propertyLife[i].y - 100
+      transition.to(propertyLife[i],{time=1000,transition=easing.inOutCubic,y=propY})
+    end
     scoreTier = #propertyLife
 
     --add back button
-    backButton = display.newImage("res/back.png",screenLeft+25,bottomMarg-25)
+    backButtonPosX = screenLeft+25
+    backButtonPosY = bottomMarg-25
+    backButton = display.newImage("res/back.png",-100,backButtonPosY)
     backButton.width = 50
     backButton.height = 50
     backButton:addEventListener("tap",backToMenuListener)
+    transition.to(backButton,{time=1000,transition=easing.inOutCubic,x=backButtonPosX})
 
     --add restart button
-    restartButton = display.newImage("res/restart.png",rightMarg-25,bottomMarg-25)
+    restartPosX = rightMarg-25
+    restartPosY = bottomMarg-25
+    restartButton = display.newImage("res/restart.png",rightMarg+100,bottomMarg-25)
     restartButton.width = 50
     restartButton.height = 50
+    transition.to(restartButton,{time=1000,transition=easing.inOutCubic,x=restartPosX})
 
     sceneGroup:insert(backButton)
     sceneGroup:insert(restartButton)
@@ -286,7 +297,7 @@ function transitionTheMenu(item,callback)
 end
 
 function goToMainMenu()
-  composer.gotoScene("scenes.menu",{effect="crossFade"})
+  composer.gotoScene("scenes.menu",{effect="crossFade",params={score=currentScore}})
 end
 
 function resumeFromMenu()

@@ -21,8 +21,11 @@ local flagSprite
 local bg
 local buttons
 local highscore
+local playScore
+highscoreNumber = nil
 whichScene = "menu"
 ropeJoint = nil
+box = nil
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -114,9 +117,14 @@ function scene:create( event )
     physics.addBody (rightWall, "static", { bounce = 0.1} )
     physics.addBody (topWall, "static", { bounce = 0.1} )
 
+    loadHighScore()
+
     --insert highscore
+    if highscoreNumber == nil then
+      highscoreNumber = 0
+    end
     local textOptions = {
-      text = "Highscore: ".. 0,
+      text = "Highscore: ".. highscoreNumber,
       font = highscoreFont,
       x = display.contentCenterX,
       y = 18
@@ -127,6 +135,50 @@ function scene:create( event )
     --add listener for cloud emitter
     Runtime:addEventListener("enterFrame",cloudEmitter)
     Runtime:addEventListener("enterFrame",zepFrame)
+
+    --check for new highscore
+    if event.params ~= nil then
+      if event.params.score ~= nil then
+        local tempScore = event.params.score
+        if tempScore > highscoreNumber then
+          highscoreNumber = tempScore
+          updateHighscore()
+        end
+      end
+    end
+end
+
+--load the stored highscore into the scene
+function loadHighScore()
+  box = ggData:new("highscore")
+  if box.highscore == nil then
+    box:set("highscore",0)
+    box:save()
+  else
+    highscoreNumber = box.highscore
+  end
+end
+
+function updateHighscore()
+  local textOptions = {
+    text = "New Highscore! " .. highscoreNumber,
+    font = newHighscoreFont,
+    x = display.contentCenterX,
+    y = centerY
+  }
+  local updateScoreText = display.newText(textOptions)
+  updateScoreText:scale(0,0)
+  transition.to(updateScoreText,{time=2000,delay=1000,xScale=1,yScale=1,
+  transition=easing.inOutElastic,onComplete=updateScoreComplete})
+  box:set("highscore",highscoreNumber)
+  box:save()
+end
+
+function updateScoreComplete(event)
+  local ust = event
+  transition.to(ust,{time=500,delay=1000,y=0,xScale=0,yScale=0,
+  onComplete=function(event) event:removeSelf() end})
+  highscore.text = "Highscore: " .. highscoreNumber
 end
 
 --balloon button tap animation and functions
@@ -208,7 +260,9 @@ function scene:show( event )
           time = 1000,
           onComplete = function()
             if event.params ~= nil then
-              event.params.bg:removeSelf()
+              if event.params.bg ~= nil then
+                event.params.bg:removeSelf()
+              end
             end
           end --remove previous bg
         }

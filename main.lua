@@ -5,12 +5,14 @@
 -----------------------------------------------------------------------------------------
 spriteSheets = require("spritesheets")
 physics = require("physics")
+ggData = require("plugins.GGData")
 
 local composer = require("composer")
 
 --setFonts
 titleFont = native.newFont("Jim.ttf",28)
 highscoreFont = native.newFont("Jim.ttf",20)
+newHighscoreFont = native.newFont("Jim.ttf",30)
 font321 = native.newFont("Jim.ttf",100)
 
 globalTextOptions = {
