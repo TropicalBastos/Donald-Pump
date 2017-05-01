@@ -4,7 +4,7 @@ local composer = require( "composer" )
 local cloudGenerator = require("objects.cloudGenerator")
 local menubuttons = require("objects.buttons")
 local zepellin = require("objects.zep")
-
+local flyAwayText = require("plugins.FlyAwayText")
 local scene = composer.newScene()
 
 -- -----------------------------------------------------------------------------------
@@ -22,6 +22,7 @@ local bg
 local buttons
 local highscore
 local playScore
+local flyText
 highscoreNumber = nil
 whichScene = "menu"
 ropeJoint = nil
@@ -36,7 +37,7 @@ function scene:create( event )
 
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
-
+    resetHighscore()
     composer.removeScene("scenes.play")
     composer.removeScene("scenes.loading")
 
@@ -159,26 +160,103 @@ function loadHighScore()
   end
 end
 
+--update the highscore with animation
 function updateHighscore()
+
+  highscoreParticles()
+
   local textOptions = {
-    text = "New Highscore! " .. highscoreNumber,
+    text = "New Highscore!",
     font = newHighscoreFont,
     x = display.contentCenterX,
     y = centerY
   }
+
+  local scoreOptions = {
+    text = "" .. highscoreNumber,
+    font = newHighscoreFont,
+    x = display.contentCenterX,
+    y = centerY+50
+  }
+
   local updateScoreText = display.newText(textOptions)
+  local updateScoreNumber = display.newText(scoreOptions)
   updateScoreText:scale(0,0)
-  transition.to(updateScoreText,{time=2000,delay=1000,xScale=1,yScale=1,
+  updateScoreNumber:scale(0,0)
+  transition.to(updateScoreText,{time=2000,xScale=1,yScale=1,
+  transition=easing.inOutElastic,onComplete=updateScoreComplete})
+  transition.to(updateScoreNumber,{time=2000,xScale=1,yScale=1,
   transition=easing.inOutElastic,onComplete=updateScoreComplete})
   box:set("highscore",highscoreNumber)
   box:save()
 end
 
+--callback function after new highscore has been displayed on screen
 function updateScoreComplete(event)
   local ust = event
-  transition.to(ust,{time=500,delay=1000,y=0,xScale=0,yScale=0,
-  onComplete=function(event) event:removeSelf() end})
+  local t = event.text
+  local y
+  event:removeSelf()
+
+  if t == "New Highscore!" then
+    y = centerY
+  else
+    y = centerY + 50
+  end
+
+  local textOptions = {
+    text = t,
+    font = newHighscoreFont,
+    x = display.contentCenterX,
+    y = y
+  }
+
+  flyText = flyAwayText.new(textOptions)
+  flyText:fly(100,{time=200,delay=0,y=0,xScale=0,yScale=0,transition=easing.outSine})
   highscore.text = "Highscore: " .. highscoreNumber
+end
+
+function resetHighscore()
+  box = ggData:new("highscore")
+  box:set("highscore",0)
+  box:save()
+end
+
+function highscoreParticles()
+
+    local emitter = prism.newEmitter({
+  	-- Particle building and emission options
+  	particles = {
+  		type = "image",
+  		image = "res/particle.png",
+  		width = 50,
+  		height = 50,
+  		color = {{1, 1, 0.1}, {1, 0, 0}},
+  		blendMode = "add",
+  		particlesPerEmission = 100,
+  		delayBetweenEmissions = 100,
+  		inTime = 100,
+  		lifeTime = 100,
+  		outTime = 1000,
+  		startProperties = {xScale = 1, yScale = 1},
+  		endProperties = {xScale = 0.3, yScale = 0.3}
+  	},
+  	-- Particle positioning options
+  	position = {
+  		type = "point"
+  	},
+  	-- Particle movement options
+  	movement = {
+  		type = "random",
+  		velocityRetain = .97,
+  		speed = 1,
+  		yGravity = -0.15
+  	}
+  })
+
+  emitter.emitX, emitter.emitY = centerX, bottomMarg
+  emitter:emit()
+
 end
 
 --balloon button tap animation and functions
@@ -348,6 +426,9 @@ function scene:destroy( event )
     Runtime:removeEventListener("enterFrame",zepFrame)
     zep:removeSelf()
     cloudEmitter:deleteAll()
+    if flyText ~= nil then
+      flyText:removeSelf()
+    end
 end
 
 

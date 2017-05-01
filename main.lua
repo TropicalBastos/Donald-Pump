@@ -3,17 +3,18 @@
 -- main.lua
 --
 -----------------------------------------------------------------------------------------
-spriteSheets = require("spritesheets")
+spriteSheets = require("sheets.spritesheets")
 physics = require("physics")
 ggData = require("plugins.GGData")
+prism = require("plugins.prism")
 
 local composer = require("composer")
 
 --setFonts
-titleFont = native.newFont("Jim.ttf",28)
-highscoreFont = native.newFont("Jim.ttf",20)
-newHighscoreFont = native.newFont("Jim.ttf",30)
-font321 = native.newFont("Jim.ttf",100)
+titleFont = native.newFont("fonts/Jim.ttf",28)
+highscoreFont = native.newFont("fonts/Jim.ttf",20)
+newHighscoreFont = native.newFont("fonts/Jim.ttf",30)
+font321 = native.newFont("fonts/Jim.ttf",100)
 
 globalTextOptions = {
   text = "NULL",

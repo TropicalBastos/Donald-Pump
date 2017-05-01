@@ -37,6 +37,7 @@ whichScene = "play"
 gamePaused = true
 darkenedScreen = nil
 menuMenu = nil
+retryMenu = nil
 yesButton = nil
 noButton = nil
 fromMenuToPlay = true
@@ -52,6 +53,7 @@ function scene:create( event )
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
     composer.removeScene("scenes.menu")
+    composer.removeScene("scenes.transition")
 
     --Background
     bg = display.newImage("res/bg.png",0,0)
@@ -117,6 +119,7 @@ function scene:create( event )
     restartButton = display.newImage("res/restart.png",rightMarg+100,bottomMarg-25)
     restartButton.width = 50
     restartButton.height = 50
+    restartButton:addEventListener("tap",retryMenuListener)
     transition.to(restartButton,{time=1000,transition=easing.inOutCubic,x=restartPosX})
 
     sceneGroup:insert(backButton)
@@ -285,19 +288,23 @@ function backToMenuListener()
   transition.to(noButton,{y=centerY+(menuMenuHeight/4),time=200,
   onComplete=restartRuntimeTouch,transition=easing.inOutSine})
 
-  yesButton:addEventListener("touch",buttonTouchListener)
-  noButton:addEventListener("touch",buttonTouchListener)
+  yesButton:addEventListener("touch",menuButtonTouchListener)
+  noButton:addEventListener("touch",menuButtonTouchListener)
 end
 
 function transitionTheMenu(item,callback)
   transition.to(item,{time=500,y=-2000,onComplete=callback})
-  transition.to(yesButton,{time=500,y=-2000,onComplete=callback})
-  transition.to(noButton,{time=500,y=-2000,onComplete=callback})
+  transition.to(yesButton,{time=500,y=-2000})
+  transition.to(noButton,{time=500,y=-2000})
   darkenedScreen:removeSelf()
 end
 
 function goToMainMenu()
   composer.gotoScene("scenes.menu",{effect="crossFade",params={score=currentScore}})
+end
+
+function retry()
+  composer.gotoScene("scenes.transition",{effect="crossFade",params={score=currentScore}})
 end
 
 function resumeFromMenu()
@@ -306,7 +313,13 @@ function resumeFromMenu()
   gamePaused = false
 end
 
-function buttonTouchListener(event)
+function resumeFromRetry()
+  transitionTheMenu(retryMenu)
+  physics.start()
+  gamePaused = false
+end
+
+function menuButtonTouchListener(event)
 local function mainMenuGo()
   transitionTheMenu(menuMenu,goToMainMenu)
 end
@@ -325,6 +338,66 @@ end
     event.target:scale(1.67,1.67)
   end
 
+end
+
+function retryButtonTouchListener(event)
+local function retryMenuGo()
+  transitionTheMenu(retryMenu,retry)
+end
+
+  if event.phase == "began" then
+    event.target:scale(0.6,0.6)
+    if event.target == yesButton then
+      --cancel increase of game speed
+      timer.cancel(speedTimer)
+      timer.performWithDelay(100,retryMenuGo)
+    else
+      timer.performWithDelay(100,resumeFromRetry)
+    end
+
+  elseif event.phase == "ended" or event.phase == "cancelled" then
+    event.target:scale(1.67,1.67)
+  end
+
+end
+
+function retryMenuListener()
+  if gamePaused or not finishedUltraAnimation then
+    return
+  end
+
+  physics.pause()
+  gamePaused = true
+
+  --add menu container
+  darkenedScreen = display.newRect(centerX,centerY,2000,2000)
+  darkenedScreen:setFillColor(black)
+  darkenedScreen.alpha = 0.3
+  local retryMenuWidth = rightMarg - 25
+  local retryMenuHeight = retryMenuWidth/1.5
+  retryMenu = display.newImage("res/retrymenu.png",centerX,2000)
+  retryMenu.width = retryMenuWidth
+  retryMenu.height = retryMenuHeight
+  transition.to(retryMenu,{y=centerY,time=200,
+  onComplete=restartRuntimeTouch,transition=easing.inOutSine})
+
+  --add buttons
+  yesButton = display.newImage("res/yesbutton.png",
+  centerX-(retryMenuWidth/4),2000)
+  yesButton.width = retryMenuWidth/2.5
+  yesButton.height = retryMenuHeight/3
+  transition.to(yesButton,{y=centerY+(retryMenuHeight/4),time=200,
+  onComplete=restartRuntimeTouch,transition=easing.inOutSine})
+
+  noButton = display.newImage("res/nobutton.png",
+  centerX+(retryMenuWidth/4),2000)
+  noButton.width = retryMenuWidth/2.5
+  noButton.height = retryMenuHeight/3
+  transition.to(noButton,{y=centerY+(retryMenuHeight/4),time=200,
+  onComplete=restartRuntimeTouch,transition=easing.inOutSine})
+
+  yesButton:addEventListener("touch",retryButtonTouchListener)
+  noButton:addEventListener("touch",retryButtonTouchListener)
 end
 
 function deleteAllNonSceneObjects()
