@@ -76,18 +76,21 @@ function tapUltra()
   muscleSprite:play()
   popSprite.muscle = muscleSprite
 
-  --x3 score label
-  local x3 = display.newText(globalTextOptions)
-  x3.text = "x10 MULTIPLIER"
-  x3:scale(0,0)
-  popSprite.x3 = x3
-  transition.to(x3,{xScale=1,yScale=1,transition=easing.outBounce,time=1000})
+  scoreMultiplier = 10
 
   --set true the score multiplier
   if scoreTimer ~= nil then
     timer.cancel(scoreTimer)
+    scoreMultiplier = scoreMultiplier + 10
   end
-  scoreMultiplier = true
+
+  --x scoremultiplier score label
+  local x3 = display.newText(globalTextOptions)
+  x3.text = "x" .. scoreMultiplier .. " MULTIPLIER"
+  x3:scale(0,0)
+  popSprite.x3 = x3
+  transition.to(x3,{xScale=1,yScale=1,transition=easing.outBounce,time=1000})
+
   scoreTimer = timer.performWithDelay(10000,normalScoreMode)
   physics.pause()
 end
@@ -119,7 +122,7 @@ function popEventUltra(event)
 end
 
 function normalScoreMode()
-  scoreMultiplier = false
+  scoreMultiplier = 0;
   scoreTimer = nil
 end
 

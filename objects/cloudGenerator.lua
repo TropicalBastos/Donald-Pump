@@ -35,7 +35,7 @@ function cloudGenerator:touch(event)
     timer.performWithDelay(5000,deleteScoreText)
   end
 
-  if scoreMultiplier then
+  if scoreMultiplier > 0 then
     local popSprite = display.newSprite(ultraSheet,ultraSeq)
     popSprite:addEventListener("sprite",popEvent)
     popSprite.x = event.target.x+50
@@ -45,9 +45,9 @@ function cloudGenerator:touch(event)
     popSprite:play()
     event.target.alpha = 0
     event.target:removeEventListener("touch",self)
-    currentScore = currentScore+10
+    currentScore = currentScore+scoreMultiplier
     updatePlayScore()
-    makeScoreFall(10)
+    makeScoreFall(scoreMultiplier)
   else
     local popSprite = display.newSprite(balloonSheet,balloonSequence)
     popSprite:addEventListener("sprite",popEvent)

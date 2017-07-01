@@ -16,7 +16,7 @@ local scene = composer.newScene()
 -- -----------------------------------------------------------------------------------
 --global
 balloonGravity = -0.01
-scoreMultiplier = false
+scoreMultiplier = 0
 scoreTimer = nil
 playScore = nil
 currentScore = 0

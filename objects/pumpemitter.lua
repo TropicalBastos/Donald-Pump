@@ -36,7 +36,7 @@ function emitter:pop(event)
     timer.performWithDelay(5000,deleteScoreText)
   end
 
-  if scoreMultiplier then
+  if scoreMultiplier > 0 then
     local popSprite = display.newSprite(ultraSheet,ultraSeq)
     popSprite:addEventListener("sprite",popEvent)
     popSprite.x = event.target.x+50
@@ -46,9 +46,9 @@ function emitter:pop(event)
     popSprite:play()
     event.target.alpha = 0
     event.target:removeEventListener("touch",self)
-    currentScore = currentScore+(scoreTier*10)
+    currentScore = currentScore+(scoreTier*scoreMultiplier)
     updatePlayScore()
-    makeScoreFall(scoreTier*10)
+    makeScoreFall(scoreTier*scoreMultiplier)
   else
     local popSprite = display.newSprite(balloonSheet,balloonSequence)
     popSprite:addEventListener("sprite",popEvent)
