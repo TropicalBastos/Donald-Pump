@@ -9,10 +9,10 @@ local scene = composer.newScene()
 -- -----------------------------------------------------------------------------------
 
 --declare all objects for scene
-local sheetOptions
-local sheet_loading
-local loadingSequence
-local loading
+--local sheetOptions
+--local sheet_loading
+--local loadingSequence
+--local loading
 local logo
 local balloonGenerator
 local loadingComplete = false
@@ -41,43 +41,43 @@ function scene:create( event )
     bg.height = bottomMarg + 100
     bg.x = centerX
     bg.y = centerY
-
-    sheetOptions = {
-      width = 500,
-      height = 500,
-      numFrames = 36
-    }
+    
+    --sheetOptions = {
+      --width = 500,
+      --height = 500,
+      --numFrames = 36
+    --}
     --load sprite sheet with options
-    sheet_loading = graphics.newImageSheet("res/loadingmain.png",sheetOptions)
+    --sheet_loading = graphics.newImageSheet("res/loadingmain.png",sheetOptions)
 
     -- set the sequence
-    loadingSequence = {
+    --loadingSequence = {
       --consecutive frames
-      {
-        name = "loading",
-        start = 1,
-        count = 36,
-        time = 2000,
-        loopCount = 0,
-        loopDirection = "forward"
-      }
-    }
+      --{
+        --name = "loading",
+        --start = 1,
+        --count = 36,
+        --time = 2000,
+        --loopCount = 0,
+        --loopDirection = "forward"
+      --}
+    --}
 
-    loading = display.newSprite(sheet_loading,loadingSequence)
-    loading:scale(0.0,0.0)
+    --loading = display.newSprite(sheet_loading,loadingSequence)
+    --loading:scale(0.0,0.0)
 
     --positioning
-    loading.x = display.contentCenterX
-    loading.y = display.contentCenterY
-    loading:toBack()
-    loading:play()
+    --loading.x = display.contentCenterX
+    --loading.y = display.contentCenterY
+    --loading:toBack()
+    --loading:play()
 
     renderLogo()
-    logo.y = 80
+    logo.y = centerY;
     logo:scale(0.0,0.0)
 
     sceneGroup:insert(logo)
-    sceneGroup:insert(loading)
+    --sceneGroup:insert(loading)
 
     balloonGenerator = transitionBalloons.new(60,sceneGroup,10)
 
@@ -97,8 +97,8 @@ end
 
 function renderLogo()
   logo = display.newImage("res/logo.png")
-  logo.width = 300
-  logo.height = 50
+  logo.width = 350
+  logo.height = 350
   logo.x = display.contentCenterX
 end
 
@@ -111,8 +111,8 @@ end
 
 function slideUp()
   --slide display objects up as a trnsition before the next scene appears
-  transition.to(logo,{y=-300,time=2000,transition=easing.inOutQuart})
-  transition.to(loading,{y=-300,time=2000,transition=easing.inOutQuart,onComplete=goToMenu})
+  transition.to(logo,{y=-300,time=2000,transition=easing.inOutQuart,onComplete=goToMenu})
+  --transition.to(loading,{y=-300,time=2000,transition=easing.inOutQuart,onComplete=goToMenu})
 end
 
 function goToMenu()
