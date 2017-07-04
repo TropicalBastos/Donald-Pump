@@ -59,8 +59,8 @@ function scene:create( event )
 
     --white house graphic
     whiteHouse = display.newImage("res/whitehouse2.png",display.contentCenterX,100)
-    whiteHouse.width = display.actualContentWidth
-    whiteHouse.height = whiteHouse.width/3
+    whiteHouse.width = (display.actualContentWidth) / 1.3
+    whiteHouse.height = whiteHouse.width/2.25
     whiteHouse.y = bottomMarg - (whiteHouse.height/2)
     sceneGroup:insert(whiteHouse)
 
