@@ -6,6 +6,7 @@ local bemitter = require("objects.bombemitter")
 local pemitter = require("objects.pumpemitter")
 local temitter = require("objects.toupeemitter")
 local uemitter = require("objects.ultraemitter")
+local propemitter = require("objects.propertyemitter")
 local propertiesImport = require("objects.properties")
 
 local scene = composer.newScene()
@@ -172,6 +173,7 @@ function removeEventListeners()
   Runtime:removeEventListener("enterFrame",frameUltra)
   Runtime:removeEventListener("enterFrame",cloudEmitter)
   Runtime:removeEventListener("enterFrame",zepFrame)
+  Runtime:removeEventListener("enterFrame",framePropBalloon)
 end
 
 function addEventListeners()
@@ -181,6 +183,7 @@ function addEventListeners()
   Runtime:addEventListener("enterFrame",frameUltra)
   Runtime:addEventListener("enterFrame",cloudEmitter)
   Runtime:addEventListener("enterFrame",zepFrame)
+  Runtime:addEventListener("enterFrame",framePropBalloon)
 end
 
 function incrementScoreTier()
@@ -232,6 +235,7 @@ function startGame()
   addEventListeners()
   beginToupeEmitter()
   beginUltraEmitter()
+  beginPropBalloonEmitter()
   speedTimer = timer.performWithDelay(5000,speedUp,0)
   physics.start()
   gamePaused = false
@@ -405,6 +409,7 @@ function deleteAllNonSceneObjects()
   propertyLife:deleteAll()
   destroyToupe()
   destroyUltra()
+  destroyPropBalloon()
   deleteZep()
 end
 
@@ -417,6 +422,7 @@ function scene:destroy( event )
     deleteAllNonSceneObjects()
     cancelUltraEmitter()
     cancelToupeEmitter()
+    cancelPropBalloonEmitter()
 end
 
 

@@ -45,9 +45,9 @@ function emitter:pop(event)
     popSprite:play()
     event.target.alpha = 0
     event.target:removeEventListener("touch",self)
-    currentScore = currentScore+scoreMultiplier
+    currentScore = currentScore+(scoreTier*scoreMultiplier)
     updatePlayScore()
-    makeScoreFall(scoreMultiplier)
+    makeScoreFall(scoreMultiplier*scoreTier)
   else
     local popSprite = display.newSprite(explosionSheet,explosionSeq)
     popSprite:addEventListener("sprite",popEvent)
@@ -58,9 +58,9 @@ function emitter:pop(event)
     popSprite:play()
     event.target.alpha = 0
     event.target:removeEventListener("touch",self)
-    currentScore = currentScore+1
+    currentScore = currentScore+scoreTier
     updatePlayScore()
-    makeScoreFall(1)
+    makeScoreFall(scoreTier)
   end
 end
 
