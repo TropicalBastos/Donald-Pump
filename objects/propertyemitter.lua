@@ -6,9 +6,32 @@ local balloonProperty
 local speed
 local propBalloonTimer = nil
 
-local function tapProperty()
+local function tapProperty(event)
     propertyLife:add()
     destroyPropBalloon()
+    local popSprite = display.newSprite(balloonSheet,balloonSequence)
+    popSprite:addEventListener("sprite",popEvent)
+    popSprite.x = event.target.x
+    popSprite.y = event.target.y-50
+    popSprite.width = event.target.width
+    popSprite.height = event.target.height
+    popSprite:play()
+    event.target.alpha = 0
+    event.target:removeEventListener("touch",tapProperty)
+
+    --display coin
+    local coin = display.newImage('res/propcoin.png')
+    coin.x = event.target.x
+    coin.y = event.target.y
+    coin.width = 60
+    coin.height = 60
+    transition.to(coin, {
+      time = 1000,
+      x = rightMarg,
+      y = screenTop,
+      transition = easing.inQuad,
+      onComplete = function() coin:removeSelf() end
+    })
 end
 
 local function createBalloon()
@@ -17,7 +40,7 @@ local function createBalloon()
     local height = 110
     local randomX = math.random(screenLeft+width/2,rightMarg-width/2)
     local randomY = math.random(bottomMarg+height,bottomMarg+800)
-    local chance = math.random()
+    --local chance = math.random()
     balloonProperty = display.newImage("res/propertyballoon.png",randomX,randomY)
     balloonProperty.width = width
     balloonProperty.height = height
