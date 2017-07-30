@@ -44,7 +44,7 @@ end
 function properties:pop()
   if #self ~= 0 then
     self[#self]:removeSelf()
-    self[#self] = ni
+    self[#self] = nil
   end
 end
 

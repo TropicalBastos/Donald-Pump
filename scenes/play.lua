@@ -21,6 +21,7 @@ scoreMultiplier = 0
 scoreTimer = nil
 playScore = nil
 currentScore = 0
+prevScore = 0
 
 local bg
 local current
@@ -40,9 +41,11 @@ darkenedScreen = nil
 menuMenu = nil
 retryMenu = nil
 gameoverMenu = nil
+gameOverOn = false
 yesButton = nil
 noButton = nil
 fromMenuToPlay = true
+gameOverHighscore = nil
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -127,6 +130,13 @@ function scene:create( event )
     sceneGroup:insert(backButton)
     sceneGroup:insert(restartButton)
 
+    --check any scores passed in from previous round
+    if event.params ~= nil then
+      if event.params.score ~= nil then
+        prevScore = event.params.score
+      end
+    end
+
     --animate startup
     startup()
 end
@@ -193,7 +203,10 @@ function incrementScoreTier()
 end
 
 function decrementScoreTier()
-  if #propertyLife >= 1 then
+  if #propertyLife == 0 then
+    gameOverMenuListener()
+    return
+  elseif #propertyLife >= 1 then
     propertyLife:pop()
     scoreTier = scoreTier - 1
   end
@@ -298,6 +311,7 @@ function backToMenuListener()
 end
 
 function transitionTheMenu(item,callback)
+  removeGameOverHighScore()
   transition.to(item,{time=500,y=-2000,onComplete=callback})
   transition.to(yesButton,{time=500,y=-2000})
   transition.to(noButton,{time=500,y=-2000})
@@ -305,11 +319,19 @@ function transitionTheMenu(item,callback)
 end
 
 function goToMainMenu()
-  composer.gotoScene("scenes.menu",{effect="crossFade",params={score=currentScore}})
+  local scoreToPass = currentScore
+  if currentScore < prevScore then
+    scoreToPass = prevScore
+  end
+  composer.gotoScene("scenes.menu",{effect="crossFade",params={score=scoreToPass}})
 end
 
 function retry()
-  composer.gotoScene("scenes.transition",{effect="crossFade",params={score=currentScore}})
+  local scoreToPass = currentScore
+  if currentScore < prevScore then
+    scoreToPass = prevScore
+  end
+  composer.gotoScene("scenes.transition",{effect="crossFade",params={score=scoreToPass}})
 end
 
 function resumeFromMenu()
@@ -427,40 +449,78 @@ end
 
 function gameOverMenuListener()
 
+--if gameover menu is already on screen then exit the function, no need to propagate
+  if gameOverOn then
+    return
+  end
+
+  gameOverOn = true
   physics.pause()
   gamePaused = true
 
   --add menu container
   darkenedScreen = display.newRect(centerX,centerY,2000,2000)
   darkenedScreen:setFillColor(black)
-  darkenedScreen.alpha = 0.6
+  darkenedScreen.alpha = 0
+  transition.to(darkenedScreen,{alpha=0.9, time=1000})
   local gameoverMenuWidth = rightMarg - 25
   local gameoverMenuHeight = gameoverMenuWidth/1.5
-  gameoverMenu = display.newImage("res/gameover.png",centerX,2000)
-  gameoverMenu.width = gameoverMenuWidth
-  gameoverMenu.height = gameoverMenuHeight
-  transition.to(gameoverMenu,{y=centerY,time=200,
-  onComplete=restartRuntimeTouch,transition=easing.inOutSine})
+  gameoverMenu = display.newImage("res/gameover.png",centerX,centerY)
+  gameoverMenu.width = 0
+  gameoverMenu.height = 0
+  transition.to(gameoverMenu,{y=centerY,time=200,width=gameoverMenuWidth,height=gameoverMenuHeight,
+  onComplete=restartRuntimeTouch,transition=easing.inOutBounce})
+
+  --add highscore, if there is one
+  compareHighScore()
 
   --add buttons
   yesButton = display.newImage("res/yesbutton.png",
   centerX-(gameoverMenuWidth/4),2000)
   yesButton.gameover = true
-  yesButton.width = gameoverMenuWidth/2.5
-  yesButton.height = gameoverMenuHeight/3
-  transition.to(yesButton,{y=centerY+(gameoverMenuHeight/4),time=200,
-  onComplete=restartRuntimeTouch,transition=easing.inOutSine})
+  local yesButtonWidth = gameoverMenuWidth/2.5
+  local yesButtonHeight = gameoverMenuHeight/3
+  yesButton.width = 0
+  yesButton.height = 0
+  transition.to(yesButton,{y=centerY+(gameoverMenuHeight/4),time=200,width = yesButtonWidth, height = yesButtonHeight,
+  onComplete=restartRuntimeTouch,transition=easing.inOutBounce})
 
   noButton = display.newImage("res/nobutton.png",
   centerX+(gameoverMenuWidth/4),2000)
   noButton.gameover = true
-  noButton.width = gameoverMenuWidth/2.5
-  noButton.height = gameoverMenuHeight/3
-  transition.to(noButton,{y=centerY+(gameoverMenuHeight/4),time=200,
-  onComplete=restartRuntimeTouch,transition=easing.inOutSine})
+  local noButtonWidth = gameoverMenuWidth/2.5
+  local noButtonHeight = gameoverMenuHeight/3
+  noButton.width = 0
+  noButton.height = 0
+  transition.to(noButton,{y=centerY+(gameoverMenuHeight/4),time=200,width = noButtonWidth, height = noButtonHeight,
+  onComplete=restartRuntimeTouch,transition=easing.inOutBounce})
 
   yesButton:addEventListener("touch",retryButtonTouchListener)
   noButton:addEventListener("touch",menuButtonTouchListener)
+end
+
+function compareHighScore()
+  local box = ggData:new('highscore')
+  if currentScore > box.highscore then
+    box:set('highscore', currentScore)
+    box:save()
+    local textOptions = {
+      text = "New Highscore! ".. currentScore,
+      font = highscoreFont,
+      x = display.contentCenterX,
+      y = 18
+    }
+    gameOverHighscore = display.newText(textOptions)
+    gameOverHighscore.alpha = 0
+    transition.to(gameOverHighscore, {alpha = 1, time = 1000})
+  end
+end
+
+function removeGameOverHighScore()
+  if gameOverHighscore ~= nil then
+    gameOverHighscore:removeSelf()
+    gameOverHighscore = nil
+  end
 end
 
 function deleteAllNonSceneObjects()

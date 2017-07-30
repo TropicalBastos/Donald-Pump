@@ -110,8 +110,10 @@ function popEventUltra(event)
     dark:removeSelf()
     transition.fadeOut(muscle,{onComplete=fadeOut2})
     transition.fadeOut(x3,{onComplete=fadeOut2})
-    addEventListeners()
-    physics.start()
+    if not gameOverOn then
+      addEventListeners()
+      physics.start()
+    end
     finishedUltraAnimation = true
   end
 
