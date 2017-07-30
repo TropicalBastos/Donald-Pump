@@ -39,6 +39,7 @@ gamePaused = true
 darkenedScreen = nil
 menuMenu = nil
 retryMenu = nil
+gameoverMenu = nil
 yesButton = nil
 noButton = nil
 fromMenuToPlay = true
@@ -324,12 +325,25 @@ function resumeFromRetry()
 end
 
 function menuButtonTouchListener(event)
+
+local t = event.target
+
 local function mainMenuGo()
-  transitionTheMenu(menuMenu,goToMainMenu)
+  if t.gameover == nil then
+    transitionTheMenu(menuMenu,goToMainMenu)
+  else
+    transitionTheMenu(gameoverMenu,goToMainMenu)
+  end
 end
 
   if event.phase == "began" then
     event.target:scale(0.6,0.6)
+    --if it was called by the gameover menu
+     if t.gameover ~= nil then
+     --cancel increase of game speed
+      timer.cancel(speedTimer)
+      timer.performWithDelay(100,mainMenuGo)
+     end
     if event.target == yesButton then
       --cancel increase of game speed
       timer.cancel(speedTimer)
@@ -345,8 +359,15 @@ end
 end
 
 function retryButtonTouchListener(event)
+
+local t = event.target
+
 local function retryMenuGo()
-  transitionTheMenu(retryMenu,retry)
+  if t.gameover == nil then
+    transitionTheMenu(retryMenu,retry)
+  else
+    transitionTheMenu(gameoverMenu,retry)
+  end
 end
 
   if event.phase == "began" then
@@ -402,6 +423,44 @@ function retryMenuListener()
 
   yesButton:addEventListener("touch",retryButtonTouchListener)
   noButton:addEventListener("touch",retryButtonTouchListener)
+end
+
+function gameOverMenuListener()
+
+  physics.pause()
+  gamePaused = true
+
+  --add menu container
+  darkenedScreen = display.newRect(centerX,centerY,2000,2000)
+  darkenedScreen:setFillColor(black)
+  darkenedScreen.alpha = 0.6
+  local gameoverMenuWidth = rightMarg - 25
+  local gameoverMenuHeight = gameoverMenuWidth/1.5
+  gameoverMenu = display.newImage("res/gameover.png",centerX,2000)
+  gameoverMenu.width = gameoverMenuWidth
+  gameoverMenu.height = gameoverMenuHeight
+  transition.to(gameoverMenu,{y=centerY,time=200,
+  onComplete=restartRuntimeTouch,transition=easing.inOutSine})
+
+  --add buttons
+  yesButton = display.newImage("res/yesbutton.png",
+  centerX-(gameoverMenuWidth/4),2000)
+  yesButton.gameover = true
+  yesButton.width = gameoverMenuWidth/2.5
+  yesButton.height = gameoverMenuHeight/3
+  transition.to(yesButton,{y=centerY+(gameoverMenuHeight/4),time=200,
+  onComplete=restartRuntimeTouch,transition=easing.inOutSine})
+
+  noButton = display.newImage("res/nobutton.png",
+  centerX+(gameoverMenuWidth/4),2000)
+  noButton.gameover = true
+  noButton.width = gameoverMenuWidth/2.5
+  noButton.height = gameoverMenuHeight/3
+  transition.to(noButton,{y=centerY+(gameoverMenuHeight/4),time=200,
+  onComplete=restartRuntimeTouch,transition=easing.inOutSine})
+
+  yesButton:addEventListener("touch",retryButtonTouchListener)
+  noButton:addEventListener("touch",menuButtonTouchListener)
 end
 
 function deleteAllNonSceneObjects()
