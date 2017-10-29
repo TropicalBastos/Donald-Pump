@@ -79,7 +79,7 @@ function scene:create( event )
     sceneGroup:insert(logo)
     --sceneGroup:insert(loading)
 
-    balloonGenerator = transitionBalloons.new(60,sceneGroup,10)
+    balloonGenerator = transitionBalloons.new(12,sceneGroup,10)
 
     local addBalloons = function()
       loadingComplete = true

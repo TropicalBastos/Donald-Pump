@@ -285,7 +285,7 @@ function buttonTap(event)
     popSprite:play()
   elseif event.target == buttons.allButtons[3] then
     local popSprite = display.newSprite(balloonSheet,balloonSequence)
-    popSprite.button = "rank"
+    popSprite.button = "options"
     popSprite:addEventListener("sprite",popEventMenu)
     popSprite.x = buttons.allButtons[3].x
     popSprite.y = buttons.allButtons[3].y-50
@@ -306,6 +306,8 @@ function popEventMenu(event)
   local function changeScene()
     if event.target.button == "play" then
       composer.gotoScene("scenes.play")
+    elseif event.target.button == "how" then
+      composer.gotoScene("scenes.howtoplay", {effect="crossFade", time=1000})  
     end
   end
 

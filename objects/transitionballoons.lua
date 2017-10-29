@@ -40,13 +40,13 @@ function transitionBalloons:enterFrame()
 end
 
 function transitionBalloons:createBalloon()
-  local width = 50
-  local height = 65
+  local width = 60
+  local height = 130
 
   --half width to constrain center x of balloon within screen
   local hWidth = width/2
 
-  local image = display.newImage("res/balloon.png",math.random(screenLeft+hWidth,rightMarg-hWidth),
+  local image = display.newImage("res/bombballoon.png",math.random(screenLeft+hWidth,rightMarg-hWidth),
   math.random(bottomMarg+100,bottomMarg+800))
   image.width = width
   image.height = height

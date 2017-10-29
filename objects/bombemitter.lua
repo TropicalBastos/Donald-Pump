@@ -125,7 +125,7 @@ end
 
 function emitter:createBalloon()
   local balloon
-  local width = 90
+  local width = 50
   local height = 110
   local randomX = math.random(screenLeft+width/2,rightMarg-width/2)
   local randomY = math.random(bottomMarg+height,bottomMarg+800)

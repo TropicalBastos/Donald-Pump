@@ -13,15 +13,15 @@ Buttons.new = function(x,y,view)
 
   local play = display.newImage("res/play.png",xPos,yPos)
   local how = display.newImage("res/how.png",xPos,yPos)
-  local rank = display.newImage("res/rank.png",xPos,yPos)
+  local options = display.newImage("res/options.png",xPos,yPos)
 
   table.insert(allButtons,play)
   table.insert(allButtons,how)
-  table.insert(allButtons,rank)
+  table.insert(allButtons,options)
 
   ButtonGroup:insert(play)
   ButtonGroup:insert(how)
-  ButtonGroup:insert(rank)
+  ButtonGroup:insert(options)
 
   view:insert(ButtonGroup)
 
