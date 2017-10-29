@@ -37,6 +37,8 @@ local propertyObj
 local nukeObj
 local objStartCol = 500
 local objArray
+local textForObjArray
+local backBtn
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -59,12 +61,13 @@ function scene:create( event )
     toupeObj = display.newImage("res/toupeballoon.png")
     propertyObj = display.newImage("res/propertyballoon.png")
     nukeObj = display.newImage("res/bombballoon.png")
+    backBtn = display.newImage("res/backmenu.png")
 
-    pumpText = display.newText({text=pumpInfo, font=ruleFont, align="center", width=85, height=0})
-    ultraText = display.newText({text=ultraInfo, font=ruleFont, align="center", width=85, height=0})
-    toupeText = display.newText({text=toupeInfo, font=ruleFont, align="center", width=85, height=0})
-    propertyText = display.newText({text=propertyInfo, font=ruleFont, align="center", width=85, height=0})
-    nukeText = display.newText({text=bombInfo, font=ruleFont, align="center", width=85, height=0})
+    pumpText = display.newText({text=pumpInfo, font=ruleFont, align="center", width=100, height=0})
+    ultraText = display.newText({text=ultraInfo, font=ruleFont, align="center", width=100, height=0})
+    toupeText = display.newText({text=toupeInfo, font=ruleFont, align="center", width=100, height=0})
+    propertyText = display.newText({text=propertyInfo, font=ruleFont, align="center", width=100, height=0})
+    nukeText = display.newText({text=bombInfo, font=ruleFont, align="center", width=100, height=0})
 
     textForObjArray = {pumpText, ultraText, toupeText, propertyText, nukeText}
     objArray = {pumpObj, ultraObj, toupeObj, propertyObj, nukeObj}
@@ -74,15 +77,15 @@ function scene:create( event )
         --local xPos = (i * objArray[i].width) + 20
         local xPos
         if i == 1 then
-            xPos = centerX - (objArray[i].width + 20)
+            xPos = centerX - (objArray[i].width + 40)
         elseif i == 2 then
             xPos = centerX
         elseif i == 3 then
-            xPos = centerX + (objArray[i].width + 20)
+            xPos = centerX + (objArray[i].width + 40)
         elseif i == 4 then
-            xPos = centerX - (objArray[i].width + 20)
+            xPos = centerX - (objArray[i].width + 40)
         elseif i == 5 then
-            xPos = centerX + (objArray[i].width + 20)
+            xPos = centerX + (objArray[i].width + 40)
         end 
         objArray[i].x = xPos
         -- textForObjArray[i].width = 65
@@ -90,6 +93,12 @@ function scene:create( event )
         textForObjArray[i].x = xPos
     end
     nukeObj.width = 35
+
+    --back button dimensions
+    backBtn.width = 110
+    backBtn.height = 50
+    backBtn.y = bottomMarg - backBtn.height
+    backBtn.x = 1000
 
     local titleOptions = {
         text = title,
@@ -111,43 +120,52 @@ function scene:create( event )
         y = 1000,
         width = rightMarg/1.4
     }
+
     titleObj = display.newText(titleOptions)
     infoObj = display.newText(infoOptions)
     subInfoObj = display.newText(subInfoOptions)
+
     local tr = {
         time = 500,
-        y = 30,
+        y = 15,
         transition = easing.outCubic
     }
     local tr2 = {
         time = 700,
-        y = 80,
+        y = 60,
         transition = easing.outCubic
     }
     local tr3 = {
         time = 900,
-        y = 130,
+        y = 110,
         transition = easing.outCubic
     }
     local balloonTr = {
         time = 1100,
-        y = 190,
+        y = 170,
         transition = easing.outCubic
     }
     local descTr = {
         time = 1100,
-        y = 250,
+        y = 240,
         transition = easing.outCubic
     }
+    local backTr = {
+        time = 1200,
+        x = centerX,
+        transition = easing.inCubic
+    }
+
     transition.to(titleObj, tr)
     transition.to(infoObj, tr2)
     transition.to(subInfoObj, tr3)
+    transition.to(backBtn, backTr)
     for i=1, #objArray do
         balloonTr.time = balloonTr.time + 200
         if i >= 4 then
             transition.to(objArray[i], {
                 time = 1100,
-                y = 320,
+                y = 315,
                 transition = easing.outCubic
             })
         else
@@ -159,7 +177,7 @@ function scene:create( event )
         if i >= 4 then
             transition.to(textForObjArray[i], {
                 time = 1100,
-                y = 380,
+                y = 390,
                 transition = easing.outCubic
             })
         else 
@@ -169,6 +187,16 @@ function scene:create( event )
 
 end
 
+
+--back event listener
+function goBackToMain()
+    transition.to(backBtn, {
+        x = -1000,
+        time = 800,
+        transition = easing.outCubic,
+        onComplete = function() composer.gotoScene("scenes.menu", {effect="crossFade", time=500}) end
+    })
+end
 
 -- show()
 function scene:show( event )
@@ -181,7 +209,7 @@ function scene:show( event )
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
-        
+        backBtn:addEventListener("touch", goBackToMain)
     end
 end
 
@@ -207,7 +235,14 @@ function scene:destroy( event )
 
     local sceneGroup = self.view
     -- Code here runs prior to the removal of scene's view
-
+    for i=1, #objArray do 
+        objArray[i]:removeSelf()
+        textForObjArray[i]:removeSelf()
+    end
+    titleObj:removeSelf()
+    infoObj:removeSelf()
+    subInfoObj:removeSelf()
+    bg:removeSelf()
 end
 
 

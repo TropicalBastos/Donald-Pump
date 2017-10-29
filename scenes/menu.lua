@@ -40,6 +40,7 @@ function scene:create( event )
     resetHighscore()
     composer.removeScene("scenes.play")
     composer.removeScene("scenes.loading")
+    composer.removeScene("scenes.howtoplay")
 
     --start physics that is used by some objects
     physics.start()
