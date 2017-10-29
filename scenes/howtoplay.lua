@@ -60,11 +60,11 @@ function scene:create( event )
     propertyObj = display.newImage("res/propertyballoon.png")
     nukeObj = display.newImage("res/bombballoon.png")
 
-    pumpText = display.newText({text=pumpInfo, font=howFont})
-    ultraText = display.newText({text=ultraInfo, font=howFont})
-    toupeText = display.newText({text=toupeInfo, font=howFont})
-    propertyText = display.newText({text=propertyInfo, font=howFont})
-    nukeText = display.newText({text=bombInfo, font=howFont})
+    pumpText = display.newText({text=pumpInfo, font=ruleFont, align="center", width=85, height=0})
+    ultraText = display.newText({text=ultraInfo, font=ruleFont, align="center", width=85, height=0})
+    toupeText = display.newText({text=toupeInfo, font=ruleFont, align="center", width=85, height=0})
+    propertyText = display.newText({text=propertyInfo, font=ruleFont, align="center", width=85, height=0})
+    nukeText = display.newText({text=bombInfo, font=ruleFont, align="center", width=85, height=0})
 
     textForObjArray = {pumpText, ultraText, toupeText, propertyText, nukeText}
     objArray = {pumpObj, ultraObj, toupeObj, propertyObj, nukeObj}
@@ -85,8 +85,9 @@ function scene:create( event )
             xPos = centerX + (objArray[i].width + 20)
         end 
         objArray[i].x = xPos
-        textForObjArray[i].width = 65
-        textForObjArray[i].x = xPos 
+        -- textForObjArray[i].width = 65
+        -- textForObjArray[i].height = 40 
+        textForObjArray[i].x = xPos
     end
     nukeObj.width = 35
 
@@ -120,22 +121,22 @@ function scene:create( event )
     }
     local tr2 = {
         time = 700,
-        y = 100,
+        y = 80,
         transition = easing.outCubic
     }
     local tr3 = {
         time = 900,
-        y = 150,
+        y = 130,
         transition = easing.outCubic
     }
     local balloonTr = {
         time = 1100,
-        y = 220,
+        y = 190,
         transition = easing.outCubic
     }
     local descTr = {
         time = 1100,
-        y = 280,
+        y = 250,
         transition = easing.outCubic
     }
     transition.to(titleObj, tr)
@@ -143,24 +144,26 @@ function scene:create( event )
     transition.to(subInfoObj, tr3)
     for i=1, #objArray do
         balloonTr.time = balloonTr.time + 200
-        transition.to(objArray[i], balloonTr)
         if i >= 4 then
             transition.to(objArray[i], {
                 time = 1100,
                 y = 320,
                 transition = easing.outCubic
             })
+        else
+            transition.to(objArray[i], balloonTr)
         end
     end
     for i=1, #textForObjArray do
         descTr.time = descTr.time + 200
-        transition.to(textForObjArray[i], descTr)
         if i >= 4 then
             transition.to(textForObjArray[i], {
                 time = 1100,
-                y = 370,
+                y = 380,
                 transition = easing.outCubic
             })
+        else 
+            transition.to(textForObjArray[i], descTr)
         end
     end
 
@@ -178,7 +181,7 @@ function scene:show( event )
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
-
+        
     end
 end
 

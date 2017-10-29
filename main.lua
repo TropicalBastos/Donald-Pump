@@ -16,6 +16,7 @@ highscoreFont = native.newFont("fonts/Jim.ttf",20)
 newHighscoreFont = native.newFont("fonts/Jim.ttf",30)
 font321 = native.newFont("fonts/Jim.ttf",100)
 howFont = native.newFont("fonts/Jim.ttf", 12)
+ruleFont = native.newFont("fonts/Jim.ttf", 10)
 
 globalTextOptions = {
   text = "NULL",
