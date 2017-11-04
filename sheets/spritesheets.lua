@@ -24,21 +24,21 @@ balloonSheet = graphics.newImageSheet("res/popeffect.png",balloonPopSheetOptions
 --explosion effect
 
 local explosionOptions = {
-  width = 96,
-  height = 96,
-  numFrames = 18
+  width = 100,
+  height = 60,
+  numFrames = 25
 }
 
 explosionSeq = {
   name= "explosionseq",
   start = 1,
-  count = 18,
-  time = 500,
+  count = 25,
+  time = 800,
   loopCount = 1,
   loopDirection = "forward"
 }
 
-explosionSheet = graphics.newImageSheet("res/explosion.png",explosionOptions)
+explosionSheet = graphics.newImageSheet("res/nuked.png",explosionOptions)
 
 --collect toupe effect
 local toupeSheetOptions = {

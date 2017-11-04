@@ -41,6 +41,7 @@ function scene:create( event )
     composer.removeScene("scenes.play")
     composer.removeScene("scenes.loading")
     composer.removeScene("scenes.howtoplay")
+    composer.removeScene("scenes.options")
 
     --start physics that is used by some objects
     physics.start()
@@ -308,7 +309,9 @@ function popEventMenu(event)
     if event.target.button == "play" then
       composer.gotoScene("scenes.play")
     elseif event.target.button == "how" then
-      composer.gotoScene("scenes.howtoplay", {effect="crossFade", time=1000})  
+      composer.gotoScene("scenes.howtoplay", {effect="crossFade", time=1000})
+    elseif event.target.button == "options" then
+      composer.gotoScene("scenes.options", {effect="crossFade", time=1000})
     end
   end
 
