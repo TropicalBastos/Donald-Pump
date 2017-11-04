@@ -82,16 +82,23 @@ function scene:create( event )
     backBtn.y = bottomMarg - backBtn.height
     backBtn.x = 1000
 
+    local thumbsUp = display.newImage("res/thumbsup.png")
+    thumbsUp.width = rightMarg * 0.65
+    thumbsUp.height = thumbsUp.width * 0.8
+    thumbsUp.x = rightMarg - (thumbsUp.width / 2)
+    thumbsUp.y = bottomMarg - (thumbsUp.height / 2)
+
     sceneGroup:insert(bg)
     sceneGroup:insert(titleObj)
     sceneGroup:insert(container)
     sceneGroup:insert(soundSlider)
     sceneGroup:insert(volumeObj)
     sceneGroup:insert(backBtn)
+    sceneGroup:insert(thumbsUp)
 
     local backTr = {
         time = 1200,
-        x = centerX,
+        x = centerX - 100,
         transition = easing.inCubic
     }
     transition.to(backBtn, backTr)
