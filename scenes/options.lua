@@ -59,7 +59,8 @@ function scene:create( event )
     container:scale(0, 1)
 
     local function sliderListener( event )
-        print( "Slider at " .. event.value .. "%" )
+        local vol = event.value / 100
+        audio.setVolume(vol)
     end
 
     soundSlider = widget.newSlider({
