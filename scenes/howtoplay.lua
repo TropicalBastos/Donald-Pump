@@ -61,7 +61,8 @@ function scene:create( event )
     toupeObj = display.newImage("res/toupeballoon.png")
     propertyObj = display.newImage("res/propertyballoon.png")
     nukeObj = display.newImage("res/bombballoon.png")
-    backBtn = display.newImage("res/backmenu.png")
+    backBtn = display.newSprite(backSheet, backSeq)
+    backBtn:play()
 
     pumpText = display.newText({text=pumpInfo, font=ruleFont, align="center", width=100, height=0})
     ultraText = display.newText({text=ultraInfo, font=ruleFont, align="center", width=100, height=0})
@@ -95,9 +96,8 @@ function scene:create( event )
     nukeObj.width = 35
 
     --back button dimensions
-    backBtn.width = 110
-    backBtn.height = 50
-    backBtn.y = bottomMarg - backBtn.height
+    backBtn:scale(0.6, 0.6)
+    backBtn.y = bottomMarg - 35
     backBtn.x = 1000
 
     local titleOptions = {
@@ -152,7 +152,7 @@ function scene:create( event )
     }
     local backTr = {
         time = 1200,
-        x = centerX,
+        x = centerX + 15,
         transition = easing.inCubic
     }
 
@@ -192,7 +192,7 @@ end
 function goBackToMain()
     transition.to(backBtn, {
         x = -1000,
-        time = 800,
+        time = 1000,
         transition = easing.outCubic,
         onComplete = function() composer.gotoScene("scenes.menu", {effect="crossFade", time=500}) end
     })

@@ -24,6 +24,7 @@ local titleObj
 local container
 local soundSlider
 local backBtn
+local thumbsUp
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -55,6 +56,7 @@ function scene:create( event )
     container.height = 300
     container.x = centerX
     container.y = centerY
+    container:scale(0, 1)
 
     local function sliderListener( event )
         print( "Slider at " .. event.value .. "%" )
@@ -67,6 +69,7 @@ function scene:create( event )
         width = container.width * 0.8,
         listener = sliderListener
     })
+    soundSlider:scale(0, 1)
 
     local volumeOptions = {
         text = volume,
@@ -76,37 +79,57 @@ function scene:create( event )
     }
     volumeObj = display.newText(volumeOptions)
 
-    backBtn = display.newImage("res/backmenu.png")
-    backBtn.width = 110
-    backBtn.height = 50
-    backBtn.y = bottomMarg - backBtn.height
+    backBtn = display.newSprite(backSheet, backSeq)
+    backBtn:scale(0.6, 0.6)
+    backBtn.y = bottomMarg - 35
     backBtn.x = 1000
+    backBtn:play()
 
-    local thumbsUp = display.newImage("res/thumbsup.png")
+    thumbsUp = display.newImage("res/thumbsup.png")
     thumbsUp.width = rightMarg * 0.65
     thumbsUp.height = thumbsUp.width * 0.8
     thumbsUp.x = rightMarg - (thumbsUp.width / 2)
-    thumbsUp.y = bottomMarg - (thumbsUp.height / 2)
+    thumbsUp.y = 1500
 
     sceneGroup:insert(bg)
     sceneGroup:insert(titleObj)
     sceneGroup:insert(container)
     sceneGroup:insert(soundSlider)
     sceneGroup:insert(volumeObj)
-    sceneGroup:insert(backBtn)
     sceneGroup:insert(thumbsUp)
+    sceneGroup:insert(backBtn)
+
+    local containerTr = {
+        xScale = 1,
+        transition = easing.outCubic
+    }
 
     local backTr = {
         time = 1200,
-        x = centerX - 100,
+        x = centerX - 75,
         transition = easing.inCubic
     }
+
+    local thumbsTr = {
+        time = 1000,
+        y = bottomMarg - (thumbsUp.height / 2),
+        transition = easing.outCubic
+    }
+
     transition.to(backBtn, backTr)
+    transition.to(thumbsUp, thumbsTr)
+    transition.to(container, containerTr)
+    transition.to(soundSlider, containerTr)
 
 end
 
 --back event listener
 function goBackToMain()
+    transition.to(thumbsUp, {
+        y = 1500,
+        time = 800,
+        transition = easing.inCubic
+    })
     transition.to(backBtn, {
         x = -1000,
         time = 800,

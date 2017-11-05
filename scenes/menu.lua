@@ -37,7 +37,7 @@ function scene:create( event )
 
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
-    resetHighscore()
+    --resetHighscore()
     composer.removeScene("scenes.play")
     composer.removeScene("scenes.loading")
     composer.removeScene("scenes.howtoplay")

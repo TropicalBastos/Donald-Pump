@@ -93,3 +93,20 @@ muscleSeq = {
 }
 
 muscleSheet = graphics.newImageSheet("res/donaldpumpsheet.png",muscleOptions)
+
+local backOptions = {
+  width = 250,
+  height = 75,
+  numFrames = 4
+}
+
+backSeq = {
+  name= "backseq",
+  start = 1,
+  count = 4,
+  time = 500,
+  loopCount = 0,
+  loopDirection = "forward"
+}
+
+backSheet = graphics.newImageSheet("res/backsheet.png", backOptions)
