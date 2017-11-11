@@ -104,7 +104,7 @@ backSeq = {
   name= "backseq",
   start = 1,
   count = 4,
-  time = 500,
+  time = 350,
   loopCount = 0,
   loopDirection = "forward"
 }

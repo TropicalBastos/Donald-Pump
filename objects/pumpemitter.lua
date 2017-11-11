@@ -3,6 +3,7 @@ package.path = package.path .. ";../?.lua"
 local emitter = {}
 local emitter_mt = {__index = emitter}
 local speed
+local popSound
 eventCopy = nil
 
 function emitter:collision(event)
@@ -35,6 +36,8 @@ function emitter:pop(event)
     fallScore.isSensor = true
     timer.performWithDelay(5000,deleteScoreText)
   end
+
+  audio.play(pop, {channel=1})
 
   if scoreMultiplier > 0 then
     local popSprite = display.newSprite(ultraSheet,ultraSeq)
@@ -74,6 +77,7 @@ end
 
 function emitter.new(number,view)
 
+  pop = audio.loadSound("audio/pop.wav")
   local bGroup = display.newGroup()
   local all = {}
   --local tapRect = {}

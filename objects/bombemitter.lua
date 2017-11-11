@@ -79,6 +79,10 @@ function emitter:touch(event)
   timer.performWithDelay(500, gameOverMenuListener)
   event.target.alpha = 0
   event.target:removeEventListener("touch",self)
+
+  
+  --display nuclear overlay
+  displayNuclearOverlay()
 end
 
 function emitter.new(number,view)

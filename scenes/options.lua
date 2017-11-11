@@ -18,11 +18,14 @@ local rightMarg = display.contentWidth - display.screenOriginX
 
 local bg
 local title = "Options"
-local volume = "Volume"
-local volumeObj
+local sound = "Sound FX"
+local soundObj
+local music = "Music"
+local musicObj
 local titleObj
 local container
 local soundSlider
+local musicSlider
 local backBtn
 local thumbsUp
 
@@ -58,27 +61,49 @@ function scene:create( event )
     container.y = centerY
     container:scale(0, 1)
 
-    local function sliderListener( event )
+    local function soundListener( event )
         local vol = event.value / 100
-        audio.setVolume(vol)
+        audio.setVolume(vol, {channel=1})
+    end
+
+    local function musicListener( event )
+        local vol = event.value / 100
+        audio.setVolume(vol, {channel=2})
     end
 
     soundSlider = widget.newSlider({
         x = display.contentCenterX,
-        y = display.contentCenterY,
+        y = display.contentCenterY - 50,
         orientation = "horizontal",
         width = container.width * 0.8,
-        listener = sliderListener
+        listener = soundListener
     })
     soundSlider:scale(0, 1)
 
-    local volumeOptions = {
-        text = volume,
+    musicSlider = widget.newSlider({
+        x = display.contentCenterX,
+        y = display.contentCenterY + 50,
+        orientation = "horizontal",
+        width = container.width * 0.8,
+        listener = musicListener
+    })
+    musicSlider:scale(0, 1)
+
+    local soundOptions = {
+        text = sound,
         font = titleFont,
         x = display.contentCenterX,
-        y = 200
+        y = 150
     }
-    volumeObj = display.newText(volumeOptions)
+    soundObj = display.newText(soundOptions)
+
+    local musicOptions = {
+        text = music,
+        font = titleFont,
+        x = display.contentCenterX,
+        y = 250
+    }
+    musicObj = display.newText(musicOptions)
 
     backBtn = display.newSprite(backSheet, backSeq)
     backBtn:scale(0.6, 0.6)
@@ -96,7 +121,9 @@ function scene:create( event )
     sceneGroup:insert(titleObj)
     sceneGroup:insert(container)
     sceneGroup:insert(soundSlider)
-    sceneGroup:insert(volumeObj)
+    sceneGroup:insert(musicSlider)
+    sceneGroup:insert(soundObj)
+    sceneGroup:insert(musicObj)
     sceneGroup:insert(thumbsUp)
     sceneGroup:insert(backBtn)
 
@@ -121,6 +148,7 @@ function scene:create( event )
     transition.to(thumbsUp, thumbsTr)
     transition.to(container, containerTr)
     transition.to(soundSlider, containerTr)
+    transition.to(musicSlider, containerTr)
 
 end
 

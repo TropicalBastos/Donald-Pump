@@ -29,6 +29,8 @@ local num
 local bombEmitter = nil
 local pumpEmitter = nil
 local cloudEmitter = nil
+nuclearOverlayOn = false
+nuclearOverlay = nil
 scoreTier = 1
 backButton = nil
 restartButton = nil
@@ -161,8 +163,8 @@ function speedUp()
   if gamePaused then
     return
   end
-  if balloonGravity > -0.23 then
-    balloonGravity = balloonGravity - 0.01
+  if balloonGravity > -1.5 then
+    balloonGravity = balloonGravity - 0.03
   end
 end
 
@@ -195,6 +197,20 @@ function addEventListeners()
   Runtime:addEventListener("enterFrame",cloudEmitter)
   Runtime:addEventListener("enterFrame",zepFrame)
   Runtime:addEventListener("enterFrame",framePropBalloon)
+end
+
+function displayNuclearOverlay()
+  if nuclearOverlayOn then
+    return
+  end
+  nuclearOverlay = display.newImage("res/nuclearoverlay.png")
+  nuclearOverlay.height = bottomMarg + 100
+  nuclearOverlay.width = rightMarg + 100
+  nuclearOverlay.x = centerX
+  nuclearOverlay.y = centerY
+  nuclearOverlay.alpha = 0
+  transition.fadeIn(nuclearOverlay, {transition = easing.outCubic})
+  nuclearOverlayOn = true
 end
 
 function incrementScoreTier()
@@ -540,6 +556,10 @@ function scene:destroy( event )
     cancelUltraEmitter()
     cancelToupeEmitter()
     cancelPropBalloonEmitter()
+    if(nuclearOverlay ~= nil) then
+      nuclearOverlay:removeSelf()
+      nuclearOverlay = nil
+    end
 end
 
 
