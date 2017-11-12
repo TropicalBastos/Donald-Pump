@@ -35,6 +35,8 @@ function cloudGenerator:touch(event)
     timer.performWithDelay(5000,deleteScoreText)
   end
 
+  audio.play(popSound, {channel=1})
+
   if scoreMultiplier > 0 then
     local popSprite = display.newSprite(ultraSheet,ultraSeq)
     popSprite:addEventListener("sprite",popEvent)

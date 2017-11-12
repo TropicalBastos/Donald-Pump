@@ -30,6 +30,7 @@ local backBtn
 local thumbsUp
 local soundBuffer = nil
 local musicBuffer = nil
+local volSample
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -47,6 +48,8 @@ function scene:create( event )
     bg.height = bottomMarg + 50
     bg.x = centerX
     bg.y = centerY
+
+    volSample = audio.loadSound("audio/volumesample.wav")
 
     local titleOptions = {
         text = title,
@@ -79,6 +82,7 @@ function scene:create( event )
     local function soundListener( event )
         local vol = event.value / 100
         audio.setVolume(vol, {channel=1})
+        audio.play(volSample, {channel=1})
         soundBuffer = vol
     end
 

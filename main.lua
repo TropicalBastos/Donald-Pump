@@ -42,5 +42,8 @@ screenLeft = display.screenOriginX
 bottomMarg = display.contentHeight - display.screenOriginY
 rightMarg = display.contentWidth - display.screenOriginX
 
+--global sounds
+popSound = audio.loadSound("audio/pop.wav")
+
 --start the app on the loading scene
 composer.gotoScene("scenes.loading")

@@ -76,6 +76,9 @@ function scene:create( event )
     --zep object
     newZep(150,80,1.3)
 
+    --plane object
+    newPlane(160, 90, 2)
+
     --reset global
     balloonSpeed = 1
 
@@ -186,6 +189,7 @@ function removeEventListeners()
   Runtime:removeEventListener("enterFrame",frameUltra)
   Runtime:removeEventListener("enterFrame",cloudEmitter)
   Runtime:removeEventListener("enterFrame",zepFrame)
+  Runtime:removeEventListener("enterFrame",planeFrame)
   Runtime:removeEventListener("enterFrame",framePropBalloon)
 end
 
@@ -196,6 +200,7 @@ function addEventListeners()
   Runtime:addEventListener("enterFrame",frameUltra)
   Runtime:addEventListener("enterFrame",cloudEmitter)
   Runtime:addEventListener("enterFrame",zepFrame)
+  Runtime:addEventListener("enterFrame",planeFrame)
   Runtime:addEventListener("enterFrame",framePropBalloon)
 end
 
@@ -544,6 +549,7 @@ function deleteAllNonSceneObjects()
   destroyUltra()
   destroyPropBalloon()
   deleteZep()
+  deletePlane()
 end
 
 -- destroy()

@@ -4,6 +4,7 @@ local composer = require( "composer" )
 local cloudGenerator = require("objects.cloudGenerator")
 local menubuttons = require("objects.buttons")
 local zepellin = require("objects.zep")
+local donaldPlane = require("objects.plane")
 local flyAwayText = require("plugins.FlyAwayText")
 local scene = composer.newScene()
 
@@ -23,7 +24,6 @@ local buttons
 local highscore
 local playScore
 local flyText
-local popSound
 highscoreNumber = nil
 whichScene = "menu"
 ropeJoint = nil
@@ -95,6 +95,9 @@ function scene:create( event )
     --our zepellin object
     newZep(150,80,1.3)
 
+    --our plane object
+    newPlane(160, 90, 2)
+
     --insert buttons
     buttons = menubuttons.new(80,centerY+40,sceneGroup)
     buttons:setDimension(rightMarg/4)
@@ -139,6 +142,7 @@ function scene:create( event )
     --add listener for cloud emitter
     Runtime:addEventListener("enterFrame",cloudEmitter)
     Runtime:addEventListener("enterFrame",zepFrame)
+    Runtime:addEventListener("enterFrame",planeFrame)
 
     --check for new highscore
     if event.params ~= nil then
@@ -150,9 +154,6 @@ function scene:create( event )
         end
       end
     end
-
-    --load sounds
-    popSound = audio.loadSound("audio/pop.wav")
 end
 
 --load the stored highscore into the scene
@@ -435,7 +436,9 @@ function scene:destroy( event )
     -- Code here runs prior to the removal of scene's view
     Runtime:removeEventListener("enterFrame",cloudEmitter)
     Runtime:removeEventListener("enterFrame",zepFrame)
+    Runtime:removeEventListener("enterFrame",planeFrame)
     zep:removeSelf()
+    plane:removeSelf()
     cloudEmitter:deleteAll()
     if flyText ~= nil then
       flyText:removeSelf()
