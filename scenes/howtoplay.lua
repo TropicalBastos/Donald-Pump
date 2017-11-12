@@ -24,7 +24,7 @@ local subInfo = "The following balloon rules apply:"
 local pumpInfo = "Normal Donald: 1 point for each property token"
 local ultraInfo = "Donald Pump: x10 multiplier, score = property tokens x 10"
 local toupeInfo = "The Toupe: cascade, get points for each balloon it hits"
-local propertyInfo = "Property Token: +1 property token, lose all tokens and you its game over!"
+local propertyInfo = "Property Token: +1 property token, lose all tokens and its game over!"
 local bombInfo = "DPRK Nuke: Touch it and its game over, so tap carefully"
 local titleObj
 local infoObj
