@@ -140,6 +140,7 @@ function scene:show( event )
           --cool transitions
           transition.to(loading,{time=1500,xScale=0.6,yScale=0.6,transition=easing.inBounce})
           transition.to(logo,{time=1500,xScale=0.6,yScale=0.6,transition=easing.inBounce})
+          audio.play(windSound, {channel=4})
     end
 end
 

@@ -27,7 +27,8 @@ function scene:create( event )
     -- Code here runs when the scene is first created but has not yet appeared on screen
     composer.removeScene("scenes.play")
     local tempscore = event.params.score
-    composer.gotoScene("scenes.play",{effect="crossFade", params={score=tempscore}})
+    physics.stop()
+    composer.gotoScene("scenes.menu",{effect="crossFade", params={score=tempscore}})
 
 end
 

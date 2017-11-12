@@ -43,6 +43,7 @@ function scene:create( event )
     composer.removeScene("scenes.loading")
     composer.removeScene("scenes.howtoplay")
     composer.removeScene("scenes.options")
+    composer.removeScene("scenes.transitionfromplay")
 
     --start physics that is used by some objects
     physics.start()
@@ -50,6 +51,29 @@ function scene:create( event )
 
     --set the game to paused so it doesnt start up any game play objects
     gamePaused = false
+
+    --get and show any alerts from previous scenes
+    if event.params ~= nil then
+      if(event.params.alert ~= nil) then
+          local alert = display.newText({
+            text = event.params.alert,
+            font = titleFont,
+            fontSize = 18,
+            x = centerX,
+            y = centerY - 100,
+            width = rightMarg / 1.5
+          })
+          alert.alpha = 0
+          sceneGroup:insert(alert)
+          transition.fadeIn(alert, {time = 1000})
+
+          local function fadeOutAlert()
+              transition.fadeOut(alert)
+          end
+
+          timer.performWithDelay(5000, fadeOutAlert)
+      end
+    end
 
     --Background
     bg = display.newImage("res/bg.png",0,0)
@@ -95,9 +119,6 @@ function scene:create( event )
     --our zepellin object
     newZep(150,80,1.3)
 
-    --our plane object
-    newPlane(160, 90, 2)
-
     --insert buttons
     buttons = menubuttons.new(80,centerY+40,sceneGroup)
     buttons:setDimension(rightMarg/4)
@@ -107,6 +128,7 @@ function scene:create( event )
       local r = math.random(3,6)/10
       physics.addBody(buttons.allButtons[i],{bounce=r,density=r})
       buttons.allButtons[i].gravityScale = -0.5
+      buttons.allButtons[i]:addEventListener("collision", bounceCollision)
     end
 
     local leftWall = display.newRect(0,0,40,4000)
@@ -142,7 +164,6 @@ function scene:create( event )
     --add listener for cloud emitter
     Runtime:addEventListener("enterFrame",cloudEmitter)
     Runtime:addEventListener("enterFrame",zepFrame)
-    Runtime:addEventListener("enterFrame",planeFrame)
 
     --check for new highscore
     if event.params ~= nil then
@@ -264,6 +285,10 @@ function highscoreParticles()
   emitter.emitX, emitter.emitY = centerX, bottomMarg
   emitter:emit()
 
+end
+
+function bounceCollision()
+    audio.play(bounceSound, {channel=3})
 end
 
 --balloon button tap animation and functions
@@ -436,9 +461,7 @@ function scene:destroy( event )
     -- Code here runs prior to the removal of scene's view
     Runtime:removeEventListener("enterFrame",cloudEmitter)
     Runtime:removeEventListener("enterFrame",zepFrame)
-    Runtime:removeEventListener("enterFrame",planeFrame)
     zep:removeSelf()
-    plane:removeSelf()
     cloudEmitter:deleteAll()
     if flyText ~= nil then
       flyText:removeSelf()

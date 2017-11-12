@@ -53,6 +53,7 @@ function tapToupe()
   if gamePaused then
     return
   end
+  audio.play(whistleSound, {channel = 3})
   local popSprite = display.newSprite(balloonSheet,balloonSequence)
   popSprite:addEventListener("sprite",popEvent)
   popSprite.x = balloonToupe.x

@@ -68,6 +68,7 @@ function emitter:touch(event)
   if gamePaused then
     return
   end
+  audio.play(explosionSound, {channel = 3})
   local popSprite = display.newSprite(explosionSheet,explosionSeq)
   popSprite:addEventListener("sprite",popEvent)
   popSprite.x = event.target.x

@@ -29,6 +29,8 @@ globalTextOptions = {
 local vol = ggData:new("vol")
 if vol.sound ~= nil then
   audio.setVolume(vol.sound, {channel=1})
+  audio.setVolume(vol.sound, {channel=3})
+  audio.setVolume(vol.sound, {channel=4})
 end
 if vol.music ~= nil then
   audio.setVolume(vol.music, {channel=2})
@@ -44,6 +46,14 @@ rightMarg = display.contentWidth - display.screenOriginX
 
 --global sounds
 popSound = audio.loadSound("audio/pop.wav")
+bounceSound = audio.loadSound("audio/bounce.wav")
+windSound = audio.loadSound("audio/wind.mp3")
+coinSound = audio.loadSound("audio/coin.wav")
+explosionSound = audio.loadSound("audio/explosion.mp3")
+gameOverSound = audio.loadSound("audio/gameover.mp3")
+clickSound = audio.loadSound("audio/click.mp3")
+powerSound = audio.loadSound("audio/powerup.wav")
+whistleSound = audio.loadSound("audio/whistle.mp3")
 
 --start the app on the loading scene
 composer.gotoScene("scenes.loading")

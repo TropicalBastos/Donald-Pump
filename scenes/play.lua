@@ -29,6 +29,8 @@ local num
 local bombEmitter = nil
 local pumpEmitter = nil
 local cloudEmitter = nil
+local nuclearLoopSound = nil
+local goingToMainMenu = false
 nuclearOverlayOn = false
 nuclearOverlay = nil
 scoreTier = 1
@@ -77,7 +79,7 @@ function scene:create( event )
     newZep(150,80,1.3)
 
     --plane object
-    newPlane(160, 90, 2)
+    newPlane(300, 100, 2)
 
     --reset global
     balloonSpeed = 1
@@ -300,6 +302,8 @@ function backToMenuListener()
   physics.pause()
   gamePaused = true
 
+  audio.play(clickSound, {channel = 1})
+
   --add menu container
   darkenedScreen = display.newRect(centerX,centerY,2000,2000)
   darkenedScreen:setFillColor(black)
@@ -340,11 +344,15 @@ function transitionTheMenu(item,callback)
 end
 
 function goToMainMenu()
+  if goingToMainMenu then
+    return
+  end
   local scoreToPass = currentScore
   if currentScore < prevScore then
     scoreToPass = prevScore
   end
-  composer.gotoScene("scenes.menu",{effect="crossFade",params={score=scoreToPass}})
+  goingToMainMenu = true
+  composer.gotoScene("scenes.transitionfromplay",{effect="crossFade",params={score=scoreToPass}})
 end
 
 function retry()
@@ -370,6 +378,8 @@ end
 function menuButtonTouchListener(event)
 
 local t = event.target
+audio.play(clickSound, {channel = 1})
+local pressed = false
 
 local function mainMenuGo()
   if t.gameover == nil then
@@ -380,6 +390,7 @@ local function mainMenuGo()
 end
 
   if event.phase == "began" then
+    pressed = true
     event.target:scale(0.6,0.6)
     --if it was called by the gameover menu
      if t.gameover ~= nil then
@@ -392,11 +403,19 @@ end
       timer.cancel(speedTimer)
       timer.performWithDelay(100,mainMenuGo)
     else
-      timer.performWithDelay(100,resumeFromMenu)
+      if t.gameover ~= nil then
+        timer.cancel(speedTimer)
+        timer.performWithDelay(100,mainMenuGo)
+      else
+        timer.performWithDelay(100,resumeFromMenu)
+      end
     end
 
   elseif event.phase == "ended" or event.phase == "cancelled" then
-    event.target:scale(1.67,1.67)
+    if pressed then
+      event.target:scale(1.67,1.67)
+      pressed = false
+    end
   end
 
 end
@@ -404,6 +423,8 @@ end
 function retryButtonTouchListener(event)
 
 local t = event.target
+audio.play(clickSound, {channel = 1})
+local pressed = false
 
 local function retryMenuGo()
   if t.gameover == nil then
@@ -414,6 +435,7 @@ local function retryMenuGo()
 end
 
   if event.phase == "began" then
+    pressed = true
     event.target:scale(0.6,0.6)
     if event.target == yesButton then
       --cancel increase of game speed
@@ -424,7 +446,10 @@ end
     end
 
   elseif event.phase == "ended" or event.phase == "cancelled" then
-    event.target:scale(1.67,1.67)
+    if pressed then
+      event.target:scale(1.67,1.67)
+      pressed = false
+    end
   end
 
 end
@@ -436,6 +461,7 @@ function retryMenuListener()
 
   physics.pause()
   gamePaused = true
+  audio.play(clickSound, {channel = 1})
 
   --add menu container
   darkenedScreen = display.newRect(centerX,centerY,2000,2000)
@@ -478,6 +504,8 @@ function gameOverMenuListener()
   gameOverOn = true
   physics.pause()
   gamePaused = true
+
+  nuclearLoopSound = audio.play(gameOverSound, {channel = 4, loops = -1})
 
   --add menu container
   darkenedScreen = display.newRect(centerX,centerY,2000,2000)
@@ -550,6 +578,13 @@ function deleteAllNonSceneObjects()
   destroyPropBalloon()
   deleteZep()
   deletePlane()
+  if darkenedScreen ~= nil then
+    darkenedScreen = nil
+  end
+  if(nuclearOverlay ~= nil) then
+      nuclearOverlay:removeSelf()
+      nuclearOverlay = nil
+  end
 end
 
 -- destroy()
@@ -562,9 +597,8 @@ function scene:destroy( event )
     cancelUltraEmitter()
     cancelToupeEmitter()
     cancelPropBalloonEmitter()
-    if(nuclearOverlay ~= nil) then
-      nuclearOverlay:removeSelf()
-      nuclearOverlay = nil
+    if nuclearLoopSound ~= nil then
+        audio.stop(nuclearLoopSound)
     end
 end
 

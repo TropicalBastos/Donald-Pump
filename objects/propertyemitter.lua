@@ -19,6 +19,8 @@ local function tapProperty(event)
     event.target.alpha = 0
     event.target:removeEventListener("touch",tapProperty)
 
+    audio.play(coinSound, {channel=3})
+
     --display coin
     local coin = display.newImage('res/propcoin.png')
     coin.x = event.target.x

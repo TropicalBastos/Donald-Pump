@@ -82,7 +82,9 @@ function scene:create( event )
     local function soundListener( event )
         local vol = event.value / 100
         audio.setVolume(vol, {channel=1})
-        audio.play(volSample, {channel=1})
+        audio.setVolume(vol, {channel=3})
+        audio.setVolume(vol, {channel=4})
+        audio.play(popSound, {channel=1})
         soundBuffer = vol
     end
 
@@ -195,6 +197,12 @@ function goBackToMain()
     --save option details with the buffers
     saveOptions()
 
+    --send an alert if any options have been changed
+    local alert = nil
+    if soundBuffer ~= nil or musicBuffer ~= nil then
+        alert = "Options have been saved successfully"
+    end
+
     transition.to(thumbsUp, {
         y = 1500,
         time = 800,
@@ -204,7 +212,7 @@ function goBackToMain()
         x = -1000,
         time = 800,
         transition = easing.outCubic,
-        onComplete = function() composer.gotoScene("scenes.menu", {effect="crossFade", time=500}) end
+        onComplete = function() composer.gotoScene("scenes.menu", {effect="crossFade", time=500, params={alert = alert}}) end
     })
 end
 
