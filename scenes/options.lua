@@ -28,6 +28,8 @@ local soundSlider
 local musicSlider
 local backBtn
 local thumbsUp
+local soundBuffer = nil
+local musicBuffer = nil
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -61,14 +63,29 @@ function scene:create( event )
     container.y = centerY
     container:scale(0, 1)
 
+    --get any previously saved slider values
+    local volBox = ggData:new("vol")
+    local soundVol = 100
+    local musicVol = 100
+
+    if volBox.sound ~= nil then
+        soundVol = volBox.sound * 100
+    end
+
+    if volBox.music ~= nil then
+        musicVol = volBox.music * 100
+    end
+
     local function soundListener( event )
         local vol = event.value / 100
         audio.setVolume(vol, {channel=1})
+        soundBuffer = vol
     end
 
     local function musicListener( event )
         local vol = event.value / 100
         audio.setVolume(vol, {channel=2})
+        musicBuffer = vol
     end
 
     soundSlider = widget.newSlider({
@@ -76,6 +93,7 @@ function scene:create( event )
         y = display.contentCenterY - 50,
         orientation = "horizontal",
         width = container.width * 0.8,
+        value = soundVol,
         listener = soundListener
     })
     soundSlider:scale(0, 1)
@@ -85,6 +103,7 @@ function scene:create( event )
         y = display.contentCenterY + 50,
         orientation = "horizontal",
         width = container.width * 0.8,
+        value = musicVol,
         listener = musicListener
     })
     musicSlider:scale(0, 1)
@@ -149,11 +168,29 @@ function scene:create( event )
     transition.to(container, containerTr)
     transition.to(soundSlider, containerTr)
     transition.to(musicSlider, containerTr)
+end
 
+function saveOptions()
+    box = ggData:new("vol")
+
+    if soundBuffer ~= nil then
+        box:set("sound", soundBuffer)
+        box:save()
+    end
+
+    if musicBuffer ~= nil then
+        box:set("music", musicBuffer)
+        box:save()
+    end
+    
 end
 
 --back event listener
 function goBackToMain()
+
+    --save option details with the buffers
+    saveOptions()
+
     transition.to(thumbsUp, {
         y = 1500,
         time = 800,

@@ -23,6 +23,7 @@ local buttons
 local highscore
 local playScore
 local flyText
+local popSound
 highscoreNumber = nil
 whichScene = "menu"
 ropeJoint = nil
@@ -149,6 +150,9 @@ function scene:create( event )
         end
       end
     end
+
+    --load sounds
+    popSound = audio.loadSound("audio/pop.wav")
 end
 
 --load the stored highscore into the scene
@@ -263,6 +267,7 @@ end
 
 --balloon button tap animation and functions
 function buttonTap(event)
+  audio.play(popSound, {channel=1})
   if event.target == buttons.allButtons[1] then
     local popSprite = display.newSprite(balloonSheet,balloonSequence)
     popSprite.button = "play"

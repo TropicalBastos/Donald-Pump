@@ -25,6 +25,15 @@ globalTextOptions = {
   y = display.contentCenterY
 }
 
+--get any saved options
+local vol = ggData:new("vol")
+if vol.sound ~= nil then
+  audio.setVolume(vol.sound, {channel=1})
+end
+if vol.music ~= nil then
+  audio.setVolume(vol.music, {channel=2})
+end
+
 --global screen position variables
 centerX = display.contentCenterX
 centerY = display.contentCenterY
