@@ -194,6 +194,8 @@ end
 --back event listener
 function goBackToMain()
 
+    audio.play(wooshSound, {channel=1})
+
     --save option details with the buffers
     saveOptions()
 

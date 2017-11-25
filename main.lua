@@ -54,6 +54,7 @@ gameOverSound = audio.loadSound("audio/gameover.mp3")
 clickSound = audio.loadSound("audio/click.mp3")
 powerSound = audio.loadSound("audio/powerup.wav")
 whistleSound = audio.loadSound("audio/whistle.mp3")
+wooshSound = audio.loadSound("audio/woosh.wav")
 
 --start the app on the loading scene
 composer.gotoScene("scenes.loading")

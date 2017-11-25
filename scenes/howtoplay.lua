@@ -190,6 +190,7 @@ end
 
 --back event listener
 function goBackToMain()
+    audio.play(wooshSound, {channel=1})
     transition.to(backBtn, {
         x = -1000,
         time = 1000,
