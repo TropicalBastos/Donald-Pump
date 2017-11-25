@@ -65,9 +65,10 @@ function emitter:pop(event)
 end
 
 function emitter:touch(event)
-  if gamePaused then
+  if gamePaused or gameOverOn then
     return
   end
+  totalGameOver = true
   audio.play(explosionSound, {channel = 3})
   local popSprite = display.newSprite(explosionSheet,explosionSeq)
   popSprite:addEventListener("sprite",popEvent)

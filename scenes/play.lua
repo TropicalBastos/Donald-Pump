@@ -50,6 +50,7 @@ yesButton = nil
 noButton = nil
 fromMenuToPlay = true
 gameOverHighscore = nil
+totalGameOver = false
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -238,7 +239,7 @@ end
 function startup()
 
   current = 3
-
+  audio.play(clickSound, {channel = 4})
   local textOptions = {
       text = current,
       font = font321,
@@ -258,6 +259,7 @@ function numIn()
     startGame()
     return
   end
+  audio.play(clickSound, {channel = 4})
   num.text = current
   transition.fadeIn(num,{onComplete = numOut})
 end
@@ -295,7 +297,7 @@ function scene:hide( event )
 end
 
 function backToMenuListener()
-  if gamePaused or not finishedUltraAnimation then
+  if gamePaused or totalGameOver or not finishedUltraAnimation then
     return
   end
 
@@ -303,6 +305,7 @@ function backToMenuListener()
   gamePaused = true
 
   audio.play(clickSound, {channel = 1})
+  --resetModal()
 
   --add menu container
   darkenedScreen = display.newRect(centerX,centerY,2000,2000)
@@ -455,13 +458,15 @@ end
 end
 
 function retryMenuListener()
-  if gamePaused or not finishedUltraAnimation then
+  if gamePaused or totalGameOver or not finishedUltraAnimation then
     return
   end
 
   physics.pause()
   gamePaused = true
   audio.play(clickSound, {channel = 1})
+
+  --resetModal()
 
   --add menu container
   darkenedScreen = display.newRect(centerX,centerY,2000,2000)
@@ -494,10 +499,37 @@ function retryMenuListener()
   noButton:addEventListener("touch",retryButtonTouchListener)
 end
 
+function resetModal()
+  if darkenedScreen ~= nil then
+    darkenedScreen:removeSelf()
+    darkenedScreen = nil
+  end
+  if menuMenu ~= nil then
+    menuMenu:removeSef()
+    menuMenu = nil
+  end
+  if retryMenu ~= nil then
+    retryMenu:removeSelf()
+    retryMenu = nil
+  end
+  if gameoverMenu ~= nil then
+    gameoverMenu:removeSelf()
+    gameoverMenu = nil
+  end
+  if yesButton ~= nil then
+    yesButton:removeSelf()
+    yesButton = nil
+  end
+  if noButton ~= nil then
+    noButton:removeSelf()
+    noButton = nil
+  end
+end
+
 function gameOverMenuListener()
 
 --if gameover menu is already on screen then exit the function, no need to propagate
-  if gameOverOn then
+  if gameOverOn or gamePaused then
     return
   end
 
@@ -506,6 +538,8 @@ function gameOverMenuListener()
   gamePaused = true
 
   nuclearLoopSound = audio.play(gameOverSound, {channel = 4, loops = -1})
+
+  --resetModal()
 
   --add menu container
   darkenedScreen = display.newRect(centerX,centerY,2000,2000)
