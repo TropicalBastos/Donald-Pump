@@ -3,6 +3,7 @@ package.path = package.path .. ";../?.lua"
 local emitter = {}
 local emitter_mt = {__index = emitter}
 local speed
+local overlay
 eventCopy = nil
 
 function emitter:collision(event)
@@ -12,6 +13,29 @@ function emitter:collision(event)
   if collided==toupe then
     timer.performWithDelay(50,self.pop)
   end
+end
+
+function showUltraOverlay()
+  if overlay ~= nil then
+    return
+  end
+  overlay = display.newImage("res/poweroverlay.png")
+  overlay.x = centerX
+  overlay.y = centerY
+  overlay.width = rightMarg + 100
+  overlay.height = bottomMarg + 100
+  local function finish()
+    transition.fadeOut(overlay, {
+      time = 250,
+      transition = easing.outCubic,
+      onComplete = function() overlay:removeSelf() overlay = nil end
+    })    
+  end
+  transition.fadeIn(overlay, {
+    time = 250,
+    transition = easing.inCubic,
+    onComplete = finish
+  })
 end
 
 function emitter:pop(event)
@@ -37,6 +61,7 @@ function emitter:pop(event)
   end
 
   if scoreMultiplier > 0 then
+    showUltraOverlay()
     audio.play(powerSound, {channel=1})
     local popSprite = display.newSprite(ultraSheet,ultraSeq)
     popSprite:addEventListener("sprite",popEvent)
