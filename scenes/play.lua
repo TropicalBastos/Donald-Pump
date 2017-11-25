@@ -305,7 +305,6 @@ function backToMenuListener()
   gamePaused = true
 
   audio.play(clickSound, {channel = 1})
-  --resetModal()
 
   --add menu container
   darkenedScreen = display.newRect(centerX,centerY,2000,2000)
@@ -466,8 +465,6 @@ function retryMenuListener()
   gamePaused = true
   audio.play(clickSound, {channel = 1})
 
-  --resetModal()
-
   --add menu container
   darkenedScreen = display.newRect(centerX,centerY,2000,2000)
   darkenedScreen:setFillColor(black)
@@ -499,33 +496,6 @@ function retryMenuListener()
   noButton:addEventListener("touch",retryButtonTouchListener)
 end
 
-function resetModal()
-  if darkenedScreen ~= nil then
-    darkenedScreen:removeSelf()
-    darkenedScreen = nil
-  end
-  if menuMenu ~= nil then
-    menuMenu:removeSef()
-    menuMenu = nil
-  end
-  if retryMenu ~= nil then
-    retryMenu:removeSelf()
-    retryMenu = nil
-  end
-  if gameoverMenu ~= nil then
-    gameoverMenu:removeSelf()
-    gameoverMenu = nil
-  end
-  if yesButton ~= nil then
-    yesButton:removeSelf()
-    yesButton = nil
-  end
-  if noButton ~= nil then
-    noButton:removeSelf()
-    noButton = nil
-  end
-end
-
 function gameOverMenuListener()
 
 --if gameover menu is already on screen then exit the function, no need to propagate
@@ -538,8 +508,6 @@ function gameOverMenuListener()
   gamePaused = true
 
   nuclearLoopSound = audio.play(gameOverSound, {channel = 4, loops = -1})
-
-  --resetModal()
 
   --add menu container
   darkenedScreen = display.newRect(centerX,centerY,2000,2000)
