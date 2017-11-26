@@ -58,6 +58,8 @@ wooshSound = audio.loadSound("audio/woosh.wav")
 ultraSound = audio.loadSound("audio/ultra.wav")
 errorSound = audio.loadSound("audio/error.wav")
 introSound = audio.loadSound("audio/intro.mp3")
+menuTheme = audio.loadSound("audio/menutheme.mp3")
+playTheme = audio.loadSound("audio/playtheme.mp3")
 
 --start the app on the loading scene
 composer.gotoScene("scenes.loading")

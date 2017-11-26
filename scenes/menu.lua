@@ -384,6 +384,8 @@ function scene:show( event )
         }
         transition.fadeIn(bg,transitionOptions)
         transition.fadeIn(highscore)
+        audio.stop({channel = 2})
+        audio.play(menuTheme, {channel = 2, loops = -1})
 
     end
 end

@@ -61,7 +61,8 @@ isOnMenu = false
 function scene:create( event )
 
     physics.pause()
-
+    audio.stop({channel = 2})
+    audio.play(playTheme, {channel = 2})
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
     composer.removeScene("scenes.menu")
