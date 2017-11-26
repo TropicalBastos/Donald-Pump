@@ -61,5 +61,21 @@ introSound = audio.loadSound("audio/intro.mp3")
 menuTheme = audio.loadSound("audio/menutheme.mp3")
 playTheme = audio.loadSound("audio/playtheme.mp3")
 
+--ads
+platform = system.getInfo("platform")
+
+if platform == "android" or platform == "ios" then
+  appodeal = require( "plugin.appodeal" )
+  APP_KEY = "6e89d1b50c19c7c39f0db6d2a4fb24c7b8c7575bb2a0c75d"
+
+  function adListener( event )
+      if ( event.phase == "init" ) then  -- Successful initialization
+          print( event.isError )
+      end
+  end
+
+  appodeal.init( adListener, { appKey=APP_KEY } )
+end
+
 --start the app on the loading scene
 composer.gotoScene("scenes.loading")

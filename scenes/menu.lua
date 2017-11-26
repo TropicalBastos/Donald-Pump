@@ -176,6 +176,17 @@ function scene:create( event )
         end
       end
     end
+
+    --display ad randomly
+    if platform == "android" or platform == "ios" then
+      local chosenNumber = 3
+      local randomAdNumer = math.random(chosenNumber)
+      print(randomAdNumer)
+      if randomAdNumer == chosenNumber then
+        appodeal.show( "interstitial" )
+      end
+    end
+
 end
 
 --load the stored highscore into the scene
