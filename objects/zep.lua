@@ -3,6 +3,8 @@ package.path = package.path .. ";../?lua"
 local zepSpeed = 0
 local zepWidth = 100
 local zepHeight = 60
+local zepNormal
+local zepTapped
 zep = nil
 
 function newZep(w,h,s)
@@ -13,13 +15,16 @@ function newZep(w,h,s)
 end
 
 function moveZep()
-  zep.x = zep.x - zepSpeed
+  zepNormal.x = zepNormal.x - zepSpeed
+  zepTapped.x = zepTapped.x - zepSpeed
 end
 
 function outZep()
-  if zep.x < (screenLeft-zepWidth)-1000 then
-    zep:removeSelf()
-    createZep()
+  if zepNormal ~= nil then
+    if zepNormal.x < (screenLeft-zepWidth)-1000 then
+      zep:removeSelf()
+      createZep()
+    end
   end
 end
 
@@ -36,9 +41,28 @@ end
 function createZep()
   local x = math.random(rightMarg+zepWidth,rightMarg+zepWidth+1000)
   local y = math.random(screenTop+zepWidth/2,centerY)
-  zep = display.newImage("res/zep.png",x,y)
-  zep.width = zepWidth
-  zep.height = zepHeight
+  zep = display.newGroup()
+  zepNormal = display.newImage("res/zep.png",x,y)
+  zepNormal.width = zepWidth
+  zepNormal.height = zepHeight
+  zepTapped = display.newImage("res/zeptapped.png",x,y)
+  zepTapped.width = zepWidth
+  zepTapped.height = zepHeight
+  zep:insert(zepTapped)
+  zep:insert(zepNormal)
+  zep:addEventListener("touch", tapZep)
+end
+
+function tapZep()
+  if gamePaused or isOnMenu then return end
+  local function tapOut()
+    zepNormal.isVisible = true
+    untappableObjectTapped = false
+  end
+  audio.play(errorSound, {channel = 1})
+  zepNormal.isVisible = false
+  untappableObjectTapped = true
+  timer.performWithDelay(400, tapOut)
 end
 
 function deleteZep()

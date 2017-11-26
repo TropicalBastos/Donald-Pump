@@ -65,6 +65,9 @@ function emitter:pop(event)
 end
 
 function emitter:touch(event)
+  if untappableObjectTapped then
+    return
+  end
   if gamePaused or gameOverOn then
     return
   end

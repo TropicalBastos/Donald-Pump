@@ -51,6 +51,8 @@ noButton = nil
 fromMenuToPlay = true
 gameOverHighscore = nil
 totalGameOver = false
+untappableObjectTapped = false
+isOnMenu = false
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------

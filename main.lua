@@ -56,6 +56,7 @@ powerSound = audio.loadSound("audio/powerup.wav")
 whistleSound = audio.loadSound("audio/whistle.mp3")
 wooshSound = audio.loadSound("audio/woosh.wav")
 ultraSound = audio.loadSound("audio/ultra.wav")
+errorSound = audio.loadSound("audio/error.wav")
 
 --start the app on the loading scene
 composer.gotoScene("scenes.loading")

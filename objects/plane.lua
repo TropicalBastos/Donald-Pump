@@ -3,6 +3,8 @@ package.path = package.path .. ";../?lua"
 local planeSpeed = 0
 local planeWidth = 160
 local planeHeight = 90
+local planeNormal
+local planeTapped
 plane = nil
 
 function newPlane(w,h,s)
@@ -13,13 +15,16 @@ function newPlane(w,h,s)
 end
 
 function movePlane()
-  plane.x = plane.x - planeSpeed
+  planeNormal.x = planeNormal.x - planeSpeed
+  planeTapped.x = planeTapped.x - planeSpeed
 end
 
 function outPlane()
-  if plane.x < (screenLeft-planeWidth)-1000 then
-    plane:removeSelf()
-    createPlane()
+  if planeNormal ~= nil then
+    if planeNormal.x < (screenLeft-planeWidth)-1000 then
+      plane:removeSelf()
+      createPlane()
+    end
   end
 end
 
@@ -36,9 +41,28 @@ end
 function createPlane()
   local x = math.random(rightMarg+planeWidth,rightMarg+planeWidth+1000)
   local y = math.random(screenTop+planeWidth/2,centerY)
-  plane = display.newImage("res/plane.png",x,y)
-  plane.width = planeWidth
-  plane.height = planeHeight
+  plane = display.newGroup()
+  planeNormal = display.newImage("res/plane.png",x,y)
+  planeNormal.width = planeWidth
+  planeNormal.height = planeHeight
+  planeTapped = display.newImage("res/planetapped.png", x, y)
+  planeTapped.width = planeWidth
+  planeTapped.height = planeHeight
+  plane:insert(planeTapped)
+  plane:insert(planeNormal)
+  plane:addEventListener("touch", tapPlane)
+end
+
+function tapPlane()
+  if gamePaused then return end
+  local function tapOut()
+    planeNormal.isVisible = true
+    untappableObjectTapped = false
+  end
+  audio.play(errorSound, {channel = 1})
+  planeNormal.isVisible = false
+  untappableObjectTapped = true
+  timer.performWithDelay(400, tapOut)
 end
 
 function deletePlane()

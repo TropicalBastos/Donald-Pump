@@ -24,6 +24,7 @@ local buttons
 local highscore
 local playScore
 local flyText
+isOnMenu = true
 highscoreNumber = nil
 whichScene = "menu"
 ropeJoint = nil

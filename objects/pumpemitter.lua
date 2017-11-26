@@ -40,6 +40,10 @@ end
 
 function emitter:pop(event)
 
+  if untappableObjectTapped then
+    return
+  end
+  
   if event == nil then event = eventCopy end
 
   local fallScore = nil
