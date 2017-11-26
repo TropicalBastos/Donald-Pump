@@ -52,6 +52,7 @@ function tapUltra()
     return
   end
 
+  audio.play(ultraSound, {channel = 4})
   finishedUltraAnimation = false
   local darkeffect = display.newRect(centerX,centerY,4000,4000)
   darkeffect:setFillColor(0,0,0)
