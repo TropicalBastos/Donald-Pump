@@ -92,6 +92,32 @@ function scene:create( event )
     timer.performWithDelay(5500,slideUp,1)
 
     bg:toBack()
+
+    --attributions
+    local attributionText1 = "Music by Eric Matyas"
+    local attributionText2 = "www.soundimage.org"
+    local attributionObj1 = display.newText({
+      text = attributionText1,
+      x = centerX,
+      y = centerY + 150,
+      parent = sceneGroup,
+      font = highscoreFont
+    })
+    local attributionObj2 = display.newText({
+      text = attributionText2,
+      x = centerX,
+      y = centerY + 170,
+      parent = sceneGroup,
+      font = highscoreFont
+    })
+
+    local function slideUpAttribution()
+      transition.to(attributionObj1,{y=-300,time=2000,transition=easing.inOutQuart})
+      transition.to(attributionObj2,{y=-300,time=2000,transition=easing.inOutQuart})
+    end
+
+    timer.performWithDelay(5500, slideUpAttribution)
+
 end
 
 
@@ -142,6 +168,7 @@ function scene:show( event )
           transition.to(logo,{time=1500,xScale=0.6,yScale=0.6,transition=easing.inBounce})
           audio.play(windSound, {channel=4})
           audio.play(introSound, {channel = 1})
+          
     end
 end
 
