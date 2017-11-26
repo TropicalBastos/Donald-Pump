@@ -9,8 +9,8 @@ finishedUltraAnimation = true
 
 local function createBalloon()
   if balloonUltra == nil then
-    local width = 90
-    local height = 110
+    local width = 110
+    local height = 90
     local randomX = math.random(screenLeft+width/2,rightMarg-width/2)
     local randomY = math.random(bottomMarg+height,bottomMarg+800)
     local chance = math.random()
@@ -48,6 +48,9 @@ function isOutUltra()
 end
 
 function tapUltra()
+  if untappableObjectTapped then
+    return
+  end
   if gamePaused then
     return
   end

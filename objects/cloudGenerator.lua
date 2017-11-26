@@ -36,6 +36,7 @@ function cloudGenerator:touch(event)
   end
 
   if scoreMultiplier > 0 then
+    showUltraOverlay()
     audio.play(powerSound, {channel=1})
     local popSprite = display.newSprite(ultraSheet,ultraSeq)
     popSprite:addEventListener("sprite",popEvent)

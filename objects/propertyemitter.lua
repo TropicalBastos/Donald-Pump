@@ -7,6 +7,9 @@ local speed
 local propBalloonTimer = nil
 
 local function tapProperty(event)
+    if untappableObjectTapped or gamePaused then
+      return
+    end
     propertyLife:add()
     destroyPropBalloon()
     local popSprite = display.newSprite(balloonSheet,balloonSequence)

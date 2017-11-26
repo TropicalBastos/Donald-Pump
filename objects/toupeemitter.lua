@@ -50,6 +50,9 @@ function destroyToupe()
 end
 
 function tapToupe()
+  if untappableObjectTapped then
+    return
+  end
   if gamePaused then
     return
   end
