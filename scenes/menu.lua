@@ -262,7 +262,7 @@ function updateScoreComplete(event)
   }
 
   flyText = flyAwayText.new(textOptions)
-  flyText:fly(100,{time=200,delay=0,y=0,xScale=0,yScale=0,transition=easing.outSine})
+  flyText:fly(100,{time=200,delay=0,y=-100,xScale=0,yScale=0,transition=easing.outSine})
   highscore.text = "Highscore: " .. highscoreNumber
 end
 
