@@ -111,7 +111,7 @@ function scene:create( event )
     sceneGroup:insert(title)
 
     flagSprite = createFlagSprite()
-    flagSprite:scale(0.05,0.05)
+    flagSprite:scale(0.5, 0.5)
     flagSprite.x = centerX + 19
     flagSprite.y = bottomMarg - (whiteHouse.height)+2
     flagSprite:play()
@@ -443,8 +443,8 @@ end
 --create our animated flag
 function createFlagSprite()
   local options = {
-    width = 800,
-    height = 600,
+    width = 80,
+    height = 60,
     numFrames = 9
   }
 
