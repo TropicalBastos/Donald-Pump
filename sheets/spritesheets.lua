@@ -40,24 +40,6 @@ explosionSeq = {
 
 explosionSheet = graphics.newImageSheet("res/nuked.png",explosionOptions)
 
---collect toupe effect
-local toupeSheetOptions = {
-  width = 192,
-  height = 192,
-  numFrames = 35
-}
-
-toupeSeq = {
-  name= "toupeseq",
-  start = 1,
-  count = 35,
-  time = 500,
-  loopCount = 1,
-  loopDirection = "forward"
-}
-
-toupeSheet = graphics.newImageSheet("res/toupesheet.png",toupeSheetOptions)
-
 --ultra pump effect
 local ultraOptions = {
   width = 612,

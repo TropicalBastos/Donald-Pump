@@ -194,7 +194,7 @@ function scene:create( event )
       local randomAdNumer = math.random(chosenNumber)
       print(randomAdNumer)
       if randomAdNumer == chosenNumber then
-        appodeal.show( "interstitial" )
+        appodeal.show( "banner" )
       end
     end
 

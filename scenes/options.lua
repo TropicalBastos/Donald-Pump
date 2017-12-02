@@ -49,6 +49,8 @@ function scene:create( event )
     bg.x = centerX
     bg.y = centerY
 
+    appodeal.hide( "banner" )
+    
     volSample = audio.loadSound("audio/volumesample.wav")
 
     local titleOptions = {

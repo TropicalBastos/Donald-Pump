@@ -56,6 +56,8 @@ function scene:create( event )
     bg.height = bottomMarg + 100
     --balloonContainer = display.new
 
+    appodeal.hide( "banner" )
+
     pumpObj = display.newImage("res/pumpballoon.png")
     ultraObj = display.newImage("res/ultraballoon.png")
     toupeObj = display.newImage("res/toupeballoon.png")

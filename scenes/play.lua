@@ -68,6 +68,8 @@ function scene:create( event )
     composer.removeScene("scenes.menu")
     composer.removeScene("scenes.transition")
 
+    appodeal.hide( "banner" )
+
     --Background
     bg = display.newImage("res/bg.png",0,0)
     bg.width = rightMarg + 100
@@ -230,12 +232,12 @@ function incrementScoreTier()
 end
 
 function decrementScoreTier()
-  if #propertyLife == 0 then
-    gameOverMenuListener()
-    return
-  elseif #propertyLife >= 1 then
+  if #propertyLife >= 1 then
     propertyLife:pop()
     scoreTier = scoreTier - 1
+  end
+  if #propertyLife == 0 then
+    gameOverMenuListener()
   end
 end
 
