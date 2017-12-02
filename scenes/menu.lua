@@ -24,6 +24,7 @@ local buttons
 local highscore
 local playScore
 local flyText
+local menuButtonTapped = false
 isOnMenu = true
 highscoreNumber = nil
 whichScene = "menu"
@@ -315,6 +316,10 @@ end
 
 --balloon button tap animation and functions
 function buttonTap(event)
+  if menuButtonTapped then
+    return
+  end
+  menuButtonTapped = true
   audio.play(popSound, {channel=1})
   if event.target == buttons.allButtons[1] then
     local popSprite = display.newSprite(balloonSheet,balloonSequence)
