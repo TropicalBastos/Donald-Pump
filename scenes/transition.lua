@@ -26,6 +26,8 @@ function scene:create( event )
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
     composer.removeScene("scenes.play")
+    physics.stop()
+    physics.start()
     local tempscore = event.params.score
     composer.gotoScene("scenes.play",{effect="crossFade", params={score=tempscore}})
 

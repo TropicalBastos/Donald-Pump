@@ -177,6 +177,8 @@ function speedUp()
   if balloonGravity > -1.5 then
     balloonGravity = balloonGravity - 0.03
   end
+  pumpEmitter:speedUp()
+  bombEmitter:speedUp()
 end
 
 --global event for all pops

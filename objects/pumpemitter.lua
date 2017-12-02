@@ -4,6 +4,7 @@ local emitter = {}
 local emitter_mt = {__index = emitter}
 local speed
 local overlay
+local yForce = 0
 eventCopy = nil
 
 function emitter:collision(event)
@@ -96,6 +97,16 @@ function emitter:pop(event)
   end
 end
 
+function emitter:speedUp()
+  if yForce >= -50 then
+    yForce = yForce - 5
+  end
+  for i = 1, #self.all do
+    self.all[i]:applyForce(0, yForce, self.all[i].x, self.all[i].y)
+  end
+  print(yForce)
+end
+
 function emitter:touch(event)
   if gamePaused then
     return
@@ -107,6 +118,7 @@ function emitter.new(number,view)
 
   local bGroup = display.newGroup()
   local all = {}
+  yForce = 0
   --local tapRect = {}
 
   for i = 0, number do
@@ -172,6 +184,7 @@ function emitter:createBalloon()
   --lRect.isHitTestable = true
   --balloon.tapRect = lRect
   --balloon.tapRect.p = balloon
+  balloon:applyForce(0, yForce, balloon.x, balloon.y)
   return balloon
 end
 

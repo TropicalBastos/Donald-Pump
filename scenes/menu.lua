@@ -182,7 +182,6 @@ function scene:create( event )
     if platform == "android" or platform == "ios" then
       local chosenNumber = 3
       local randomAdNumer = math.random(chosenNumber)
-      print(randomAdNumer)
       if randomAdNumer == chosenNumber then
         appodeal.show( "interstitial" )
       end
@@ -192,7 +191,6 @@ function scene:create( event )
     if platform == "android" or platform == "ios" then
       local chosenNumber = 3
       local randomAdNumer = math.random(chosenNumber)
-      print(randomAdNumer)
       if randomAdNumer == chosenNumber then
         appodeal.show( "banner" )
       end
@@ -263,7 +261,7 @@ function updateScoreComplete(event)
   }
 
   flyText = flyAwayText.new(textOptions)
-  flyText:fly(100,{time=200,delay=0,y=-100,xScale=0,yScale=0,transition=easing.outSine})
+  flyText:fly(100,{time=200,delay=0,y=-100,transition=easing.outSine})
   highscore.text = "Highscore: " .. highscoreNumber
 end
 
