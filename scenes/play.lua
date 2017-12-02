@@ -557,6 +557,9 @@ end
 
 function compareHighScore()
   local box = ggData:new('highscore')
+  if currentScore < prevScore then
+    return
+  end
   if currentScore > box.highscore then
     local textOptions = {
       text = "New Highscore! ".. currentScore,
