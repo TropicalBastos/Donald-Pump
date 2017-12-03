@@ -16,12 +16,14 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 --global
-balloonGravity = -0.01
+--balloonGravity = -0.01
+balloonGravity = 0
 scoreMultiplier = 0
 scoreTimer = nil
 playScore = nil
 currentScore = 0
 prevScore = 0
+yVelGlobal = 0
 
 local bg
 local current
@@ -69,6 +71,9 @@ function scene:create( event )
     composer.removeScene("scenes.transition")
 
     appodeal.hide( "banner" )
+
+    --reset yvel of global objects
+    yVelGlobal = 0
 
     --Background
     bg = display.newImage("res/bg.png",0,0)
@@ -174,11 +179,18 @@ function speedUp()
   if gamePaused then
     return
   end
-  if balloonGravity > -1.5 then
-    balloonGravity = balloonGravity - 0.03
+  if yVelGlobal == -700 then
+    return
   end
+  -- if balloonGravity > -1.5 then
+  --   balloonGravity = balloonGravity - 0.03
+  -- end
+  yVelGlobal = yVelGlobal - 10
   pumpEmitter:speedUp()
   bombEmitter:speedUp()
+  toupeSpeedUp()
+  propSpeedUp()
+  ultraSpeedUp()
 end
 
 --global event for all pops
@@ -282,7 +294,7 @@ function startGame()
   beginToupeEmitter()
   beginUltraEmitter()
   beginPropBalloonEmitter()
-  speedTimer = timer.performWithDelay(5000,speedUp,0)
+  speedTimer = timer.performWithDelay(1000,speedUp,0)
   physics.start()
   gamePaused = false
   fromMenuToPlay = false

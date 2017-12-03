@@ -52,6 +52,7 @@ local function createBalloon()
     balloonProperty:addEventListener("touch",tapProperty)
     physics.addBody(balloonProperty);
     balloonProperty.gravityScale = balloonGravity
+    balloonProperty:setLinearVelocity(0, yVelGlobal)
   end
 end
 
@@ -60,6 +61,12 @@ local function chanceOfAppearance()
   local r = math.random(1,chance)
   if r==1 then
     createBalloon()
+  end
+end
+
+function propSpeedUp()
+  if balloonProperty ~= nil then
+    balloonProperty:setLinearVelocity(0, yVelGlobal)
   end
 end
 

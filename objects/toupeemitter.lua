@@ -21,6 +21,7 @@ local function createBalloon()
     balloonToupe:addEventListener("touch",tapToupe)
     physics.addBody(balloonToupe);
     balloonToupe.gravityScale = balloonGravity
+    balloonToupe:setLinearVelocity(0, yVelGlobal)
   end
 end
 
@@ -46,6 +47,12 @@ function destroyToupe()
   display.remove(toupe)
   if balloonToupe ~= nil then
     balloonToupe = nil
+  end
+end
+
+function toupeSpeedUp()
+  if balloonToupe ~= nil then
+    balloonToupe:setLinearVelocity(0, yVelGlobal)
   end
 end
 

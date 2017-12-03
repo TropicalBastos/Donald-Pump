@@ -20,6 +20,7 @@ local function createBalloon()
     balloonUltra:addEventListener("touch",tapUltra)
     physics.addBody(balloonUltra);
     balloonUltra.gravityScale = balloonGravity
+    balloonUltra:setLinearVelocity(0, yVelGlobal)
   end
 end
 
@@ -28,6 +29,12 @@ local function chanceOfAppearance()
   local r = math.random(1,chance)
   if r==1 then
     createBalloon()
+  end
+end
+
+function ultraSpeedUp()
+  if balloonUltra ~= nil then
+    balloonUltra:setLinearVelocity(0, yVelGlobal)
   end
 end
 
