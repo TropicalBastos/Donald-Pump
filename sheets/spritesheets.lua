@@ -69,9 +69,9 @@ muscleSeq = {
   name= "muscleseq",
   start = 1,
   count = 7,
-  time = 250,
-  loopCount = 1,
-  loopDirection = "bounce"
+  time = 500,
+  loopCount = 2,
+  loopDirection = "forwards"
 }
 
 muscleSheet = graphics.newImageSheet("res/donaldpumpsheet.png",muscleOptions)
