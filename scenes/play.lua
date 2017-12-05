@@ -134,7 +134,7 @@ function scene:create( event )
     backButton = display.newImage("res/back.png",-100,backButtonPosY)
     backButton.width = 50
     backButton.height = 50
-    backButton:addEventListener("tap",backToMenuListener)
+    backButton:addEventListener("touch",backToMenuListener)
     transition.to(backButton,{time=1000,transition=easing.inOutCubic,x=backButtonPosX})
 
     --add restart button
@@ -143,7 +143,7 @@ function scene:create( event )
     restartButton = display.newImage("res/restart.png",screenLeft - 100, restartPosY)
     restartButton.width = 50
     restartButton.height = 50
-    restartButton:addEventListener("tap",retryMenuListener)
+    restartButton:addEventListener("touch",retryMenuListener)
     transition.to(restartButton,{time=1000,transition=easing.inOutCubic,x=restartPosX, y=restartPosY})
 
     --add crosshair
@@ -152,6 +152,7 @@ function scene:create( event )
     crosshair.height = 50
     local crosshairX = rightMarg-25
     local crosshairY = bottomMarg - 25
+    crosshair:addEventListener("touch", crosshairListener)
     transition.to(crosshair,{time=1000,transition=easing.inOutCubic, x=crosshairX, y=crosshairY})
 
     sceneGroup:insert(backButton)
@@ -325,10 +326,59 @@ function scene:hide( event )
     end
 end
 
+function crosshairListener()
+  if gamePaused or totalGameOver or not finishedUltraAnimation then
+    return
+  end
+
+  untappableObjectTapped = true
+  timer.performWithDelay(400, function() untappableObjectTapped = false end)
+
+  crosshairEffect()
+end
+
+function crosshairEffect()
+      local emitter = prism.newEmitter({
+      -- Particle building and emission options
+      particles = {
+        type = "image",
+        image = "res/particle.png",
+        width = 50,
+        height = 50,
+        color = {{1, 1, 0.1}, {1, 0, 0}},
+        blendMode = "add",
+        particlesPerEmission = 100,
+        delayBetweenEmissions = 100,
+        inTime = 100,
+        lifeTime = 100,
+        outTime = 1000,
+        startProperties = {xScale = 1, yScale = 1},
+        endProperties = {xScale = 0.3, yScale = 0.3}
+      },
+      -- Particle positioning options
+      position = {
+        type = "point"
+      },
+      -- Particle movement options
+      movement = {
+        type = "random",
+        velocityRetain = .97,
+        speed = 1,
+        yGravity = -0.15
+      }
+    })
+  
+    emitter.emitX, emitter.emitY = crosshair.x, crosshair.y
+    emitter:emit()
+end
+
 function backToMenuListener()
   if gamePaused or totalGameOver or not finishedUltraAnimation then
     return
   end
+
+  untappableObjectTapped = true
+  timer.performWithDelay(400, function() untappableObjectTapped = false end)
 
   physics.pause()
   gamePaused = true
@@ -489,6 +539,9 @@ function retryMenuListener()
   if gamePaused or totalGameOver or not finishedUltraAnimation then
     return
   end
+
+  untappableObjectTapped = true
+  timer.performWithDelay(400, function() untappableObjectTapped = false end)
 
   physics.pause()
   gamePaused = true
