@@ -179,22 +179,8 @@ function scene:create( event )
     end
 
     --display ad randomly
-    if platform == "android" or platform == "ios" then
-      local chosenNumber = 3
-      local randomAdNumer = math.random(chosenNumber)
-      if randomAdNumer == chosenNumber then
-        appodeal.show( "interstitial" )
-      end
-    end
-
-    --display banner ad randomly
-    if platform == "android" or platform == "ios" then
-      local chosenNumber = 3
-      local randomAdNumer = math.random(chosenNumber)
-      if randomAdNumer == chosenNumber then
-        appodeal.show( "banner" )
-      end
-    end
+    displayAd(3, "interstitial")
+    displayAd(2, "banner")
 
 end
 

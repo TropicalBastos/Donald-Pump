@@ -7,6 +7,7 @@ spriteSheets = require("sheets.spritesheets")
 physics = require("physics")
 ggData = require("plugins.GGData")
 prism = require("plugins.prism")
+appodeal = require( "plugin.appodeal" )
 
 local composer = require("composer")
 
@@ -65,7 +66,6 @@ playTheme = audio.loadSound("audio/playtheme.mp3")
 platform = system.getInfo("platform")
 
 if platform == "android" or platform == "ios" then
-  appodeal = require( "plugin.appodeal" )
   APP_KEY = "6e89d1b50c19c7c39f0db6d2a4fb24c7b8c7575bb2a0c75d"
 
   function adListener( event )
@@ -75,6 +75,15 @@ if platform == "android" or platform == "ios" then
   end
 
   appodeal.init( adListener, { appKey=APP_KEY } )
+end
+
+function displayAd(chance, type)
+    if platform == "android" or platform == "ios" then
+      local randomAdNumer = math.random(chance)
+      if randomAdNumer == chance then
+        appodeal.show( type )
+      end
+    end
 end
 
 --start the app on the loading scene
