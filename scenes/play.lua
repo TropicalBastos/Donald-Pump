@@ -33,6 +33,7 @@ local pumpEmitter = nil
 local cloudEmitter = nil
 local nuclearLoopSound = nil
 local goingToMainMenu = false
+local crosshair
 nuclearOverlayOn = false
 nuclearOverlay = nil
 scoreTier = 1
@@ -137,16 +138,25 @@ function scene:create( event )
     transition.to(backButton,{time=1000,transition=easing.inOutCubic,x=backButtonPosX})
 
     --add restart button
-    restartPosX = rightMarg-25
-    restartPosY = bottomMarg-25
-    restartButton = display.newImage("res/restart.png",rightMarg+100,bottomMarg-25)
+    restartPosX = screenLeft + 25
+    restartPosY = (screenTop + 25) + 3
+    restartButton = display.newImage("res/restart.png",screenLeft - 100, restartPosY)
     restartButton.width = 50
     restartButton.height = 50
     restartButton:addEventListener("tap",retryMenuListener)
-    transition.to(restartButton,{time=1000,transition=easing.inOutCubic,x=restartPosX})
+    transition.to(restartButton,{time=1000,transition=easing.inOutCubic,x=restartPosX, y=restartPosY})
+
+    --add crosshair
+    crosshair = display.newImage("res/target.png", rightMarg + 100, bottomMarg - 25)
+    crosshair.width = 50
+    crosshair.height = 50
+    local crosshairX = rightMarg-25
+    local crosshairY = bottomMarg - 25
+    transition.to(crosshair,{time=1000,transition=easing.inOutCubic, x=crosshairX, y=crosshairY})
 
     sceneGroup:insert(backButton)
     sceneGroup:insert(restartButton)
+    sceneGroup:insert(crosshair)
 
     --check any scores passed in from previous round
     if event.params ~= nil then
