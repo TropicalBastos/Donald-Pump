@@ -3,8 +3,8 @@ package.path = package.path .. ";../?lua"
 local planeSpeed = 0
 local planeWidth = 160
 local planeHeight = 90
-local planeNormal
-local planeTapped
+planeNormal = nil
+planeTapped = nil
 plane = nil
 
 function newPlane(w,h,s)
@@ -36,6 +36,19 @@ function planeFrame()
     movePlane()
     outPlane()
   end
+end
+
+function planeExplode()
+  audio.play(explosionSound, {channel = 3})
+  local explodeSprite = display.newSprite(explosionSheet,explosionSeq)
+  explodeSprite:addEventListener("sprite",popEvent)
+  explodeSprite.x = planeNormal.x
+  explodeSprite.y = planeNormal.y
+  explodeSprite:scale(2.5, 2.5)
+  explodeSprite:play()
+  planeNormal.alpha = 0
+  planeTapped.alpha = 0
+  timer.performWithDelay(500, gameOverMenuListener)
 end
 
 function createPlane()

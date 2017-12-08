@@ -8,6 +8,7 @@ local temitter = require("objects.toupeemitter")
 local uemitter = require("objects.ultraemitter")
 local propemitter = require("objects.propertyemitter")
 local propertiesImport = require("objects.properties")
+local americanNuke = require("objects.americabomb")
 
 local scene = composer.newScene()
 
@@ -190,7 +191,7 @@ function speedUp()
   if gamePaused then
     return
   end
-  if yVelGlobal == -700 then
+  if yVelGlobal == -600 then
     return
   end
   -- if balloonGravity > -1.5 then
@@ -224,6 +225,7 @@ function removeEventListeners()
   Runtime:removeEventListener("enterFrame",zepFrame)
   Runtime:removeEventListener("enterFrame",planeFrame)
   Runtime:removeEventListener("enterFrame",framePropBalloon)
+  Runtime:removeEventListener("enterFrame", americaFrame)
 end
 
 function addEventListeners()
@@ -235,6 +237,7 @@ function addEventListeners()
   Runtime:addEventListener("enterFrame",zepFrame)
   Runtime:addEventListener("enterFrame",planeFrame)
   Runtime:addEventListener("enterFrame",framePropBalloon)
+  Runtime:addEventListener("enterFrame", americaFrame)
 end
 
 function displayNuclearOverlay()
@@ -261,9 +264,9 @@ function decrementScoreTier()
     propertyLife:pop()
     scoreTier = scoreTier - 1
   end
-  if #propertyLife == 0 then
-    gameOverMenuListener()
-  end
+  -- if #propertyLife == 0 then
+  --   gameOverMenuListener()
+  -- end
 end
 
 function startup()
@@ -327,7 +330,7 @@ function scene:hide( event )
 end
 
 function crosshairListener()
-  if gamePaused or totalGameOver or not finishedUltraAnimation then
+  if gamePaused or totalGameOver or not finishedUltraAnimation or creatingNewNuke then
     return
   end
 
@@ -335,6 +338,7 @@ function crosshairListener()
   timer.performWithDelay(400, function() untappableObjectTapped = false end)
 
   crosshairEffect()
+  newAmerica(50, 110, -600)
 end
 
 function crosshairEffect()
@@ -665,6 +669,7 @@ function deleteAllNonSceneObjects()
   destroyPropBalloon()
   deleteZep()
   deletePlane()
+  deleteAmericanNuke()
   if darkenedScreen ~= nil then
     darkenedScreen = nil
   end
