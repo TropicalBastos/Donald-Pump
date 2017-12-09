@@ -109,3 +109,20 @@ americaSeq = {
 }
 
 americaSheet = graphics.newImageSheet("res/americasheet.png", americaOptions)
+
+local rocketManOptions = {
+  width = 250,
+  height = 236,
+  numFrames = 6
+}
+
+rocketManSeq = {
+  name= "rocketmanseq",
+  start = 1,
+  count = 6,
+  time = 800,
+  loopCount = 0,
+  loopDirection = "forward"
+}
+
+rocketManSheet = graphics.newImageSheet("res/rocketman.png", rocketManOptions)
