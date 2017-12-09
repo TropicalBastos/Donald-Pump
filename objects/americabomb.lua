@@ -20,6 +20,7 @@ function newAmerica(w,h,s)
   americaSpeed = s
   creatingNewNuke = true
   timer.performWithDelay(3000, function() creatingNewNuke = false end)
+  collisionHappening = false
   createAmerica()
 end
 
