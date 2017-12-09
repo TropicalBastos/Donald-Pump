@@ -92,3 +92,20 @@ backSeq = {
 }
 
 backSheet = graphics.newImageSheet("res/backsheet.png", backOptions)
+
+local americaOptions = {
+  width = 109,
+  height = 316,
+  numFrames = 5
+}
+
+americaSeq = {
+  name= "americaseq",
+  start = 1,
+  count = 5,
+  time = 500,
+  loopCount = 0,
+  loopDirection = "forward"
+}
+
+americaSheet = graphics.newImageSheet("res/americasheet.png", americaOptions)

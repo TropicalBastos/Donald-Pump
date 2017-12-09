@@ -84,12 +84,14 @@ end
 function createAmerica()
   local x = centerX
   local y = bottomMarg + americaHeight + 100
-  america = display.newImage("res/americanuke.png",x,y)
-  america.width = americaWidth
-  america.height = americaHeight
+  america = display.newSprite(americaSheet, americaSeq)
+  america:scale(0.5, 0.5)
+  america.x = x
+  america.y = y
   physics.addBody(america, "kinematic")
   america.gravityScale = balloonGravity
   america:setLinearVelocity(0, americaSpeed)
+  america:play()
 end
 
 function deleteAmericanNuke()
