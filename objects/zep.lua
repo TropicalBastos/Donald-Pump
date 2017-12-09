@@ -3,8 +3,8 @@ package.path = package.path .. ";../?lua"
 local zepSpeed = 0
 local zepWidth = 100
 local zepHeight = 60
-local zepNormal
-local zepTapped
+zepNormal = nil
+zepTapped = nil
 zep = nil
 
 function newZep(w,h,s)
@@ -36,6 +36,19 @@ function zepFrame()
     moveZep()
     outZep()
   end
+end
+
+function zepExplode()
+  audio.play(explosionSound, {channel = 3})
+  local explodeSprite = display.newSprite(explosionSheet,explosionSeq)
+  explodeSprite:addEventListener("sprite",popEvent)
+  explodeSprite.x = zepNormal.x
+  explodeSprite.y = zepNormal.y
+  explodeSprite:scale(2.5, 2.5)
+  explodeSprite:play()
+  zepNormal.alpha = 0
+  zepTapped.alpha = 0
+  timer.performWithDelay(500, gameOverMenuListener)
 end
 
 function createZep()

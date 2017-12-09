@@ -50,7 +50,7 @@ function checkObjectCollision(displayObj)
         else 
           xDist = displayObj.x - america.x 
         end
-    
+
         if xDist <= (displayObj.width/2)
         and yDist <= (displayObj.height/2) then
           return true
@@ -66,6 +66,11 @@ function checkCollisions()
   end
   if checkObjectCollision(planeNormal) then
     planeExplode()
+    america.alpha = 0
+    collisionHappening = true
+  end
+  if checkObjectCollision(zepNormal) then
+    zepExplode()
     america.alpha = 0
     collisionHappening = true
   end
