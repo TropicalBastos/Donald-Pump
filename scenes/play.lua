@@ -57,6 +57,7 @@ gameOverHighscore = nil
 totalGameOver = false
 untappableObjectTapped = false
 isOnMenu = false
+playScene = nil
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -67,7 +68,8 @@ function scene:create( event )
     physics.pause()
     audio.stop({channel = 2})
     audio.play(playTheme, {channel = 2, loops = -1})
-    local sceneGroup = self.view
+    playScene = self.view
+    local sceneGroup = playScene
     -- Code here runs when the scene is first created but has not yet appeared on screen
     composer.removeScene("scenes.menu")
     composer.removeScene("scenes.transition")
@@ -216,6 +218,12 @@ function updatePlayScore()
   playScore.text = "Score: " .. currentScore
 end
 
+function bringHUDButtonsToFront()
+  crosshair:toFront()
+  restartButton:toFront()
+  backButton:toFront()
+end
+
 function removeEventListeners()
   Runtime:removeEventListener("enterFrame",bombEmitter)
   Runtime:removeEventListener("enterFrame",pumpEmitter)
@@ -226,6 +234,7 @@ function removeEventListeners()
   Runtime:removeEventListener("enterFrame",planeFrame)
   Runtime:removeEventListener("enterFrame",framePropBalloon)
   Runtime:removeEventListener("enterFrame", americaFrame)
+  Runtime:removeEventListener("enterFrame", bringHUDButtonsToFront)
 end
 
 function addEventListeners()
@@ -238,6 +247,7 @@ function addEventListeners()
   Runtime:addEventListener("enterFrame",planeFrame)
   Runtime:addEventListener("enterFrame",framePropBalloon)
   Runtime:addEventListener("enterFrame", americaFrame)
+  Runtime:addEventListener("enterFrame", bringHUDButtonsToFront)
 end
 
 function displayNuclearOverlay()

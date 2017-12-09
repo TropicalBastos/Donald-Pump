@@ -53,6 +53,7 @@ local function createBalloon()
     physics.addBody(balloonProperty);
     balloonProperty.gravityScale = balloonGravity
     balloonProperty:setLinearVelocity(0, yVelGlobal)
+    playScene:insert(balloonProperty)
   end
 end
 

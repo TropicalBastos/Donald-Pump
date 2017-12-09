@@ -21,6 +21,7 @@ local function createBalloon()
     physics.addBody(balloonUltra);
     balloonUltra.gravityScale = balloonGravity
     balloonUltra:setLinearVelocity(0, yVelGlobal)
+    playScene:insert(balloonUltra)
   end
 end
 

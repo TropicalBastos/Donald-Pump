@@ -179,6 +179,7 @@ function emitter:createBalloon()
   --balloon.tapRect = lRect
   --balloon.tapRect.p = balloon
   balloon:setLinearVelocity(0, yVelGlobal)
+  playScene:insert(balloon)
   return balloon
 end
 

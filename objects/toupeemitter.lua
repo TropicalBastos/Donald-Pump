@@ -22,6 +22,7 @@ local function createBalloon()
     physics.addBody(balloonToupe);
     balloonToupe.gravityScale = balloonGravity
     balloonToupe:setLinearVelocity(0, yVelGlobal)
+    playScene:insert(balloonToupe)
   end
 end
 

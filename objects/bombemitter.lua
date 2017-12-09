@@ -152,6 +152,7 @@ function emitter:createBalloon()
   balloon.gravityScale = balloonGravity
   balloon:addEventListener("collision",self)
   balloon:setLinearVelocity(0, yVelGlobal)
+  playScene:insert(balloon)
   return balloon
 end
 
