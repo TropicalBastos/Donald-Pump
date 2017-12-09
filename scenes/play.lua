@@ -344,8 +344,42 @@ function crosshairListener()
     return
   end
 
+  local startNo = 3
+  local crosshairTimer = nil
+
+  local function bringBackCrosshair()
+    transition.fadeIn(crosshair)
+  end
+
+  local function hide321()
+    if gamePaused or totalGameOver or not finishedUltraAnimation then
+      return
+    end
+    if startNo == 0 then
+      timer.cancel(crosshairTimer)
+      bringBackCrosshair()
+      return
+    end
+    local currentNo = display.newText({
+      text = tostring(startNo),
+      font = highscoreFont,
+      x = crosshair.x,
+      y = crosshair.y,
+      fontSize = 40
+    })
+    currentNo:setTextColor(255, 255, 0)
+    transition.fadeIn(currentNo, {
+      onComplete = function() 
+        transition.fadeOut(currentNo, {onComplete = function() currentNo:removeSelf() end})
+       end
+    })
+    startNo = startNo - 1
+  end
+
   untappableObjectTapped = true
   timer.performWithDelay(400, function() untappableObjectTapped = false end)
+  crosshairTimer = timer.performWithDelay(1000, hide321, 0)
+  transition.fadeOut(crosshair)
 
   crosshairEffect()
   newAmerica(50, 110, -600)
@@ -435,7 +469,9 @@ function transitionTheMenu(item,callback)
   transition.to(item,{time=500,y=-2000,onComplete=callback})
   transition.to(yesButton,{time=500,y=-2000})
   transition.to(noButton,{time=500,y=-2000})
-  darkenedScreen:removeSelf()
+  if darkenedScreen ~= nil then
+    darkenedScreen:removeSelf()
+  end
 end
 
 function goToMainMenu()
