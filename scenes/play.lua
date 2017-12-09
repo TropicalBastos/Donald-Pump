@@ -343,7 +343,8 @@ function crosshairListener()
   if gamePaused or totalGameOver or not finishedUltraAnimation or creatingNewNuke then
     return
   end
-
+  
+  audio.play(wooshSound, {channel = 1})
   local startNo = 3
   local crosshairTimer = nil
 
@@ -352,7 +353,11 @@ function crosshairListener()
   end
 
   local function hide321()
-    if gamePaused or totalGameOver or not finishedUltraAnimation then
+    if gamePaused or not finishedUltraAnimation then
+      return
+    end
+    if gameOverOn then
+      timer.cancel(crosshairTimer)
       return
     end
     if startNo == 0 then
