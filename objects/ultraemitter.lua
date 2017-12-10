@@ -84,7 +84,7 @@ function tapUltra()
   local muscleSprite = display.newSprite(muscleSheet,muscleSeq)
   muscleSprite.x = centerX
   muscleSprite.y = centerY
-  muscleSprite.alpha = 0.7
+  muscleSprite.alpha = 0.9
   muscleSprite:play()
   popSprite.muscle = muscleSprite
 
