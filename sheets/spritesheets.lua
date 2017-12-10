@@ -126,3 +126,4 @@ rocketManSeq = {
 }
 
 rocketManSheet = graphics.newImageSheet("res/rocketman.png", rocketManOptions)
+rocketManTappedSheet = graphics.newImageSheet("res/rocketmantapped.png", rocketManOptions)

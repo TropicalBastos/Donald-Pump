@@ -74,6 +74,15 @@ function checkCollisions()
     america.alpha = 0
     collisionHappening = true
   end
+  if checkObjectCollision(rocketManNormal) then
+    rocketManExplode()
+    america.alpha = 0
+    collisionHappening = true
+  end
+end
+
+function moveAmerica()
+  america.y = america.y - americaSpeed
 end
 
 function americaFrame()
@@ -81,6 +90,7 @@ function americaFrame()
     return
   end
   if america ~= nil then
+    moveAmerica()
     checkCollisions()
     outAmericanNuke()
   end
@@ -93,9 +103,9 @@ function createAmerica()
   america:scale(0.5, 0.5)
   america.x = x
   america.y = y
-  physics.addBody(america, "kinematic")
-  america.gravityScale = balloonGravity
-  america:setLinearVelocity(0, americaSpeed)
+  -- physics.addBody(america, "kinematic")
+  -- america.gravityScale = balloonGravity
+  -- america:setLinearVelocity(0, americaSpeed)
   america:play()
 end
 

@@ -35,7 +35,46 @@ function cloudGenerator:touch(event)
     timer.performWithDelay(5000,deleteScoreText)
   end
 
-  if scoreMultiplier > 0 then
+  if scoreMultiplier >= 100 then
+    audio.play(powerSound, {channel=1})
+    event.target.alpha = 0
+    event.target:removeEventListener("touch",self)
+    currentScore = currentScore+(scoreTier*scoreMultiplier)
+    updatePlayScore()
+    makeScoreFall(scoreTier*scoreMultiplier)
+    local emitter = prism.newEmitter({
+      -- Particle building and emission options
+      particles = {
+        type = "image",
+        image = "res/particle.png",
+        width = 50,
+        height = 50,
+        color = {{1, 1, 0.1}, {1, 0, 0}},
+        blendMode = "add",
+        particlesPerEmission = 50,
+        delayBetweenEmissions = 100,
+        inTime = 100,
+        lifeTime = 100,
+        outTime = 1000,
+        startProperties = {xScale = 1, yScale = 1},
+        endProperties = {xScale = 0.3, yScale = 0.3}
+      },
+      -- Particle positioning options
+      position = {
+        type = "point"
+      },
+      -- Particle movement options
+      movement = {
+        type = "random",
+        velocityRetain = .97,
+        speed = 1,
+        yGravity = -0.15
+      }
+    })
+  
+    emitter.emitX, emitter.emitY = event.target.x, event.target.y
+    emitter:emit()
+  elseif scoreMultiplier > 0 then
     showUltraOverlay()
     audio.play(powerSound, {channel=1})
     local popSprite = display.newSprite(ultraSheet,ultraSeq)

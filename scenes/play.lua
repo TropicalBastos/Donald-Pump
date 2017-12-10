@@ -359,15 +359,17 @@ function crosshairListener()
   end
 
   local function hide321()
-    if gamePaused or not finishedUltraAnimation then
-      return
-    end
     if gameOverOn then
       timer.cancel(crosshairTimer)
+      crosshairTimer = nil
+      return
+    end
+    if gamePaused or not finishedUltraAnimation then
       return
     end
     if startNo == 0 then
       timer.cancel(crosshairTimer)
+      crosshairTimer = nil
       bringBackCrosshair()
       return
     end
@@ -393,7 +395,7 @@ function crosshairListener()
   transition.fadeOut(crosshair)
 
   crosshairEffect()
-  newAmerica(50, 110, -600)
+  newAmerica(50, 110, 12)
 end
 
 function crosshairEffect()
