@@ -4,7 +4,7 @@ local rocketManSpeed = 0
 local rocketManWidth = 160
 local rocketManHeight = 90
 local isPaused = false
-local rocketProbability = 5 --1 in 5
+local rocketProbability = 1500 --1 in 1500 every frame
 rocketManNormal = nil
 rocketManTapped = nil
 rocketMan = nil
@@ -17,14 +17,17 @@ function newRocketMan(w,h,s)
 end
 
 function moveRocketMan()
-  rocketManNormal.x = rocketManNormal.x + rocketManSpeed
-  rocketManTapped.x = rocketManTapped.x + rocketManSpeed
+  if rocketMan ~= nil then
+    rocketManNormal.x = rocketManNormal.x + rocketManSpeed
+    rocketManTapped.x = rocketManTapped.x + rocketManSpeed
+  end
 end
 
 function outRocketMan()
   if rocketManNormal ~= nil then
     if rocketManNormal.x > (rightMarg + rocketManWidth) + 1000 then
       rocketMan:removeSelf()
+      rocketMan = nil
       createRocketMan()
     end
   end
@@ -49,6 +52,8 @@ function rocketManFrame()
     
     moveRocketMan()
     outRocketMan()
+  else 
+    createRocketMan()
   end
 end
 
