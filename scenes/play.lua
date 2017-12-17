@@ -396,6 +396,20 @@ function crosshairListener()
 
   crosshairEffect()
   newAmerica(50, 110, 12)
+  timer.performWithDelay(100, displayTargeter)
+end
+
+function displayTargeter()
+  local targetRect = display.newRect(centerX, centerY, 50, bottomMarg + 100)
+  local paint = { 1, 0, 0 }
+  targetRect.alpha = 0
+  targetRect.fill = paint
+  transition.to(targetRect, {alpha = 0.2})
+  timer.performWithDelay(500, 
+  function() transition.fadeOut(targetRect, {onComplete = 
+    function() targetRect:removeSelf() 
+    end}) 
+  end)
 end
 
 function crosshairEffect()

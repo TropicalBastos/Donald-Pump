@@ -61,6 +61,7 @@ errorSound = audio.loadSound("audio/error.mp3")
 introSound = audio.loadSound("audio/intro.mp3")
 menuTheme = audio.loadSound("audio/menutheme.mp3")
 playTheme = audio.loadSound("audio/playtheme.mp3")
+x100Sound = audio.loadSound("audio/x100.mp3")
 
 --ads
 platform = system.getInfo("platform")
