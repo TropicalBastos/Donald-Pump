@@ -36,7 +36,7 @@ function cloudGenerator:touch(event)
   end
 
   if scoreMultiplier >= 100 then
-    audio.play(powerSound, {channel=1})
+    audio.play(x100Sound, {channel=1})
     event.target.alpha = 0
     event.target:removeEventListener("touch",self)
     currentScore = currentScore+(scoreTier*scoreMultiplier)
