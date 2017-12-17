@@ -21,7 +21,9 @@ function emitter:pop(event)
 
   --delete text from memory after it has exited screen
   local function deleteScoreText()
-    fallScore:removeSelf()
+    if fallScore ~= nil then
+      display.remove(fallScore)
+    end
   end
 
   local function makeScoreFall(n)
@@ -33,6 +35,7 @@ function emitter:pop(event)
     physics.addBody(fallScore)
     fallScore.isSensor = true
     timer.performWithDelay(5000,deleteScoreText)
+    playScene:insert(fallScore)
   end
 
   if scoreMultiplier > 0 then

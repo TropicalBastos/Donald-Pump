@@ -33,7 +33,7 @@ function outAmericanNuke()
 end
 
 function checkObjectCollision(displayObj)
-  if displayObj ~= nil then
+  if displayObj ~= nil and america ~= nil then
         --distances
         local yDist
         local xDist
