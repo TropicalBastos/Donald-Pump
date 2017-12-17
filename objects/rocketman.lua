@@ -53,7 +53,7 @@ function rocketManFrame()
 end
 
 function rocketManExplode()
-  audio.play(x100Sound, {channel = 3})
+  audio.play(x100Hit, {channel = 3})
 
   local emitter = prism.newEmitter({
     -- Particle building and emission options
