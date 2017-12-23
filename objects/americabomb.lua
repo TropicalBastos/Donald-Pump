@@ -33,7 +33,7 @@ function outAmericanNuke()
 end
 
 function checkObjectCollision(displayObj)
-  if displayObj ~= nil and america ~= nil then
+  if displayObj ~= nil then
         --distances
         local yDist
         local xDist
@@ -74,10 +74,14 @@ function checkCollisions()
     america.alpha = 0
     collisionHappening = true
   end
-  if checkObjectCollision(rocketManNormal) then
-    rocketManExplode()
-    america.alpha = 0
-    collisionHappening = true
+  if rocketManNormal ~= nil then
+    if not rocketManNull then
+      if checkObjectCollision(rocketManNormal) then
+        rocketManExplode()
+        america.alpha = 0
+        collisionHappening = true
+      end
+    end
   end
 end
 

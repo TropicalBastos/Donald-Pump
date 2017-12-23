@@ -5,6 +5,7 @@ local rocketManWidth = 160
 local rocketManHeight = 90
 local isPaused = false
 local rocketProbability = 1500 --1 in 1500 every frame
+rocketManNull = true
 rocketManNormal = nil
 rocketManTapped = nil
 rocketMan = nil
@@ -120,6 +121,7 @@ function rocketManExplode()
   physics.pause()
   removeEventListeners()
   timer.performWithDelay(1000,  function() physics.start() addEventListeners() end)
+  rocketManNull = true
 end
 
 function createRocketMan()
@@ -146,6 +148,7 @@ function createRocketMan()
   rocketMan:insert(rocketManTapped)
   rocketMan:insert(rocketManNormal)
   rocketMan:addEventListener("touch", tapRocketMan)
+  rocketManNull = false
 end
 
 function tapRocketMan()
