@@ -29,6 +29,7 @@ function outRocketMan()
     if rocketManNormal.x > (rightMarg + rocketManWidth) + 1000 then
       rocketMan:removeSelf()
       rocketMan = nil
+      rocketManNull = true
       createRocketMan()
     end
   end
@@ -167,5 +168,6 @@ function deleteRocketMan()
   if rocketMan ~= nil then
     rocketMan:removeSelf()
     rocketMan = nil
+    rocketManNull = true
   end
 end
