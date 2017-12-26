@@ -167,14 +167,25 @@ function scene:create( event )
     Runtime:addEventListener("enterFrame",cloudEmitter)
     Runtime:addEventListener("enterFrame",zepFrame)
 
-    --check for new highscore
-    if event.params ~= nil then
-      if event.params.score ~= nil then
-        local tempScore = event.params.score
-        if tempScore > highscoreNumber then
-          highscoreNumber = tempScore
-          updateHighscore()
-        end
+    --check for new highscore OLD
+    -- if event.params ~= nil then
+    --   if event.params.score ~= nil then
+    --     local tempScore = event.params.score
+    --     if tempScore > highscoreNumber then
+    --       highscoreNumber = tempScore
+    --       updateHighscore()
+    --     end
+    --   end
+    -- end
+
+    --check for new highscore NEW
+    local changeScore = ggData:new("updateHighscore")
+    if changeScore ~= nil then
+      if changeScore:get("updateHighscore") ~= nil then
+        highscoreNumber = changeScore:get("updateHighscore")
+        updateHighscore()
+        changeScore:set("updateHighscore", nil)
+        changeScore:save()
       end
     end
 
@@ -222,8 +233,6 @@ function updateHighscore()
   transition=easing.inOutElastic,onComplete=updateScoreComplete})
   transition.to(updateScoreNumber,{time=2000,xScale=1,yScale=1,
   transition=easing.inOutElastic,onComplete=updateScoreComplete})
-  box:set("highscore",highscoreNumber)
-  box:save()
 end
 
 --callback function after new highscore has been displayed on screen

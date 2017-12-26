@@ -54,7 +54,7 @@ gameOverOn = false
 yesButton = nil
 noButton = nil
 fromMenuToPlay = true
-gameOverHighscore = nil
+gameOverScore = nil
 totalGameOver = false
 untappableObjectTapped = false
 isOnMenu = false
@@ -711,27 +711,43 @@ end
 
 function compareHighScore()
   local box = ggData:new('highscore')
-  if currentScore < prevScore then
-    return
-  end
+  -- if currentScore < prevScore then
+  --   return
+  -- end
+
+  local textOptions = {
+    text = "Your score: ".. currentScore,
+    font = highscoreFont,
+    x = display.contentCenterX,
+    y = 18
+  }
+
   if currentScore > box.highscore then
-    local textOptions = {
-      text = "New Highscore! ".. currentScore,
-      font = highscoreFont,
-      x = display.contentCenterX,
-      y = 18
-    }
-    gameOverHighscore = display.newText(textOptions)
-    gameOverHighscore.alpha = 0
-    transition.to(gameOverHighscore, {alpha = 1, time = 1000})
+    textOptions.text = "New Highscore! ".. currentScore
+    updateHighscoreDB(currentScore)
+
+    --for rende4ring on the menu scene
+    local changeScore = ggData:new("updateHighscore")
+    changeScore:set("updateHighscore", currentScore)
+    changeScore:save()
   end
+
+  gameOverScore = display.newText(textOptions)
+  gameOverScore.alpha = 0
+  transition.to(gameOverScore, {alpha = 1, time = 1000})
 end
 
 function removeGameOverHighScore()
-  if gameOverHighscore ~= nil then
-    gameOverHighscore:removeSelf()
-    gameOverHighscore = nil
+  if gameOverScore ~= nil then
+    gameOverScore:removeSelf()
+    gameOverScore = nil
   end
+end
+
+function updateHighscoreDB(n)
+  local box = ggData:new("highscore")
+  box:set("highscore", n)
+  box:save()
 end
 
 function deleteAllNonSceneObjects()
