@@ -10,6 +10,7 @@ local propemitter = require("objects.propertyemitter")
 local propertiesImport = require("objects.properties")
 local americanNuke = require("objects.americabomb")
 local rocketManObj = require("objects.rocketman")
+local slowTimeObj = require("objects.slowtime")
 
 local scene = composer.newScene()
 
@@ -99,6 +100,9 @@ function scene:create( event )
 
     --rocketMan object
     newRocketMan(200, 210, 3)
+
+    --slow time object
+    newSlowTime(135, 80, 3)
 
     --reset global
     balloonSpeed = 1
@@ -240,6 +244,7 @@ function removeEventListeners()
   Runtime:removeEventListener("enterFrame", americaFrame)
   Runtime:removeEventListener("enterFrame", bringHUDButtonsToFront)
   Runtime:removeEventListener("enterFrame", rocketManFrame)
+  Runtime:removeEventListener("enterFrame", slowTimeFrame)
 end
 
 function addEventListeners()
@@ -254,6 +259,7 @@ function addEventListeners()
   Runtime:addEventListener("enterFrame", americaFrame)
   Runtime:addEventListener("enterFrame", bringHUDButtonsToFront)
   Runtime:addEventListener("enterFrame", rocketManFrame)
+  Runtime:addEventListener("enterFrame", slowTimeFrame)
 end
 
 function displayNuclearOverlay()
@@ -760,6 +766,7 @@ function deleteAllNonSceneObjects()
   deletePlane()
   deleteAmericanNuke()
   deleteRocketMan()
+  deleteSlowTime()
   if darkenedScreen ~= nil then
     darkenedScreen = nil
   end
