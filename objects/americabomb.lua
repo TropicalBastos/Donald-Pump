@@ -83,6 +83,15 @@ function checkCollisions()
       end
     end
   end
+  if slowTimeNormal ~= nil then
+    if not slowTimeNull then
+      if checkObjectCollision(slowTimeNormal) then
+        slowTimeExplode()
+        america.alpha = 0
+        collisionHappening = true
+      end
+    end
+  end
 end
 
 function moveAmerica()

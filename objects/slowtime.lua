@@ -46,11 +46,19 @@ end
 
 function slowTimeExplode()
   audio.play(x100Hit, {channel = 3})
+
+  local function reduceSpeed()
+    if yVelGlobal < -10 then
+        yVelGlobal = yVelGlobal + 10
+    end
+  end
+
   slowTimeNormal.alpha = 0
   slowTimeTapped.alpha = 0
-  physics.pause()
-  removeEventListeners()
-  timer.performWithDelay(1000,  function() physics.start() addEventListeners() end)
+--   physics.pause()
+--   removeEventListeners()
+  timer.performWithDelay(100, reduceSpeed, 20)
+--   timer.performWithDelay(1000,  function() physics.start() addEventListeners() end)
   slowTimeNull = true
 end
 
