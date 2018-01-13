@@ -38,7 +38,7 @@ function cloudGenerator:touch(event)
     playScene:insert(fallScore)
   end
 
-  if scoreMultiplier >= 100 then
+  if scoreMultiplier >= 50 then
     audio.play(x100Sound, {channel=1})
     event.target.alpha = 0
     event.target:removeEventListener("touch",self)
