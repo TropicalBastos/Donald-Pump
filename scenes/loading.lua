@@ -93,6 +93,30 @@ function scene:create( event )
 
     bg:toBack()
 
+    --disclaimer
+    local disclaimerTitle = "Disclaimer"
+    local disclaimerText = "This game is a parody and should not be taken seriously"
+    local disclaimerTitleObj = display.newText({
+      text = disclaimerTitle,
+      x = centerX,
+      y = screenTop + 50,
+      parent = sceneGroup,
+      font = ruleFont,
+      fontSize = 20
+    })
+
+    local disclaimerTextObj = display.newText({
+      text = disclaimerText,
+      x = centerX,
+      y = screenTop + 110,
+      parent = sceneGroup,
+      font = ruleFont,
+      fontSize = 15,
+      width = rightMarg/2,
+      height = 100,
+      align = "center"
+    })
+
     --attributions
     local attributionText1 = "Music by Eric Matyas"
     local attributionText2 = "www.soundimage.org"
@@ -111,12 +135,14 @@ function scene:create( event )
       font = highscoreFont
     })
 
-    local function slideUpAttribution()
+    local function slideUpText()
       transition.to(attributionObj1,{y=-300,time=2000,transition=easing.inOutQuart})
       transition.to(attributionObj2,{y=-300,time=2000,transition=easing.inOutQuart})
+      transition.to(disclaimerTitleObj,{y=-300,time=2000,transition=easing.inOutQuart})
+      transition.to(disclaimerTextObj,{y=-300,time=2000,transition=easing.inOutQuart})
     end
 
-    timer.performWithDelay(5500, slideUpAttribution)
+    timer.performWithDelay(5500, slideUpText)
 
 end
 
