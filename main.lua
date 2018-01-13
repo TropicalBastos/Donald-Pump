@@ -63,6 +63,7 @@ menuTheme = audio.loadSound("audio/menutheme.mp3")
 playTheme = audio.loadSound("audio/playtheme.mp3")
 x100Sound = audio.loadSound("audio/x100.mp3")
 x100Hit = audio.loadSound("audio/x100first.mp3")
+slowTimeAudio = audio.loadSound("audio/slowtime.mp3")
 
 --ads
 platform = system.getInfo("platform")

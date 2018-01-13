@@ -102,7 +102,7 @@ function scene:create( event )
     newRocketMan(200, 210, 3)
 
     --slow time object
-    newSlowTime(135, 80, 3)
+    newSlowTime(220, 80, 3)
 
     --reset global
     balloonSpeed = 1

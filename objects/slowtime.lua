@@ -47,7 +47,7 @@ function slowTimeFrame()
 end
 
 function slowTimeExplode()
-  audio.play(x100Hit, {channel = 3})
+  audio.play(slowTimeAudio, {channel = 3})
 
   local function reduceSpeed()
     if yVelGlobal < -10 then
