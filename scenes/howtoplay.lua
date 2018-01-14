@@ -1,5 +1,7 @@
-local composer = require( "composer" )
+package.path = package.path .. ";../?.lua"
 
+local composer = require( "composer" )
+local slideView = require("plugins.slideView")
 local scene = composer.newScene()
 
 -- -----------------------------------------------------------------------------------
@@ -28,7 +30,7 @@ function scene:create( event )
     composer.removeScene("scenes.menu")
     local bg = display.newImage("res/howtoplay.png")
     bg.width = rightMarg + 50
-    bg.height = bottomMarg + 50
+    bg.height = bottomMarg + 100
     bg.x = centerX
     bg.y = centerY
 
@@ -48,7 +50,17 @@ function scene:create( event )
 
     transition.to(backBtn, backTr)
 
+    local slideImages = {
+        "res/page1.png",
+        "res/page2.png",
+        "res/page3.png",
+        "res/page4.png"
+    }
+
+    local slideV = slideView.new(slideImages)
+
     sceneGroup:insert(bg)
+    sceneGroup:insert(slideV)
     sceneGroup:insert(backBtn)
 end
 
