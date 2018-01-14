@@ -92,7 +92,7 @@ function slowTimeExplode()
   slowTimeTapped.alpha = 0
 --   physics.pause()
 --   removeEventListeners()
-  timer.performWithDelay(100, reduceSpeed, 30)
+  timer.performWithDelay(100, reduceSpeed, 10)
 --   timer.performWithDelay(1000,  function() physics.start() addEventListeners() end)
   slowTimeNull = true
 end
