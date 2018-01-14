@@ -77,7 +77,6 @@ function new( imageSet, slideBackground, top, bottom )
 		end
 		
         --p.y = h*.5
-        print("bottom marg = " .. bottomMarg)
         if bottomMarg > 560 then
             p.y = centerY + 100
         elseif bottomMarg > 480 then

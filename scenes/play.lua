@@ -286,9 +286,9 @@ function decrementScoreTier()
     propertyLife:pop()
     scoreTier = scoreTier - 1
   end
-  -- if #propertyLife == 0 then
-  --   gameOverMenuListener()
-  -- end
+  if #propertyLife == 0 then
+    gameOverMenuListener()
+  end
 end
 
 function startup()
