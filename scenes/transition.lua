@@ -28,7 +28,7 @@ function scene:create( event )
     composer.removeScene("scenes.play")
     physics.stop()
     
-    displayAd(2, "interstitial")
+    displayAd(4, "interstitial")
 
     physics.start()
     local tempscore = event.params.score

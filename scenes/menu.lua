@@ -190,7 +190,7 @@ function scene:create( event )
     end
 
     --display ad randomly
-    displayAd(3, "interstitial")
+    --displayAd(3, "interstitial")
     displayAd(2, "banner")
 
 end
