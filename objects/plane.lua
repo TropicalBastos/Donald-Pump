@@ -44,7 +44,7 @@ function planeExplode()
   explodeSprite:addEventListener("sprite",popEvent)
   explodeSprite.x = planeNormal.x
   explodeSprite.y = planeNormal.y
-  explodeSprite:scale(2.5, 2.5)
+  explodeSprite:scale(6, 6)
   explodeSprite:play()
   planeNormal.alpha = 0
   planeTapped.alpha = 0

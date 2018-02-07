@@ -88,7 +88,7 @@ function emitter:touch(event)
   popSprite.y = event.target.y-25
   popSprite.width = event.target.width
   popSprite.height = event.target.height
-  popSprite:scale(2.5,2.5)
+  popSprite:scale(6, 6)
   popSprite:play()
   timer.performWithDelay(500, gameOverMenuListener)
   event.target.alpha = 0

@@ -44,7 +44,7 @@ function zepExplode()
   explodeSprite:addEventListener("sprite",popEvent)
   explodeSprite.x = zepNormal.x
   explodeSprite.y = zepNormal.y
-  explodeSprite:scale(2.5, 2.5)
+  explodeSprite:scale(6, 6)
   explodeSprite:play()
   zepNormal.alpha = 0
   zepTapped.alpha = 0
