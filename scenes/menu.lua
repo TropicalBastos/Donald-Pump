@@ -189,10 +189,27 @@ function scene:create( event )
       end
     end
 
+    local storeGraphic = display.newImage("res/store.png")
+    storeGraphic.width = 180
+    storeGraphic.height = 70
+    storeGraphic.x = -400
+    storeGraphic.y = bottomMarg - (storeGraphic.height + 50)
+    storeGraphic:rotate(90)
+    storeGraphic:addEventListener("tap", storeClickListener)
+    sceneGroup:insert(storeGraphic)
+    transition.to(storeGraphic, {x = screenLeft + storeGraphic.height/2, time = 1500, transition = easing.outCubic})
+
     --display ad randomly
     --displayAd(3, "interstitial")
     displayAd(2, "banner")
 
+end
+
+function storeClickListener(event)
+  audio.play(clickSound, {channel = 3})
+  local storeGraphic = event.target
+  transition.to(storeGraphic, {xScale = 12, yScale = 12, time = 500,
+    onComplete = function() composer.gotoScene("scenes.store", {effect="crossFade", time=1000}) end})
 end
 
 --load the stored highscore into the scene
