@@ -79,7 +79,7 @@ function scene:create( event )
     appodeal.hide( "banner" )
 
     --reset yvel of global objects
-    yVelGlobal = 0
+    yVelGlobal = -70
 
     --Background
     bg = display.newImage("res/bg.png",0,0)

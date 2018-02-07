@@ -88,12 +88,12 @@ function tapUltra()
   muscleSprite:play()
   popSprite.muscle = muscleSprite
 
-  scoreMultiplier = 10
+  scoreMultiplier = 2
 
   --set true the score multiplier
   if scoreTimer ~= nil then
     timer.cancel(scoreTimer)
-    scoreMultiplier = scoreMultiplier + 10
+    scoreMultiplier = scoreMultiplier + 2
   end
 
   --x scoremultiplier score label

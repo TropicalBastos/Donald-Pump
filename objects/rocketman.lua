@@ -95,11 +95,11 @@ function rocketManExplode()
   emitter.emitX, emitter.emitY = rocketManNormal.x, rocketManNormal.y
   emitter:emit()
 
-  scoreMultiplier = 50
+  scoreMultiplier = 5
 
   if scoreTimer ~= nil then
     timer.cancel(scoreTimer)
-    scoreMultiplier = scoreMultiplier + 50
+    scoreMultiplier = scoreMultiplier + 5
   end
 
   scoreTimer = timer.performWithDelay(10000, normalScoreMode)
