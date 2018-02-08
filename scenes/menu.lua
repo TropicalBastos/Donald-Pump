@@ -46,6 +46,7 @@ function scene:create( event )
     composer.removeScene("scenes.howtoplay")
     composer.removeScene("scenes.options")
     composer.removeScene("scenes.transitionfromplay")
+    composer.removeScene("scenes.store")
 
     --start physics that is used by some objects
     physics.start()
@@ -196,6 +197,7 @@ function scene:create( event )
     storeGraphic.y = bottomMarg - (storeGraphic.height + 50)
     storeGraphic:rotate(90)
     storeGraphic:addEventListener("tap", storeClickListener)
+    storeGraphic.button = "store"
     sceneGroup:insert(storeGraphic)
     transition.to(storeGraphic, {x = screenLeft + storeGraphic.height/2, time = 1500, transition = easing.outCubic})
 
@@ -206,10 +208,14 @@ function scene:create( event )
 end
 
 function storeClickListener(event)
+  if menuButtonTapped then
+    return
+  end
+  menuButtonTapped = true
   audio.play(clickSound, {channel = 3})
   local storeGraphic = event.target
-  transition.to(storeGraphic, {xScale = 12, yScale = 12, time = 500,
-    onComplete = function() composer.gotoScene("scenes.store", {effect="crossFade", time=1000}) end})
+  transition.to(storeGraphic, {xScale = 4, yScale = 4, alpha = 0.5, x = centerX, rotation = 0, time = 500,
+    onComplete = function() popEventMenu(event) end})
 end
 
 --load the stored highscore into the scene
@@ -380,6 +386,8 @@ function popEventMenu(event)
       composer.gotoScene("scenes.howtoplay", {effect="crossFade", time=1000})
     elseif event.target.button == "options" then
       composer.gotoScene("scenes.options", {effect="crossFade", time=1000})
+    elseif event.target.button == "store" then
+      composer.gotoScene("scenes.store", {effect="crossFade", time=1000})
     end
   end
 
