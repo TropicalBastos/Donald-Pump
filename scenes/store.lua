@@ -1,5 +1,5 @@
 local composer = require( "composer" )
-
+local widget = require("widget")
 local scene = composer.newScene()
 
 -- -----------------------------------------------------------------------------------
@@ -32,8 +32,61 @@ function scene:create( event )
     bg.height = bottomMarg + 100
     sceneGroup:insert(bg)
 
+    local title = display.newText({
+        text = "Store",
+        fontSize = 40,
+        font = highscoreFont,
+        x = centerX,
+        y = 30
+    })
+
+    local noAdsText = "No Ads! - $1.00"
+    local noAdsObj = display.newText({
+        text = noAdsText,
+        font = highscoreFont,
+        fontSize = 28,
+        x = centerX,
+        y = 100
+    })
+    local buyButton = display.newImage("res/buybutton.png")
+    buyButton.width = 150
+    buyButton.height = 60
+    buyButton.y = noAdsObj.y + (buyButton.height)
+    buyButton.x = centerX
+
+    local backBtn = display.newSprite(backSheet, backSeq)
+    backBtn:play()
+
+    --back button dimensions
+    backBtn:scale(0.6, 0.6)
+    backBtn.y = bottomMarg - 35
+    backBtn.x = 1000
+
+    local backTr = {
+        time = 1200,
+        x = centerX + 15,
+        transition = easing.inCubic
+    }
+
+    transition.to(backBtn, backTr)
+    backBtn:addEventListener("touch", goBackToMain)
+    sceneGroup:insert(backBtn)
+    sceneGroup:insert(noAdsObj)
+    sceneGroup:insert(buyButton)
+    sceneGroup:insert(title)
+
 end
 
+--back event listener
+function goBackToMain(e)
+    audio.play(wooshSound, {channel=1})
+    transition.to(e.target, {
+        x = -1000,
+        time = 1000,
+        transition = easing.outCubic,
+        onComplete = function() composer.gotoScene("scenes.menu", {effect="crossFade", time=500}) end
+    })
+end
 
 -- show()
 function scene:show( event )
