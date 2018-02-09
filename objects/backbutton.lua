@@ -1,13 +1,15 @@
 package.path = package.path .. ";../?lua"
 local composer = require("composer")
 
+local backButton = {}
+local backButton_mt = {__index = backButton}
 
 --takes scene string to which it goes back to
 function backButton.new(scene)
 
-    local function goToScene()
+    local function goToScene(e)
         audio.play(wooshSound, {channel=1})
-        transition.to(backBtn, {
+        transition.to(e.target, {
             x = -1000,
             time = 1000,
             transition = easing.outCubic,
@@ -29,7 +31,10 @@ function backButton.new(scene)
         transition = easing.inCubic
     }
 
+    backBtn:addEventListener("touch", goToScene)
     transition.to(backBtn, backTr)
     return backBtn
 
 end
+
+return backButton

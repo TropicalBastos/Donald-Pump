@@ -60,12 +60,10 @@ function scene:create( event )
 
     local backBtn = backButton.new("scenes.menu")
 
-    transition.to(backBtn, backTr)
-    backBtn:addEventListener("touch", goBackToMain)
-    sceneGroup:insert(backBtn)
     sceneGroup:insert(noAdsObj)
     sceneGroup:insert(buyButton)
     sceneGroup:insert(title)
+    sceneGroup:insert(backBtn)
 
 end
 

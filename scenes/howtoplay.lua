@@ -35,7 +35,7 @@ function scene:create( event )
     bg.x = centerX
     bg.y = centerY
 
-    backbtn = backButton.new("scenes.menu")
+    backBtn = backButton.new("scenes.menu")
 
     local slideImages = {
         "res/page1.png",
@@ -63,7 +63,6 @@ function scene:show( event )
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
-        backBtn:addEventListener("touch", goBackToMain)
     end
 end
 
