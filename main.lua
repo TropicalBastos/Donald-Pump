@@ -68,6 +68,18 @@ slowTimeAudio = audio.loadSound("audio/slowtime.mp3")
 --ads
 platform = system.getInfo("platform")
 
+local adModule = ggData:new("ads")
+local noAdsModule
+if adModule.purchased ~= nil then
+  if(adModule.purchased) then
+    noAdsModule = true
+  end
+else
+  noAdsModule = false
+end
+
+print("No ads module: " .. tostring(noAdsModule))
+
 if platform == "android" or platform == "ios" then
   APP_KEY = "6e89d1b50c19c7c39f0db6d2a4fb24c7b8c7575bb2a0c75d"
 
@@ -81,6 +93,9 @@ if platform == "android" or platform == "ios" then
 end
 
 function displayAd(chance, type)
+  if noAdsModule then
+    return
+  end
     if platform == "android" or platform == "ios" then
       local randomAdNumer = math.random(chance)
       if randomAdNumer == chance then
