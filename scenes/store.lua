@@ -1,5 +1,8 @@
+package.path = package.path .. ";../?lua"
+
 local composer = require( "composer" )
 local widget = require("widget")
+local backButton = require("objects.backbutton")
 local scene = composer.newScene()
 
 -- -----------------------------------------------------------------------------------
@@ -48,45 +51,22 @@ function scene:create( event )
         x = centerX,
         y = 100
     })
+    
     local buyButton = display.newImage("res/buybutton.png")
     buyButton.width = 150
     buyButton.height = 60
     buyButton.y = noAdsObj.y + (buyButton.height)
     buyButton.x = centerX
 
-    local backBtn = display.newSprite(backSheet, backSeq)
-    backBtn:play()
+    local backBtn = backButton.new("scenes.menu")
 
-    --back button dimensions
-    backBtn:scale(0.6, 0.6)
-    backBtn.y = bottomMarg - 35
-    backBtn.x = 1000
-
-    local backTr = {
-        time = 1200,
-        x = centerX + 15,
-        transition = easing.inCubic
-    }
-
-    transition.to(backBtn, backTr)
-    backBtn:addEventListener("touch", goBackToMain)
-    sceneGroup:insert(backBtn)
     sceneGroup:insert(noAdsObj)
     sceneGroup:insert(buyButton)
     sceneGroup:insert(title)
+    sceneGroup:insert(backBtn)
 
 end
 
---back event listener
-function goBackToMain(e)
-    audio.play(wooshSound, {channel=1})
-    transition.to(e.target, {
-        x = -1000,
-        time = 1000,
-        transition = easing.outCubic,
-        onComplete = function() composer.gotoScene("scenes.menu", {effect="crossFade", time=500}) end
-    })
-end
 
 -- show()
 function scene:show( event )

@@ -2,6 +2,7 @@ package.path = package.path .. ";../?.lua"
 
 local composer = require( "composer" )
 local slideView = require("plugins.slideView")
+local backButton = require("objects.backbutton")
 local scene = composer.newScene()
 
 -- -----------------------------------------------------------------------------------
@@ -34,21 +35,7 @@ function scene:create( event )
     bg.x = centerX
     bg.y = centerY
 
-    backBtn = display.newSprite(backSheet, backSeq)
-    backBtn:play()
-
-    --back button dimensions
-    backBtn:scale(0.6, 0.6)
-    backBtn.y = bottomMarg - 35
-    backBtn.x = 1000
-
-    local backTr = {
-        time = 1200,
-        x = centerX + 15,
-        transition = easing.inCubic
-    }
-
-    transition.to(backBtn, backTr)
+    backBtn = backButton.new("scenes.menu")
 
     local slideImages = {
         "res/page1.png",
@@ -64,17 +51,6 @@ function scene:create( event )
     sceneGroup:insert(backBtn)
 end
 
---back event listener
-function goBackToMain()
-    audio.play(wooshSound, {channel=1})
-    transition.to(backBtn, {
-        x = -1000,
-        time = 1000,
-        transition = easing.outCubic,
-        onComplete = function() composer.gotoScene("scenes.menu", {effect="crossFade", time=500}) end
-    })
-end
-
 
 -- show()
 function scene:show( event )
@@ -87,7 +63,6 @@ function scene:show( event )
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
-        backBtn:addEventListener("touch", goBackToMain)
     end
 end
 
