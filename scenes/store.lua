@@ -3,6 +3,7 @@ package.path = package.path .. ";../?lua"
 local composer = require( "composer" )
 local widget = require("widget")
 local backButton = require("objects.backbutton")
+local native = require("native")
 local scene = composer.newScene()
 
 -- -----------------------------------------------------------------------------------
@@ -57,6 +58,9 @@ function scene:create( event )
     buyButton.height = 60
     buyButton.y = noAdsObj.y + (buyButton.height)
     buyButton.x = centerX
+    buyButton.product = "noads"
+    buyButton.pressed = false
+    buyButton:addEventListener("tap", confirmPurchase)
 
     local backBtn = backButton.new("scenes.menu")
 
@@ -64,6 +68,40 @@ function scene:create( event )
     sceneGroup:insert(buyButton)
     sceneGroup:insert(title)
     sceneGroup:insert(backBtn)
+
+end
+
+function liftTouch(button)
+    if(button.pressed) then
+        button:scale(1.25, 1.25)
+        button.pressed = false
+    end
+end
+
+function confirmPurchase(event)
+
+    audio.play(clickSound)
+
+    if(not event.target.pressed) then
+        event.target.pressed = true
+        event.target:scale(0.8, 0.8)
+    end
+
+    local eventButton = event.target
+
+    local function commenceTransaction(event, productId)
+        liftTouch(eventButton)
+        --if they click no
+        if(event.index == 1) then
+            return
+        end
+        --TODO - Implement purchase with payment gateway
+    end
+
+    if(event.target.product == "noads") then
+        native.showAlert("No Ads Module", "Would you like to purchase the No Ads Module for $1.00?", 
+        {"No", "Yes"}, function(e) commenceTransaction(e, "ID453") end )
+    end
 
 end
 
