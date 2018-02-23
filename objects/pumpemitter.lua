@@ -67,7 +67,7 @@ function emitter:pop(event)
     playScene:insert(fallScore)
   end
 
-  if scoreMultiplier >= 50 then
+  if scoreMultiplier >= 5 then
     audio.play(x100Sound, {channel=1})
     event.target.alpha = 0
     event.target:removeEventListener("touch",self)
