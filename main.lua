@@ -14,10 +14,9 @@ local composer = require("composer")
 --setFonts
 titleFont = native.newFont("fonts/Jim.ttf",28)
 highscoreFont = native.newFont("fonts/Jim.ttf",20)
-newHighscoreFont = native.newFont("fonts/Jim.ttf",30)
 font321 = native.newFont("fonts/Jim.ttf",100)
 howFont = native.newFont("fonts/Jim.ttf", 12)
-ruleFont = native.newFont("fonts/Century.ttf", 13)
+secondaryFont = native.newFont("fonts/exte.ttf", 18)
 
 globalTextOptions = {
   text = "NULL",

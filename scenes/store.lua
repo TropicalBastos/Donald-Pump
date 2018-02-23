@@ -39,7 +39,7 @@ function scene:create( event )
     local title = display.newText({
         text = "Store",
         fontSize = 40,
-        font = highscoreFont,
+        font = secondaryFont,
         x = centerX,
         y = 30
     })
@@ -47,7 +47,7 @@ function scene:create( event )
     local noAdsText = "No Ads! - $1.00"
     local noAdsObj = display.newText({
         text = noAdsText,
-        font = highscoreFont,
+        font = secondaryFont,
         fontSize = 28,
         x = centerX,
         y = 100

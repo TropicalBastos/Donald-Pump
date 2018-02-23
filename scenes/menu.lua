@@ -54,13 +54,13 @@ function scene:create( event )
 
     --set the game to paused so it doesnt start up any game play objects
     gamePaused = false
-
+  
     --get and show any alerts from previous scenes
     if event.params ~= nil then
       if(event.params.alert ~= nil) then
           local alert = display.newText({
             text = event.params.alert,
-            font = titleFont,
+            font = secondaryFont,
             fontSize = 18,
             x = centerX,
             y = centerY - 100,
@@ -157,7 +157,8 @@ function scene:create( event )
     end
     local textOptions = {
       text = "Highscore: ".. highscoreNumber,
-      font = highscoreFont,
+      font = secondaryFont,
+      fontSize = 24,
       x = display.contentCenterX,
       y = 18
     }
@@ -236,14 +237,16 @@ function updateHighscore()
 
   local textOptions = {
     text = "New Highscore!",
-    font = newHighscoreFont,
+    font = secondaryFont,
+    fontSize = 26,
     x = display.contentCenterX,
     y = centerY
   }
 
   local scoreOptions = {
     text = "" .. highscoreNumber,
-    font = newHighscoreFont,
+    font = secondaryFont,
+    fontSize = 26,
     x = display.contentCenterX,
     y = centerY+50
   }
@@ -273,7 +276,8 @@ function updateScoreComplete(event)
 
   local textOptions = {
     text = t,
-    font = newHighscoreFont,
+    font = secondaryFont,
+    fontSize = 26,
     x = display.contentCenterX,
     y = y
   }
