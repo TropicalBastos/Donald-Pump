@@ -101,17 +101,17 @@ function scene:create( event )
       x = centerX,
       y = screenTop + 50,
       parent = sceneGroup,
-      font = ruleFont,
+      font = secondaryFont,
       fontSize = 20
     })
 
     local disclaimerTextObj = display.newText({
       text = disclaimerText,
       x = centerX,
-      y = screenTop + 110,
+      y = screenTop + 120,
       parent = sceneGroup,
-      font = ruleFont,
-      fontSize = 15,
+      font = secondaryFont,
+      fontSize = 14,
       width = rightMarg/2,
       height = 100,
       align = "center"
@@ -125,14 +125,16 @@ function scene:create( event )
       x = centerX,
       y = centerY + 150,
       parent = sceneGroup,
-      font = highscoreFont
+      font = secondaryFont,
+      fontSize = 24
     })
     local attributionObj2 = display.newText({
       text = attributionText2,
       x = centerX,
       y = centerY + 170,
       parent = sceneGroup,
-      font = highscoreFont
+      font = secondaryFont,
+      fontSize = 24
     })
 
     local function slideUpText()

@@ -55,7 +55,8 @@ function scene:create( event )
 
     local titleOptions = {
         text = title,
-        font = titleFont,
+        font = secondaryFont,
+        fontSize = 24,
         x = display.contentCenterX,
         y = 50
     }
@@ -118,7 +119,8 @@ function scene:create( event )
 
     local soundOptions = {
         text = sound,
-        font = titleFont,
+        font = secondaryFont,
+        fontSize = 24,
         x = display.contentCenterX,
         y = 150
     }
@@ -126,7 +128,8 @@ function scene:create( event )
 
     local musicOptions = {
         text = music,
-        font = titleFont,
+        font = secondaryFont,
+        fontSize = 24,
         x = display.contentCenterX,
         y = 250
     }

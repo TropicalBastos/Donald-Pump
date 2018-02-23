@@ -381,7 +381,7 @@ function crosshairListener()
     end
     local currentNo = display.newText({
       text = tostring(startNo),
-      font = highscoreFont,
+      font = secondaryFont,
       x = crosshair.x,
       y = crosshair.y,
       fontSize = 40
@@ -723,7 +723,8 @@ function compareHighScore()
 
   local textOptions = {
     text = "Your score: ".. currentScore,
-    font = highscoreFont,
+    font = secondaryFont,
+    fontSize = 24,
     x = display.contentCenterX,
     y = 18
   }
