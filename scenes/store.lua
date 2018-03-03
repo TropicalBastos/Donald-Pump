@@ -27,7 +27,7 @@ local noAdsObj = {}
 local function loadProductsLocal(event)
     for i = 1, #event.products do
         if(event.products[i].productIdentifier == PRODUCT_NO_ADS) then
-            noAdsObj.text = noAdsObj.text .. " - " .. event.products[i].localizedPrice
+            noAdsObj.text = noAdsObj.text .. " - " .. event.products[i].localizedPrice .. " " .. event.products[i].priceCurrencyCode
         end
     end
 end
@@ -153,7 +153,7 @@ function confirmPurchase(event)
     end
 
     if(event.target.product == "noads") then
-        native.showAlert("No Ads Module", "Would you like to purchase the No Ads Module for $1.00?", 
+        native.showAlert("No Ads Module", "Would you like to purchase the No Ads Module for " .. noAdsObj.text .. "?", 
         {"No", "Yes"}, function(e) commenceTransaction(e, PRODUCT_NO_ADS) end )
     end
 
