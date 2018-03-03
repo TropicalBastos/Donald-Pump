@@ -18,13 +18,18 @@ local screenTop = display.screenOriginY
 local screenLeft = display.screenOriginX
 local bottomMarg = display.contentHeight - display.screenOriginY
 local rightMarg = display.contentWidth - display.screenOriginX
+local noAdsText = ""
 
 -- -----------------------------------------------------------------------------------
 -- Transaction listeners
 -- -----------------------------------------------------------------------------------
 
 local function loadProductsLocal(event)
-    print(json.prettify(event))
+    for i = 1, #event.products do
+        if(event.products[i].productIdentifier == PRODUCT_NO_ADS) then
+            noAdsText = noAdsText .. " - " .. event.products[i].localizedPrice
+        end
+    end
 end
 
 local function transactionListener( event )
@@ -71,6 +76,9 @@ function scene:create( event )
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
     composer.removeScene("scenes.menu")
+
+    appodeal.hide( "banner" )
+
     local bg = display.newImage("res/optionsmenu.png")
     bg.x = centerX
     bg.y = centerY
@@ -86,7 +94,7 @@ function scene:create( event )
         y = 30
     })
 
-    local noAdsText = "No Ads! - $1.00"
+    noAdsText = "No Ads!"
     local noAdsObj = display.newText({
         text = noAdsText,
         font = secondaryFont,
