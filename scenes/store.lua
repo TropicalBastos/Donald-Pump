@@ -19,12 +19,18 @@ local screenLeft = display.screenOriginX
 local bottomMarg = display.contentHeight - display.screenOriginY
 local rightMarg = display.contentWidth - display.screenOriginX
 local noAdsObj = {}
+local loadingStore = nil
+local storeSceneGroup = nil
+local loadingStoreAnimation = nil
 
 -- -----------------------------------------------------------------------------------
 -- Transaction listeners
 -- -----------------------------------------------------------------------------------
 
 local function loadProductsLocal(event)
+    timer.cancel(loadingStoreAnimation)
+    loadingStore:removeSelf()
+    showProducts()
     for i = 1, #event.products do
         if(event.products[i].productIdentifier == PRODUCT_NO_ADS) then
             noAdsObj.text = noAdsObj.text .. " - " .. event.products[i].localizedPrice .. " " .. event.products[i].priceCurrencyCode
@@ -74,7 +80,7 @@ end
 -- create()
 function scene:create( event )
 
-    local sceneGroup = self.view
+    storeSceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
     composer.removeScene("scenes.menu")
 
@@ -85,7 +91,7 @@ function scene:create( event )
     bg.y = centerY
     bg.width = rightMarg + 100
     bg.height = bottomMarg + 100
-    sceneGroup:insert(bg)
+    storeSceneGroup:insert(bg)
 
     local title = display.newText({
         text = "Store",
@@ -95,6 +101,39 @@ function scene:create( event )
         y = 30
     })
 
+    loadingStore = display.newText({
+        text = "Loading Store",
+        font = secondaryFont,
+        fontSize = 24,
+        x = centerX,
+        y = centerY
+    })
+
+    local function loadingStoreListener()
+        if(loadingStore.text == "Loading Store...") then
+            loadingStore.text = "Loading Store"
+            return
+        end
+        loadingStore.text = loadingStore.text .. "."
+    end
+
+    loadingStoreAnimation = timer.performWithDelay(400, loadingStoreListener, 0)
+
+    local backBtn = backButton.new("scenes.menu")
+
+    storeSceneGroup:insert(loadingStore)
+    storeSceneGroup:insert(title)
+    storeSceneGroup:insert(backBtn)
+end
+
+function liftTouch(button)
+    if(button.pressed) then
+        button:scale(1.25, 1.25)
+        button.pressed = false
+    end
+end
+
+function showProducts()
     local noAdsText = "No Ads!"
     noAdsObj = display.newText({
         text = noAdsText,
@@ -115,19 +154,8 @@ function scene:create( event )
     buyButton.pressed = false
     buyButton:addEventListener("tap", confirmPurchase)
 
-    local backBtn = backButton.new("scenes.menu")
-
-    sceneGroup:insert(noAdsObj)
-    sceneGroup:insert(buyButton)
-    sceneGroup:insert(title)
-    sceneGroup:insert(backBtn)
-end
-
-function liftTouch(button)
-    if(button.pressed) then
-        button:scale(1.25, 1.25)
-        button.pressed = false
-    end
+    storeSceneGroup:insert(noAdsObj)
+    storeSceneGroup:insert(buyButton)
 end
 
 
@@ -213,7 +241,7 @@ function scene:destroy( event )
 
     local sceneGroup = self.view
     -- Code here runs prior to the removal of scene's view
-
+    timer.cancel(loadingStoreAnimation)
 end
 
 
