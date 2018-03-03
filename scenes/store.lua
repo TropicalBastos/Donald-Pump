@@ -4,6 +4,7 @@ local composer = require( "composer" )
 local widget = require("widget")
 local backButton = require("objects.backbutton")
 local native = require("native")
+local json = require( "json" )
 local scene = composer.newScene()
 
 -- -----------------------------------------------------------------------------------
@@ -18,6 +19,47 @@ local screenLeft = display.screenOriginX
 local bottomMarg = display.contentHeight - display.screenOriginY
 local rightMarg = display.contentWidth - display.screenOriginX
 
+-- -----------------------------------------------------------------------------------
+-- Transaction listeners
+-- -----------------------------------------------------------------------------------
+
+local function loadProductsLocal(event)
+    print(json.prettify(event))
+end
+
+local function transactionListener( event )
+    
+       -- Google IAP initialization event
+       if ( event.name == "init" ) then
+    
+           if not ( event.transaction.isError ) then
+               -- Perform steps to enable IAP, load products, etc.
+               globalStore.loadProducts({PRODUCT_NO_ADS}, loadProductsLocal)
+    
+           else  -- Unsuccessful initialization; output error details
+               print( event.transaction.errorType )
+               print( event.transaction.errorString )
+               native.showAlert("Error", "There has been an unknown error connecting to the Google Play Store", {"OK"})
+           end
+    
+       -- Store transaction event
+       elseif ( event.name == "storeTransaction" ) then
+    
+           if not ( event.transaction.state == "failed" ) then  -- Successful transaction
+               print( json.prettify( event ) )
+               print( "event.transaction: " .. json.prettify( event.transaction ) )
+
+               if(event.transaction.productIdentifier == PRODUCT_NO_ADS) then
+                    enableNoAds()
+               end
+    
+           else  -- Unsuccessful transaction; output error details
+               print( event.transaction.errorType )
+               print( event.transaction.errorString )
+               native.showAlert("Unsuccessful Purchase", "Unfortunately your payment has been rejected, you have not been charged.", {"OK"})
+           end
+       end
+end
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -68,7 +110,7 @@ function scene:create( event )
     sceneGroup:insert(buyButton)
     sceneGroup:insert(title)
     sceneGroup:insert(backBtn)
-
+    globalStore.init(transactionListener)
 end
 
 function liftTouch(button)
@@ -77,6 +119,7 @@ function liftTouch(button)
         button.pressed = false
     end
 end
+
 
 function confirmPurchase(event)
 
@@ -95,14 +138,31 @@ function confirmPurchase(event)
         if(event.index == 1) then
             return
         end
-        --TODO - Implement purchase with payment gateway
+        -- Implement purchase with payment gateway
+        globalStore.purchase(productId)
     end
 
     if(event.target.product == "noads") then
         native.showAlert("No Ads Module", "Would you like to purchase the No Ads Module for $1.00?", 
-        {"No", "Yes"}, function(e) commenceTransaction(e, "ID453") end )
+        {"No", "Yes"}, function(e) commenceTransaction(e, PRODUCT_NO_ADS) end )
     end
 
+end
+
+
+-- Should only call this function for testing
+function disableNoAds()
+    local storeBox = ggData:new("purchases")
+    storeBox:set(PRODUCT_NO_ADS, false)
+    storeBox:save()
+    native.showAlert("Disabling", "Disabling the No Ads Module.", {"OK"})
+end
+
+function enableNoAds()
+    local storeBox = ggData:new("purchases")
+    storeBox:set(PRODUCT_NO_ADS, true)
+    storeBox:save()
+    native.showAlert("Purchase Successful", "Thank you for purchasing our No Ads Module.", {"OK"})
 end
 
 

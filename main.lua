@@ -8,6 +8,7 @@ physics = require("physics")
 ggData = require("plugins.GGData")
 prism = require("plugins.prism")
 appodeal = require( "plugin.appodeal" )
+globalStore = require( "plugin.google.iap.v3" )
 
 local composer = require("composer")
 
@@ -17,6 +18,9 @@ highscoreFont = native.newFont("fonts/Jim.ttf",20)
 font321 = native.newFont("fonts/Jim.ttf",100)
 howFont = native.newFont("fonts/Jim.ttf", 12)
 secondaryFont = native.newFont("fonts/exte.ttf", 18)
+
+-- Store constants
+PRODUCT_NO_ADS = "NO_ADS"
 
 globalTextOptions = {
   text = "NULL",
@@ -67,14 +71,12 @@ slowTimeAudio = audio.loadSound("audio/slowtime.mp3")
 --ads
 platform = system.getInfo("platform")
 
-local adModule = ggData:new("ads")
-local noAdsModule
-if adModule.purchased ~= nil then
-  if(adModule.purchased) then
+local adModule = ggData:new("purchases")
+local noAdsModule = false
+if adModule:get(PRODUCT_NO_ADS) ~= nil then
+  if(adModule:get(PRODUCT_NO_ADS)) then
     noAdsModule = true
   end
-else
-  noAdsModule = false
 end
 
 print("No ads module: " .. tostring(noAdsModule))
