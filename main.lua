@@ -20,7 +20,7 @@ howFont = native.newFont("fonts/Jim.ttf", 12)
 secondaryFont = native.newFont("fonts/exte.ttf", 18)
 
 -- Store constants
-PRODUCT_NO_ADS = "NO_ADS"
+PRODUCT_NO_ADS = "no_ads"
 
 globalTextOptions = {
   text = "NULL",
