@@ -18,7 +18,7 @@ local screenTop = display.screenOriginY
 local screenLeft = display.screenOriginX
 local bottomMarg = display.contentHeight - display.screenOriginY
 local rightMarg = display.contentWidth - display.screenOriginX
-local noAdsText = ""
+local noAdsObj = {}
 
 -- -----------------------------------------------------------------------------------
 -- Transaction listeners
@@ -27,13 +27,13 @@ local noAdsText = ""
 local function loadProductsLocal(event)
     for i = 1, #event.products do
         if(event.products[i].productIdentifier == PRODUCT_NO_ADS) then
-            noAdsText = noAdsText .. " - " .. event.products[i].localizedPrice
+            noAdsObj.text = noAdsObj.text .. " - " .. event.products[i].localizedPrice
         end
     end
 end
 
 local function transactionListener( event )
-    
+
        -- Google IAP initialization event
        if ( event.name == "init" ) then
     
@@ -61,7 +61,8 @@ local function transactionListener( event )
            else  -- Unsuccessful transaction; output error details
                print( event.transaction.errorType )
                print( event.transaction.errorString )
-               native.showAlert("Unsuccessful Purchase", "Unfortunately your payment has been rejected, you have not been charged.", {"OK"})
+               rejectionString = "Unfortunately your payment has been rejected, you have not been charged."
+               native.showAlert("Unsuccessful Purchase", rejectionString, {"OK"})
            end
        end
 end
@@ -94,14 +95,16 @@ function scene:create( event )
         y = 30
     })
 
-    noAdsText = "No Ads!"
-    local noAdsObj = display.newText({
+    local noAdsText = "No Ads!"
+    noAdsObj = display.newText({
         text = noAdsText,
         font = secondaryFont,
         fontSize = 28,
         x = centerX,
         y = 100
     })
+
+    globalStore.init(transactionListener)
     
     local buyButton = display.newImage("res/buybutton.png")
     buyButton.width = 150
@@ -118,7 +121,6 @@ function scene:create( event )
     sceneGroup:insert(buyButton)
     sceneGroup:insert(title)
     sceneGroup:insert(backBtn)
-    globalStore.init(transactionListener)
 end
 
 function liftTouch(button)
