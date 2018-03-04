@@ -76,9 +76,9 @@ local function transactionListener( event )
                rejectionString = "Unfortunately your payment has been rejected, you have not been charged."
                native.showAlert("Unsuccessful Purchase", rejectionString, {"OK"})
            end
-
-           globalStore.finishTransaction( event.transaction )
        end
+
+       globalStore.finishTransaction( event.transaction )
 end
 
 -- -----------------------------------------------------------------------------------
