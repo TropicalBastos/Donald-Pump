@@ -72,7 +72,7 @@ function scene:create( event )
     --loading:toBack()
     --loading:play()
 
-    renderLogo()
+    renderLogo(sceneGroup)
     logo.y = centerY;
     logo:scale(0.0,0.0)
 
@@ -120,10 +120,12 @@ function scene:create( event )
     --attributions
     local attributionText1 = "Music by Eric Matyas"
     local attributionText2 = "www.soundimage.org"
+    local attributionText3 = "Graphics by Jack Duffy"
+    local attributionText4 = "www.jack-duffy.com"
     local attributionObj1 = display.newText({
       text = attributionText1,
       x = centerX,
-      y = centerY + 150,
+      y = centerY + 140,
       parent = sceneGroup,
       font = secondaryFont,
       fontSize = 24
@@ -131,29 +133,54 @@ function scene:create( event )
     local attributionObj2 = display.newText({
       text = attributionText2,
       x = centerX,
-      y = centerY + 170,
+      y = centerY + 160,
+      parent = sceneGroup,
+      font = secondaryFont,
+      fontSize = 24
+    })
+    local attributionObj3 = display.newText({
+      text = attributionText3,
+      x = centerX,
+      y = centerY + 190,
+      parent = sceneGroup,
+      font = secondaryFont,
+      fontSize = 24
+    })
+    local attributionObj4 = display.newText({
+      text = attributionText4,
+      x = centerX,
+      y = centerY + 210,
       parent = sceneGroup,
       font = secondaryFont,
       fontSize = 24
     })
 
+
     local function slideUpText()
       transition.to(attributionObj1,{y=-300,time=2000,transition=easing.inOutQuart})
       transition.to(attributionObj2,{y=-300,time=2000,transition=easing.inOutQuart})
+      transition.to(attributionObj3,{y=-300,time=2000,transition=easing.inOutQuart})
+      transition.to(attributionObj4,{y=-300,time=2000,transition=easing.inOutQuart})
       transition.to(disclaimerTitleObj,{y=-300,time=2000,transition=easing.inOutQuart})
       transition.to(disclaimerTextObj,{y=-300,time=2000,transition=easing.inOutQuart})
     end
 
     timer.performWithDelay(5500, slideUpText)
 
+    sceneGroup:insert(attributionObj1)
+    sceneGroup:insert(attributionObj2)
+    sceneGroup:insert(attributionObj3)
+    sceneGroup:insert(attributionObj4)
+
 end
 
 
-function renderLogo()
+function renderLogo(sceneGroup)
   logo = display.newImage("res/logo.png")
   logo.width = 350
   logo.height = 350
   logo.x = display.contentCenterX
+  sceneGroup:insert(logo)
 end
 
 function checkLoaded()
