@@ -42,8 +42,8 @@ explosionSheet = graphics.newImageSheet("res/nuked.png",explosionOptions)
 
 --ultra pump effect
 local ultraOptions = {
-  width = 612,
-  height = 344,
+  width = 409,
+  height = 230,
   numFrames = 30
 }
 
