@@ -1,8 +1,8 @@
 --The following is a storage of sprite sheets
 --universal balloon pop animation
 local balloonPopSheetOptions = {
-  width = 386,
-  height = 328,
+  width = 292,
+  height = 248,
   numFrames = 39
 }
 
