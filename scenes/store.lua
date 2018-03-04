@@ -124,6 +124,8 @@ function scene:create( event )
     storeSceneGroup:insert(loadingStore)
     storeSceneGroup:insert(title)
     storeSceneGroup:insert(backBtn)
+
+    globalStore.init(transactionListener)
 end
 
 function liftTouch(button)
@@ -142,8 +144,6 @@ function showProducts()
         x = centerX,
         y = 100
     })
-
-    globalStore.init(transactionListener)
     
     local buyButton = display.newImage("res/buybutton.png")
     buyButton.width = 150
