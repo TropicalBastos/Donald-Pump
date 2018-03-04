@@ -171,6 +171,8 @@ function scene:create( event )
     sceneGroup:insert(attributionObj2)
     sceneGroup:insert(attributionObj3)
     sceneGroup:insert(attributionObj4)
+    sceneGroup:insert(disclaimerTitleObj)
+    sceneGroup:insert(disclaimerTextObj)
 
 end
 
