@@ -175,7 +175,7 @@ end
 function showProducts()
     local adModule = ggData:new("purchases")
     
-    if(renderBasedIfPurchased) then
+    if(renderBasedIfPurchased()) then
         return
     end
 
