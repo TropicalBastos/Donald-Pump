@@ -19,6 +19,7 @@ local screenLeft = display.screenOriginX
 local bottomMarg = display.contentHeight - display.screenOriginY
 local rightMarg = display.contentWidth - display.screenOriginX
 local noAdsObj = {}
+local buyButton = nil
 local loadingStore = nil
 local storeSceneGroup = nil
 local loadingStoreAnimation = nil
@@ -64,6 +65,8 @@ local function transactionListener( event )
 
                if(event.transaction.productIdentifier == PRODUCT_NO_ADS) then
                     enableNoAds()
+                    removeAdPurchase()
+                    renderBasedIfPurchased()
                end
     
            else  -- Unsuccessful transaction; output error details
@@ -72,6 +75,8 @@ local function transactionListener( event )
                rejectionString = "Unfortunately your payment has been rejected, you have not been charged."
                native.showAlert("Unsuccessful Purchase", rejectionString, {"OK"})
            end
+
+           globalStore.finishTransaction( event.transaction )
        end
 end
 
@@ -128,6 +133,7 @@ function scene:create( event )
     storeSceneGroup:insert(backBtn)
 
     globalStore.init(transactionListener)
+    globalStore.restore()
 end
 
 function liftTouch(button)
@@ -137,7 +143,41 @@ function liftTouch(button)
     end
 end
 
+function renderBasedIfPurchased()
+    local isPurchasedAds = false
+    if adModule:get(PRODUCT_NO_ADS) ~= nil then
+        if(adModule:get(PRODUCT_NO_ADS)) then
+          isPurchasedAds = true
+        end
+    end
+
+    if(isPurchasedAds) then
+        local purchasedAdsObj = display.newText({
+            text = "No Ads Module - Purchased",
+            font = secondaryFont,
+            fontSize = 28,
+            x = centerX,
+            y = 100
+        })
+        storeSceneGroup:insert(purchasedAdsObj)
+        return true
+    end
+
+    return false
+end
+
+function removeAdPurchase()
+    noAdsObj:removeSelf()
+    buyButton:removeSelf()
+end
+
 function showProducts()
+    local adModule = ggData:new("purchases")
+    
+    if(renderBasedIfPurchased) then
+        return
+    end
+
     local noAdsText = "No Ads!"
     noAdsObj = display.newText({
         text = noAdsText,
@@ -147,7 +187,7 @@ function showProducts()
         y = 100
     })
     
-    local buyButton = display.newImage("res/buybutton.png")
+    buyButton = display.newImage("res/buybutton.png")
     buyButton.width = 150
     buyButton.height = 60
     buyButton.y = noAdsObj.y + (buyButton.height)
