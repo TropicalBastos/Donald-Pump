@@ -22,6 +22,7 @@ local noAdsObj = {}
 local loadingStore = nil
 local storeSceneGroup = nil
 local loadingStoreAnimation = nil
+local noAdsPriceString = ""
 
 -- -----------------------------------------------------------------------------------
 -- Transaction listeners
@@ -33,7 +34,8 @@ local function loadProductsLocal(event)
     showProducts()
     for i = 1, #event.products do
         if(event.products[i].productIdentifier == PRODUCT_NO_ADS) then
-            noAdsObj.text = noAdsObj.text .. " - " .. event.products[i].localizedPrice .. " " .. event.products[i].priceCurrencyCode
+            noAdsObj.text = noAdsObj.text .. " - " .. event.products[i].localizedPrice
+            noAdsPriceString = event.products[i].localizedPrice
         end
     end
 end
@@ -139,7 +141,7 @@ function showProducts()
     local noAdsText = "No Ads!"
     noAdsObj = display.newText({
         text = noAdsText,
-        font = secondaryFont,
+        font = lastResortFont,
         fontSize = 28,
         x = centerX,
         y = 100
@@ -181,7 +183,7 @@ function confirmPurchase(event)
     end
 
     if(event.target.product == "noads") then
-        native.showAlert("No Ads Module", "Would you like to purchase the No Ads Module for " .. noAdsObj.text .. "?", 
+        native.showAlert("No Ads Module", "Would you like to purchase the No Ads Module for " .. noAdsPriceString .. "?", 
         {"No", "Yes"}, function(e) commenceTransaction(e, PRODUCT_NO_ADS) end )
     end
 

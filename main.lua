@@ -18,6 +18,7 @@ highscoreFont = native.newFont("fonts/Jim.ttf",20)
 font321 = native.newFont("fonts/Jim.ttf",100)
 howFont = native.newFont("fonts/Jim.ttf", 12)
 secondaryFont = native.newFont("fonts/exte.ttf", 18)
+lastResortFont = native.newFont("fonts/Century.ttf", 24)
 
 -- Store constants
 PRODUCT_NO_ADS = "no_ads"
