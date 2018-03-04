@@ -49,6 +49,7 @@ local function transactionListener( event )
            if not ( event.transaction.isError ) then
                -- Perform steps to enable IAP, load products, etc.
                globalStore.loadProducts({PRODUCT_NO_ADS}, loadProductsLocal)
+               globalStore.restore()
     
            else  -- Unsuccessful initialization; output error details
                print( event.transaction.errorType )
@@ -133,7 +134,7 @@ function scene:create( event )
     storeSceneGroup:insert(backBtn)
 
     globalStore.init(transactionListener)
-    globalStore.restore()
+
 end
 
 function liftTouch(button)
