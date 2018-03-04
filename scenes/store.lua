@@ -145,6 +145,7 @@ function liftTouch(button)
 end
 
 function renderBasedIfPurchased()
+    local adModule = ggData:new("purchases")
     local isPurchasedAds = false
     if adModule:get(PRODUCT_NO_ADS) ~= nil then
         if(adModule:get(PRODUCT_NO_ADS)) then
@@ -154,13 +155,21 @@ function renderBasedIfPurchased()
 
     if(isPurchasedAds) then
         local purchasedAdsObj = display.newText({
-            text = "No Ads Module - Purchased",
+            text = "No Ads Module",
             font = secondaryFont,
-            fontSize = 28,
+            fontSize = 26,
             x = centerX,
             y = 100
         })
+        local purchasedAdsObj2 = display.newText({
+            text = "- Purchased",
+            font = secondaryFont,
+            fontSize = 26,
+            x = centerX,
+            y = 130
+        })
         storeSceneGroup:insert(purchasedAdsObj)
+        storeSceneGroup:insert(purchasedAdsObj2)
         return true
     end
 
@@ -173,7 +182,6 @@ function removeAdPurchase()
 end
 
 function showProducts()
-    local adModule = ggData:new("purchases")
     
     if(renderBasedIfPurchased()) then
         return
