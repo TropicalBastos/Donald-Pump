@@ -94,6 +94,10 @@ if platform == "android" or platform == "ios" then
   appodeal.init( adListener, { appKey=APP_KEY } )
 end
 
+function setNoAdsModule(bool)
+  noAdsModule = bool
+end
+
 function displayAd(chance, type)
   if noAdsModule then
     return

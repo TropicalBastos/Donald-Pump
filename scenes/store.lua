@@ -59,11 +59,11 @@ local function transactionListener( event )
        -- Store transaction event
        elseif ( event.name == "storeTransaction" ) then
     
-           if not ( event.transaction.state == "failed" ) then  -- Successful transaction
+           if(event.transaction.state == "purchased" or event.transaction.state == "restored") then  -- Successful transaction
                print( json.prettify( event ) )
                print( "event.transaction: " .. json.prettify( event.transaction ) )
 
-               if(event.transaction.productIdentifier == PRODUCT_NO_ADS and (event.transaction.state == "purchased" or event.transaction.state == "restored")) then
+               if(event.transaction.productIdentifier == PRODUCT_NO_ADS) then
                     enableNoAds()
                     removeAdPurchase()
                     renderBasedIfPurchased()
@@ -256,6 +256,7 @@ function enableNoAds()
     storeBox:set(PRODUCT_NO_ADS, true)
     storeBox:save()
     native.showAlert("Purchase Successful", "Thank you for purchasing our No Ads Module.", {"OK"})
+    setNoAdsModule(true)
 end
 
 
