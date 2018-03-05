@@ -158,8 +158,16 @@ function liftTouch(button)
     end
 end
 
-function restorePurchasesListener()
+function restorePurchasesListener(event)
+    if(not event.target.pressed) then
+        event.target.pressed = true
+        event.target:scale(0.8, 0.8)
+    end
+    
+    local eventButton = event.target
+
     local function innerListener(e)
+        liftTouch(eventButton)
         if(e.index == 1) then
             return
         end
