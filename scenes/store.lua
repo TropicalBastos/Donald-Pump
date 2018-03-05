@@ -132,8 +132,12 @@ function scene:create( event )
     storeSceneGroup:insert(title)
     storeSceneGroup:insert(backBtn)
 
-    globalStore.init(transactionListener)
-    globalStore.restore()
+    if(globalStore.isActive) then
+        showProducts()
+    else
+        globalStore.init(transactionListener)
+        globalStore.restore()
+    end
 
 end
 
