@@ -22,6 +22,7 @@ lastResortFont = native.newFont("fonts/Century.ttf", 24)
 
 -- Store constants
 PRODUCT_NO_ADS = "no_ads"
+PRODUCT_TYCOON = "tycoon"
 
 globalTextOptions = {
   text = "NULL",
@@ -108,6 +109,13 @@ function displayAd(chance, type)
         appodeal.show( type )
       end
     end
+end
+
+--Consumables
+tycoonConsumable = false
+local tycoon = ggData:new("consumables")
+if tycoon:get(PRODUCT_TYCOON) ~= nil then
+  tycoonConsumable = tycoon:get(PRODUCT_TYCOON)
 end
 
 --start the app on the loading scene

@@ -19,24 +19,42 @@ local screenLeft = display.screenOriginX
 local bottomMarg = display.contentHeight - display.screenOriginY
 local rightMarg = display.contentWidth - display.screenOriginX
 local noAdsObj = {}
+local tycoonObj = {}
 local buyButton = nil
+local buyButton2 = nil
 local loadingStore = nil
 local storeSceneGroup = nil
 local loadingStoreAnimation = nil
 local noAdsPriceString = ""
+local tycoonPriceString = ""
+local showProductsCalled = false
+local productStore = {
+    PRODUCT_NO_ADS,
+    PRODUCT_TYCOON
+}
 
 -- -----------------------------------------------------------------------------------
 -- Transaction listeners
 -- -----------------------------------------------------------------------------------
 
 local function loadProductsLocal(event)
-    timer.cancel(loadingStoreAnimation)
-    loadingStore:removeSelf()
-    showProducts()
+    if(loadingStoreAnimation ~= nil) then
+        timer.cancel(loadingStoreAnimation)
+    end
+    if (loadingStore ~= nil) then
+        loadingStore:removeSelf()
+    end
+    if(not showProductsCalled) then
+        showProducts()
+        showProductsCalled = true
+    end
     for i = 1, #event.products do
         if(event.products[i].productIdentifier == PRODUCT_NO_ADS) then
             noAdsObj.text = noAdsObj.text .. " - " .. event.products[i].localizedPrice
             noAdsPriceString = event.products[i].localizedPrice
+        elseif(event.products[i].productIdentifier == PRODUCT_TYCOON) then
+            tycoonObj.text = tycoonObj.text .. " - " .. event.products[i].localizedPrice
+            tycoonPriceString = event.products[i].localizedPrice
         end
     end
 end
@@ -48,7 +66,7 @@ local function transactionListener( event )
     
            if not ( event.transaction.isError ) then
                -- Perform steps to enable IAP, load products, etc.
-               globalStore.loadProducts({PRODUCT_NO_ADS}, loadProductsLocal)
+               globalStore.loadProducts(productStore, loadProductsLocal)
     
            else  -- Unsuccessful initialization; output error details
                print( event.transaction.errorType )
@@ -67,6 +85,8 @@ local function transactionListener( event )
                     enableNoAds()
                     removeAdPurchase()
                     renderBasedIfPurchased()
+               elseif(event.transaction.productIdentifier == PRODUCT_TYCOON) then
+                    enableTycoonConsumable()
                end
     
            else  -- Unsuccessful transaction; output error details
@@ -130,7 +150,7 @@ function scene:create( event )
     restoreStorePurchasesButton.width = centerX
     restoreStorePurchasesButton.height = restoreStorePurchasesButton.width / 3
     restoreStorePurchasesButton.x = centerX
-    restoreStorePurchasesButton.y = bottomMarg - (restoreStorePurchasesButton.height * 3)
+    restoreStorePurchasesButton.y = bottomMarg - (restoreStorePurchasesButton.height * 2.25)
     restoreStorePurchasesButton:addEventListener("tap", restorePurchasesListener)
 
     local backBtn = backButton.new("scenes.menu")
@@ -144,7 +164,8 @@ function scene:create( event )
         timer.cancel(loadingStoreAnimation)
         loadingStore:removeSelf()
         showProducts()
-        globalStore.loadProducts({PRODUCT_NO_ADS}, loadProductsLocal)
+        showProductsCalled = true
+        globalStore.loadProducts(productStore, loadProductsLocal)
     else
         globalStore.init(transactionListener)
     end
@@ -216,6 +237,39 @@ end
 
 function showProducts()
     
+    --RENDER CONSUMABLE PRODUCTS FIRST because they can be re purchased
+    local tycoonText = "Property Tycoon!"
+    tycoonObj = display.newText({
+        text = tycoonText,
+        font = lastResortFont,
+        fontSize = 22,
+        x = centerX,
+        y = 190
+    })
+    local tycoonDesc = display.newText({
+        text = "Start the game with 8 property coins! (Consumable)",
+        fontSize = 16,
+        width = centerX,
+        height = 60,
+        font = lastResortFont,
+        align = 'center',
+        x = centerX,
+        y = tycoonObj.y + 50
+    })
+    
+    buyButton2 = display.newImage("res/buybutton.png")
+    buyButton2.width = 120
+    buyButton2.height = 40
+    buyButton2.y = (tycoonDesc.y + (buyButton2.height + tycoonObj.height)) - 10
+    buyButton2.x = centerX
+    buyButton2.product = "tycoon"
+    buyButton2.pressed = false
+    buyButton2:addEventListener("tap", confirmPurchase)
+
+    storeSceneGroup:insert(tycoonObj)
+    storeSceneGroup:insert(buyButton2)
+    storeSceneGroup:insert(tycoonDesc)
+
     if(renderBasedIfPurchased()) then
         return
     end
@@ -224,14 +278,14 @@ function showProducts()
     noAdsObj = display.newText({
         text = noAdsText,
         font = lastResortFont,
-        fontSize = 28,
+        fontSize = 22,
         x = centerX,
         y = 100
     })
     
     buyButton = display.newImage("res/buybutton.png")
-    buyButton.width = 150
-    buyButton.height = 60
+    buyButton.width = 120
+    buyButton.height = 40
     buyButton.y = noAdsObj.y + (buyButton.height)
     buyButton.x = centerX
     buyButton.product = "noads"
@@ -261,12 +315,19 @@ function confirmPurchase(event)
             return
         end
         -- Implement purchase with payment gateway
-        globalStore.purchase(productId)
+        if(productId == PRODUCT_NO_ADS) then
+            globalStore.purchase(productId)
+        else
+            globalStore.consumePurchase(productId)
+        end
     end
 
     if(event.target.product == "noads") then
         native.showAlert("No Ads Module", "Would you like to purchase the No Ads Module for " .. noAdsPriceString .. "?", 
         {"No", "Yes"}, function(e) commenceTransaction(e, PRODUCT_NO_ADS) end )
+    elseif(event.target.product == "tycoon") then
+        native.showAlert("Property Tycoon", "Would you like to purchase the Property Tycoon consumable for " .. tycoonPriceString .. "?", 
+        {"No", "Yes"}, function(e) commenceTransaction(e, PRODUCT_TYCOON) end )
     end
 
 end
@@ -286,6 +347,14 @@ function enableNoAds()
     storeBox:save()
     native.showAlert("Purchase Successful", "Thank you for purchasing our No Ads Module.", {"OK"})
     setNoAdsModule(true)
+end
+
+function enableTycoonConsumable()
+    local tycoon = ggData:new("consumables")
+    tycoon:set(PRODUCT_TYCOON, true)
+    tycoon:save()
+    tycoonConsumable = true
+    native.showAlert("Purchase Successful", "Thank you for purchasing the Property Tycoon consumable, now wreak some havoc!", {"OK"})
 end
 
 

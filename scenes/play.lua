@@ -131,7 +131,12 @@ function scene:create( event )
     physics.addBody (rightWall, "static", { bounce = 0.1} )
 
     --set lives (properties) 3 lives to begin
-    propertyLife = propertiesImport.new(3)
+    local propertyStart = 3
+    if(tycoonConsumable) then
+      propertyStart = 8
+      disableTycoonConsumable()
+    end
+    propertyLife = propertiesImport.new(propertyStart)
     for i = 1, #propertyLife do
       local propY = propertyLife[i].y
       propertyLife[i].y = propertyLife[i].y - 100
@@ -179,6 +184,12 @@ function scene:create( event )
 
     --animate startup
     startup()
+end
+
+function disableTycoonConsumable()
+  local tycoon = ggData:new("consumables")
+  tycoon:set(PRODUCT_TYCOON, false)
+  tycoon:save()
 end
 
 -- show()
