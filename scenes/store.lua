@@ -63,7 +63,7 @@ local function transactionListener( event )
                print( json.prettify( event ) )
                print( "event.transaction: " .. json.prettify( event.transaction ) )
 
-               if(event.transaction.productIdentifier == PRODUCT_NO_ADS) then
+               if(event.transaction.productIdentifier == PRODUCT_NO_ADS and (event.transaction.state == "purchased" or event.transaction.state == "restored")) then
                     enableNoAds()
                     removeAdPurchase()
                     renderBasedIfPurchased()
