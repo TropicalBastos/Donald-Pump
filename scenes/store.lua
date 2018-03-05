@@ -126,17 +126,24 @@ function scene:create( event )
 
     loadingStoreAnimation = timer.performWithDelay(400, loadingStoreListener, 0)
 
+    local restoreStorePurchasesButton = display.newImage("res/restorepurchases.png")
+    restoreStorePurchasesButton.width = centerX
+    restoreStorePurchasesButton.height = restoreStorePurchasesButton.width / 3
+    restoreStorePurchasesButton.x = centerX
+    restoreStorePurchasesButton.y = bottomMarg - (restoreStorePurchasesButton.height * 3)
+    restoreStorePurchasesButton:addEventListener("tap", restorePurchasesListener)
+
     local backBtn = backButton.new("scenes.menu")
 
     storeSceneGroup:insert(loadingStore)
     storeSceneGroup:insert(title)
+    storeSceneGroup:insert(restoreStorePurchasesButton)
     storeSceneGroup:insert(backBtn)
 
     if(globalStore.isActive) then
         showProducts()
     else
         globalStore.init(transactionListener)
-        globalStore.restore()
     end
 
 end
@@ -146,6 +153,17 @@ function liftTouch(button)
         button:scale(1.25, 1.25)
         button.pressed = false
     end
+end
+
+function restorePurchasesListener()
+    local function innerListener(e)
+        if(e.index == 1) then
+            return
+        end
+        globalStore.restore()
+    end 
+    native.showAlert("Restore", "Would you like to restore your purchases?", 
+    {"No", "Yes"}, innerListener)
 end
 
 function renderBasedIfPurchased()
