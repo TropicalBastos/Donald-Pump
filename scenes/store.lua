@@ -141,7 +141,10 @@ function scene:create( event )
     storeSceneGroup:insert(backBtn)
 
     if(globalStore.isActive) then
+        timer.cancel(loadingStoreAnimation)
+        loadingStore:removeSelf()
         showProducts()
+        globalStore.loadProducts({PRODUCT_NO_ADS}, loadProductsLocal)
     else
         globalStore.init(transactionListener)
     end
