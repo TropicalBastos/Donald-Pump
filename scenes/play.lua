@@ -190,6 +190,7 @@ function disableTycoonConsumable()
   local tycoon = ggData:new("consumables")
   tycoon:set(PRODUCT_TYCOON, false)
   tycoon:save()
+  tycoonConsumable = false
 end
 
 -- show()
