@@ -324,8 +324,7 @@ function confirmPurchase(event)
         native.showAlert("No Ads Module", "Would you like to purchase the No Ads Module for " .. noAdsPriceString .. "?", 
         {"No", "Yes"}, function(e) commenceTransaction(e, PRODUCT_NO_ADS) end )
     elseif(event.target.product == "tycoon") then
-        native.showAlert("Property Tycoon", "Would you like to purchase the Property Tycoon consumable for " .. tycoonPriceString .. "? 
-        (Next time you start the game you will start with 8 property coins)", 
+        native.showAlert("Property Tycoon", "Would you like to purchase the Property Tycoon consumable for " .. tycoonPriceString .. "? (Next time you start the game you will start with 8 property coins)", 
         {"No", "Yes"}, function(e) commenceTransaction(e, PRODUCT_TYCOON) end )
     end
 
