@@ -2,9 +2,9 @@ package.path = package.path .. ";../?.lua"
 
 local properties = {}
 local properties_mt = {__index = properties}
-local propWidth = 40
-local propHeight = 40
-local propY = (screenTop + propHeight/2) + 3
+local propWidth = 30
+local propHeight = 30
+local propY = (screenTop + propHeight/2) + 10
 
 function properties.new(n)
   local props = {}
@@ -16,7 +16,7 @@ function properties.new(n)
     if i == 1 then
       prop.x = (rightMarg - prop.width/2) - 10
     else
-      prop.x = props[i-1].x - 40
+      prop.x = props[i-1].x - 30
     end
     props[i] = prop
   end
