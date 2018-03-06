@@ -77,7 +77,7 @@ local function transactionListener( event )
        -- Store transaction event
        elseif ( event.name == "storeTransaction" ) then
     
-           if(event.transaction.state == "purchased" or event.transaction.state == "restored") then  -- Successful transaction
+           if(event.transaction.state == "purchased" or event.transaction.state == "restored" or event.transaction.state == "consumed") then  -- Successful transaction
                print( json.prettify( event ) )
                print( "event.transaction: " .. json.prettify( event.transaction ) )
 
@@ -315,10 +315,8 @@ function confirmPurchase(event)
             return
         end
         -- Implement purchase with payment gateway
-        if(productId == PRODUCT_NO_ADS) then
+        if(productId == PRODUCT_NO_ADS or productId == PRODUCT_TYCOON) then
             globalStore.purchase(productId)
-        else
-            globalStore.consumePurchase(productId)
         end
     end
 
@@ -355,6 +353,7 @@ function enableTycoonConsumable()
     tycoon:save()
     tycoonConsumable = true
     native.showAlert("Purchase Successful", "Thank you for purchasing the Property Tycoon consumable, now wreak some havoc!", {"OK"})
+    globalStore.consumePurchase(productId)
 end
 
 
