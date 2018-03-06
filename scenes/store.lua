@@ -77,7 +77,7 @@ local function transactionListener( event )
        -- Store transaction event
        elseif ( event.name == "storeTransaction" ) then
     
-           if(event.transaction.state == "purchased" or event.transaction.state == "restored" or event.transaction.state == "consumed") then  -- Successful transaction
+           if(event.transaction.state == "purchased" or event.transaction.state == "restored") then  -- Successful transaction
                print( json.prettify( event ) )
                print( "event.transaction: " .. json.prettify( event.transaction ) )
 
