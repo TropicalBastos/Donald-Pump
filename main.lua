@@ -8,7 +8,6 @@ physics = require("physics")
 ggData = require("plugins.GGData")
 prism = require("plugins.prism")
 appodeal = require( "plugin.appodeal" )
-globalStore = require( "plugin.google.iap.v3" )
 
 local composer = require("composer")
 
@@ -84,7 +83,7 @@ end
 print("No ads module: " .. tostring(noAdsModule))
 
 if platform == "android" or platform == "ios" then
-  APP_KEY = "6e89d1b50c19c7c39f0db6d2a4fb24c7b8c7575bb2a0c75d"
+  APP_KEY = "389488ad64e1ea1d16b092b6664cafc6da1a918eeb0dc771s"
 
   function adListener( event )
       if ( event.phase == "init" ) then  -- Successful initialization

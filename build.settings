@@ -28,6 +28,7 @@ settings =
 	{
 		plist =
 		{
+			MinimumOSVersion = "8.0",
 			UIStatusBarHidden = false,
 			UIPrerenderedIcon = true, -- set to false for "shine" overlay
 			--UIApplicationExitsOnSuspend = true, -- uncomment to quit app on suspend
@@ -77,17 +78,8 @@ settings =
         ["plugin.appodeal"] =
         {
             publisherId = "com.coronalabs",
-            supportedPlatforms = { android=true }
+            supportedPlatforms = { iphone=true, android=true, ["android-kindle"]=true, appletvos=true }
         },
-        ["plugin.google.play.services"] =
-        {
-            publisherId = "com.coronalabs",
-            supportedPlatforms = { android=true }
-        },
-		["plugin.google.iap.v3"] =
-        {
-            publisherId = "com.coronalabs"
-        }
     },
 
 	splashScreen = 
