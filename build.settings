@@ -28,6 +28,7 @@ settings =
 	{
 		plist =
 		{
+            UILaunchStoryboardName = "LaunchScreen",
 			MinimumOSVersion = "8.0",
 			UIStatusBarHidden = false,
 			UIPrerenderedIcon = true, -- set to false for "shine" overlay
