@@ -8,6 +8,7 @@ physics = require("physics")
 ggData = require("plugins.GGData")
 prism = require("plugins.prism")
 appodeal = require( "plugin.appodeal" )
+globalStore = require("store")
 
 local composer = require("composer")
 

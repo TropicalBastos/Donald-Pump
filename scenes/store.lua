@@ -353,7 +353,6 @@ function enableTycoonConsumable()
     tycoon:save()
     tycoonConsumable = true
     native.showAlert("Purchase Successful", "Thank you for purchasing the Property Tycoon consumable, now wreak some havoc!", {"OK"})
-    globalStore.consumePurchase(PRODUCT_TYCOON)
 end
 
 
