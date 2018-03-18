@@ -83,7 +83,7 @@ end
 print("No ads module: " .. tostring(noAdsModule))
 
 if platform == "android" or platform == "ios" then
-  APP_KEY = "389488ad64e1ea1d16b092b6664cafc6da1a918eeb0dc771s"
+  APP_KEY = "389488ad64e1ea1d16b092b6664cafc6da1a918eeb0dc771"
 
   function adListener( event )
       if ( event.phase == "init" ) then  -- Successful initialization
