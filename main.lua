@@ -21,8 +21,8 @@ secondaryFont = native.newFont("fonts/exte.ttf", 18)
 lastResortFont = native.newFont("fonts/Century.ttf", 24)
 
 -- Store constants
-PRODUCT_NO_ADS = "no_ads"
-PRODUCT_TYCOON = "tycoon"
+PRODUCT_NO_ADS = "com.globalgust.donaldpump.no_ads"
+PRODUCT_TYCOON = "com.globalgust.donaldpump.tycoon"
 
 globalTextOptions = {
   text = "NULL",
