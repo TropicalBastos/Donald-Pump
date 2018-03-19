@@ -28,7 +28,7 @@ function properties:add()
     local prop = display.newImage("res/prop.png")
     prop.width = propWidth
     prop.height = propHeight
-    prop.x = self[#self].x - 40
+    prop.x = self[#self].x - propWidth
     prop.y = propY
     self[#self+1] = prop
     scoreTier = #self
