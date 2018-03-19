@@ -4,7 +4,6 @@ local composer = require( "composer" )
 local widget = require("widget")
 local backButton = require("objects.backbutton")
 local native = require("native")
-local json = require( "json" )
 local scene = composer.newScene()
 
 -- -----------------------------------------------------------------------------------
@@ -78,8 +77,6 @@ local function transactionListener( event )
        elseif ( event.name == "storeTransaction" ) then
     
            if(event.transaction.state == "purchased" or event.transaction.state == "restored") then  -- Successful transaction
-               print( json.prettify( event ) )
-               print( "event.transaction: " .. json.prettify( event.transaction ) )
 
                if(event.transaction.productIdentifier == PRODUCT_NO_ADS) then
                     enableNoAds()
@@ -160,14 +157,14 @@ function scene:create( event )
     storeSceneGroup:insert(restoreStorePurchasesButton)
     storeSceneGroup:insert(backBtn)
 
+    globalStore.init(transactionListener)
+
     if(globalStore.isActive) then
         timer.cancel(loadingStoreAnimation)
         loadingStore:removeSelf()
         showProducts()
         showProductsCalled = true
         globalStore.loadProducts(productStore, loadProductsLocal)
-    else
-        globalStore.init(transactionListener)
     end
 
 end
