@@ -59,22 +59,9 @@ local function loadProductsLocal(event)
 end
 
 local function transactionListener( event )
-
-       -- Google IAP initialization event
-       if ( event.name == "init" ) then
-    
-           if not ( event.transaction.isError ) then
-               -- Perform steps to enable IAP, load products, etc.
-               globalStore.loadProducts(productStore, loadProductsLocal)
-    
-           else  -- Unsuccessful initialization; output error details
-               print( event.transaction.errorType )
-               print( event.transaction.errorString )
-               native.showAlert("Error", "There has been an unknown error connecting to the Google Play Store", {"OK"})
-           end
     
        -- Store transaction event
-       elseif ( event.name == "storeTransaction" ) then
+       if ( event.name == "storeTransaction" ) then
     
            if(event.transaction.state == "purchased" or event.transaction.state == "restored") then  -- Successful transaction
 
@@ -87,8 +74,6 @@ local function transactionListener( event )
                end
     
            else  -- Unsuccessful transaction; output error details
-               print( event.transaction.errorType )
-               print( event.transaction.errorString )
                rejectionString = "Unfortunately your payment has been rejected, you have not been charged."
                native.showAlert("Unsuccessful Purchase", rejectionString, {"OK"})
            end
