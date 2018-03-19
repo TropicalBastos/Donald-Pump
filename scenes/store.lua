@@ -69,8 +69,6 @@ local function transactionListener( event )
                globalStore.loadProducts(productStore, loadProductsLocal)
     
            else  -- Unsuccessful initialization; output error details
-               print( event.transaction.errorType )
-               print( event.transaction.errorString )
                native.showAlert("Error", "There has been an unknown error connecting to the Google Play Store", {"OK"})
            end
     
@@ -78,8 +76,6 @@ local function transactionListener( event )
        elseif ( event.name == "storeTransaction" ) then
     
            if(event.transaction.state == "purchased" or event.transaction.state == "restored") then  -- Successful transaction
-               print( json.prettify( event ) )
-               print( "event.transaction: " .. json.prettify( event.transaction ) )
 
                if(event.transaction.productIdentifier == PRODUCT_NO_ADS) then
                     enableNoAds()
@@ -90,8 +86,6 @@ local function transactionListener( event )
                end
     
            else  -- Unsuccessful transaction; output error details
-               print( event.transaction.errorType )
-               print( event.transaction.errorString )
                rejectionString = "Unfortunately your payment has been rejected, you have not been charged."
                native.showAlert("Unsuccessful Purchase", rejectionString, {"OK"})
            end
