@@ -145,13 +145,17 @@ function scene:create( event )
     globalStore.init(transactionListener)
 
     if(globalStore.isActive) then
-        timer.cancel(loadingStoreAnimation)
-        loadingStore:removeSelf()
-        showProducts()
-        showProductsCalled = true
-        globalStore.loadProducts(productStore, loadProductsLocal)
+        timer.performWithDelay(1000, showStore)
     end
 
+end
+
+function showStore()
+    timer.cancel(loadingStoreAnimation)
+    loadingStore:removeSelf()
+    showProducts()
+    showProductsCalled = true
+    globalStore.loadProducts(productStore, loadProductsLocal)
 end
 
 function liftTouch(button)
