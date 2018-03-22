@@ -142,9 +142,9 @@ function scene:create( event )
     storeSceneGroup:insert(restoreStorePurchasesButton)
     storeSceneGroup:insert(backBtn)
 
-    globalStore.init(transactionListener)
+    globalStore.init("apple", transactionListener)
 
-    if(globalStore.isActive) then
+    if(globalStore.isActive and globalStore.canLoadProducts) then
         timer.performWithDelay(1000, showStore)
     end
 
@@ -307,12 +307,12 @@ function confirmPurchase(event)
     end
 
     if(event.target.product == "noads") then
-        native.showAlert("No Ads Module", "Would you like to purchase the No Ads Module for " .. noAdsPriceString .. "?", 
-        {"No", "Yes"}, function(e) commenceTransaction(e, PRODUCT_NO_ADS) end )
+        globalStore.purchase(PRODUCT_NO_ADS)
     elseif(event.target.product == "tycoon") then
-        native.showAlert("Property Tycoon", "Would you like to purchase the Property Tycoon consumable for " .. tycoonPriceString .. "? (Next time you start the game you will start with 8 property coins)", 
-        {"No", "Yes"}, function(e) commenceTransaction(e, PRODUCT_TYCOON) end )
+        globalStore.purchase(PRODUCT_TYCOON)
     end
+
+    timer.performWithDelay(500, function() liftTouch(eventButton) end)
 
 end
 
