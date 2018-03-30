@@ -239,6 +239,9 @@ function updatePlayScore()
 end
 
 function bringHUDButtonsToFront()
+  if crosshair == nil then
+    return
+  end
   crosshair:toFront()
   restartButton:toFront()
   backButton:toFront()
