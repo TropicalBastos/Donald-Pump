@@ -60,6 +60,11 @@ settings =
             publisherId = "com.coronalabs",
             supportedPlatforms = { iphone=true, android=true, ["android-kindle"]=true, appletvos=true }
         },
+		
+        ["CoronaProvider.gameNetwork.apple"] =
+        {
+            publisherId = "com.coronalabs"
+        },
     },
 
 	splashScreen = 

@@ -10,7 +10,6 @@ prism = require("plugins.prism")
 appodeal = require( "plugin.appodeal" )
 globalStore = require("store")
 gameNetwork = require( "gameNetwork" )
-gameNetwork.init()
 
 local composer = require("composer")
 
@@ -25,6 +24,9 @@ lastResortFont = native.newFont("fonts/Century.ttf", 24)
 -- Store constants
 PRODUCT_NO_ADS = "com.globalgust.donaldpump.no_ads"
 PRODUCT_TYCOON = "com.globalgust.donaldpump.tycoon"
+
+-- Other constants
+LEADERBOARD_ID = "com.globalgust.donaldpump.highscore"
 
 globalTextOptions = {
   text = "NULL",
@@ -119,6 +121,9 @@ local tycoon = ggData:new("consumables")
 if tycoon:get(PRODUCT_TYCOON) ~= nil then
   tycoonConsumable = tycoon:get(PRODUCT_TYCOON)
 end
+
+--logged into game center
+loggedIntoGC = false
 
 --start the app on the loading scene
 composer.gotoScene("scenes.loading")

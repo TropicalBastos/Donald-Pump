@@ -220,18 +220,62 @@ function scene:create( event )
 
 end
 
+function gameNetworkCallback(event)
+    if ( event.type == "showSignIn" ) then
+      -- This is an opportunity to pause your game or do other things you might need to do while the Game Center Sign-In controller is up.
+    elseif( event.type == "init" ) then
+        loggedIntoGC = true
+        registerHighscoreWithGameNetwork(highscoreNumber)
+        showLeaderboards()
+    elseif ( event.data ) then
+        loggedIntoGC = true
+    elseif ( event.data == false ) then
+        native.showAlert( "Unsuccessful login", "", { "OK" } )
+    end
+end
+
+function showLeaderboards()
+  gameNetwork.show( "leaderboards",
+    {
+        leaderboard = {
+            category = LEADERBOARD_ID
+        },
+        listener = leaderboardsEnd
+    }
+  )
+end
+
+function leaderboardsEnd()
+    leaderboards.alpha = 1
+end
+
 function leaderboardsTouch(event)
     if(event.phase == "began") then
-        event.target.alpha = 0.4
+      event.target.alpha = 0.4
+      if(loggedIntoGC) then
+        showLeaderboards()
+      else
+        gameNetwork.init( "gamecenter", gameNetworkCallback )
+      end
     elseif(event.phase == "ended") then
         event.target.alpha = 1
     end
+end
+
+function registerHighscoreWithGameNetwork(registerHighscore)
+  if(not loggedIntoGC) then return end
+    gameNetwork.request( "setHighScore",
+      {
+          localPlayerScore = { category=LEADERBOARD_ID, value=registerHighscore }
+      }
+    )
 end
 
 function storeClickListener(event)
   if menuButtonTapped then
     return
   end
+  transition.fadeOut(leaderboards)
   menuButtonTapped = true
   audio.play(clickSound, {channel = 3})
   local storeGraphic = event.target
@@ -247,6 +291,7 @@ function loadHighScore()
     box:save()
   else
     highscoreNumber = box.highscore
+    registerHighscoreWithGameNetwork(highscoreNumber)
   end
 end
 
