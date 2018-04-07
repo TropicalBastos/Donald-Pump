@@ -88,6 +88,11 @@ settings =
 		["plugin.google.iap.v3"] =
         {
             publisherId = "com.coronalabs"
+        },
+		["plugin.gpgs"] =
+        {
+            publisherId = "com.coronalabs",
+            supportedPlatforms = {android = true}
         }
     },
 
