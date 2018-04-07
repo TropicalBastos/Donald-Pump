@@ -9,6 +9,8 @@ ggData = require("plugins.GGData")
 prism = require("plugins.prism")
 appodeal = require( "plugin.appodeal" )
 globalStore = require("store")
+gameNetwork = require( "gameNetwork" )
+gameNetwork.init()
 
 local composer = require("composer")
 

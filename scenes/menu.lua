@@ -24,6 +24,7 @@ local buttons
 local highscore
 local playScore
 local flyText
+local leaderboards
 local menuButtonTapped = false
 isOnMenu = true
 highscoreNumber = nil
@@ -202,10 +203,29 @@ function scene:create( event )
     sceneGroup:insert(storeGraphic)
     transition.to(storeGraphic, {x = screenLeft + storeGraphic.height/2, time = 1500, transition = easing.outCubic})
 
+    --lets display the leaderboards
+    leaderboards = display.newImage("res/leaderboards.png")
+    leaderboards.width = storeGraphic.width
+    leaderboards.height = storeGraphic.height
+    leaderboards.x = rightMarg + leaderboards.height * 2
+    leaderboards:rotate(270)
+    leaderboards.y = storeGraphic.y
+    leaderboards:addEventListener("touch", leaderboardsTouch)
+    sceneGroup:insert(leaderboards)
+    transition.to(leaderboards, {x = rightMarg - leaderboards.height / 2, time = 1500, transition = easing.outCubic})
+
     --display ad randomly
     --displayAd(3, "interstitial")
     displayAd(2, "banner")
 
+end
+
+function leaderboardsTouch(event)
+    if(event.phase == "began") then
+        event.target.alpha = 0.4
+    elseif(event.phase == "ended") then
+        event.target.alpha = 1
+    end
 end
 
 function storeClickListener(event)
