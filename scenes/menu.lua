@@ -24,6 +24,7 @@ local buttons
 local highscore
 local playScore
 local flyText
+local leaderboards
 local menuButtonTapped = false
 isOnMenu = true
 highscoreNumber = nil
@@ -202,6 +203,17 @@ function scene:create( event )
     sceneGroup:insert(storeGraphic)
     transition.to(storeGraphic, {x = screenLeft + storeGraphic.height/2, time = 1500, transition = easing.outCubic})
 
+    --lets display the leaderboards
+    leaderboards = display.newImage("res/leaderboards.png")
+    leaderboards.width = storeGraphic.width
+    leaderboards.height = storeGraphic.height
+    leaderboards.x = rightMarg + leaderboards.height * 2
+    leaderboards:rotate(270)
+    leaderboards.y = storeGraphic.y
+    leaderboards:addEventListener("touch", leaderboardsTouch)
+    sceneGroup:insert(leaderboards)
+    transition.to(leaderboards, {x = rightMarg - leaderboards.height / 2, time = 1500, transition = easing.outCubic})
+
     --display ad randomly
     --displayAd(3, "interstitial")
     displayAd(2, "banner")
@@ -212,11 +224,52 @@ function storeClickListener(event)
   if menuButtonTapped then
     return
   end
+  transition.fadeOut(leaderboards)
   menuButtonTapped = true
   audio.play(clickSound, {channel = 3})
   local storeGraphic = event.target
   transition.to(storeGraphic, {xScale = 4, yScale = 4, alpha = 0.5, x = centerX, rotation = 0, time = 500,
     onComplete = function() popEventMenu(event) end})
+end
+
+function registerHighscoreWithGameCenter(registerHighscore)
+  if(not loggedIntoGC) then return end
+  gpgs.leaderboards.submit({
+    leaderboardId = LEADERBOARD_ID,
+    score = registerHighscore
+  })
+end
+
+function gameCenterLogin(event)
+  if(event.phase == "logged in") then
+    showLeaderboard()
+  else
+    leaderboardsEnd()
+  end
+end
+
+function leaderboardsEnd()
+  leaderboards.alpha = 1
+end
+
+function showLeaderboard()
+  gpgs.leaderboards.show({
+    listener = leaderboardsEnd
+  })
+end
+
+function leaderboardsTouch(event)
+  if(event.phase == "began") then
+    event.target.alpha = 0.4
+    if(loggedIntoGC) then
+      registerHighscoreWithGameCenter(highscoreNumber)
+      showLeaderboard()
+    else
+      gpgs.login()
+    end
+  elseif(event.phase == "ended") then
+      event.target.alpha = 1
+  end
 end
 
 --load the stored highscore into the scene
@@ -227,6 +280,7 @@ function loadHighScore()
     box:save()
   else
     highscoreNumber = box.highscore
+    registerHighscoreWithGameCenter(highscoreNumber)
   end
 end
 

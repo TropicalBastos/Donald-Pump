@@ -9,6 +9,8 @@ ggData = require("plugins.GGData")
 prism = require("plugins.prism")
 appodeal = require( "plugin.appodeal" )
 globalStore = require( "plugin.google.iap.v3" )
+gpgs = require( "plugin.gpgs" )
+gpgs.init()
 
 local composer = require("composer")
 
@@ -117,6 +119,10 @@ local tycoon = ggData:new("consumables")
 if tycoon:get(PRODUCT_TYCOON) ~= nil then
   tycoonConsumable = tycoon:get(PRODUCT_TYCOON)
 end
+
+-- game center
+loggedIntoGC= false
+LEADERBOARD_ID = "CgkIkYLB5okNEAIQAA"
 
 --start the app on the loading scene
 composer.gotoScene("scenes.loading")
