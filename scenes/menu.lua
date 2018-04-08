@@ -242,8 +242,8 @@ end
 
 function gameCenterLogin(event)
   if(event.phase == "logged in") then
-    registerHighscoreWithGameCenter(highscoreNumber)
     loggedIntoGC = true
+    registerHighscoreWithGameCenter(highscoreNumber)
     showLeaderboard()
   else
     leaderboardsEnd()
@@ -256,6 +256,7 @@ end
 
 function showLeaderboard()
   gpgs.leaderboards.show({
+    leaderboardId = LEADERBOARD_ID,
     listener = leaderboardsEnd
   })
 end
@@ -268,6 +269,7 @@ function leaderboardsTouch(event)
       showLeaderboard()
     else
       gpgs.login({
+        userInitiated = true,
         listener = gameCenterLogin
       })
     end

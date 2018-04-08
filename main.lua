@@ -122,7 +122,7 @@ end
 
 -- game center
 loggedIntoGC= false
-LEADERBOARD_ID = "CgkIkYLB5okNEAIQAA"
+LEADERBOARD_ID = "CgkI0Oi03NABEAIQAQ"
 
 --start the app on the loading scene
 composer.gotoScene("scenes.loading")

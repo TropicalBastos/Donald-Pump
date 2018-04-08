@@ -71,7 +71,7 @@ settings =
 			"com.android.vending.BILLING",
 			"com.android.vending.CHECK_LICENSE"
 		},
-		googlePlayGamesAppId = "449307492625"
+		googlePlayGamesAppId = "56028378192"
 	},
 
 	plugins =
