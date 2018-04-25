@@ -51,7 +51,7 @@ function slowTimeExplode()
 
   local function reduceSpeed()
     if yVelGlobal < -10 then
-        yVelGlobal = yVelGlobal + 10
+        yVelGlobal = yVelGlobal + 25
     end
   end
 
